@@ -1,0 +1,102 @@
+YÊU CẦU CÔNG CỤ VÀ PHIÊN BẢN — WEBSITE QUẢN LÝ HSBA
+Ngày lập: 15/10/2026
+
+1. MÔI TRƯỜNG CHÍNH
+
+- Java JDK: 26.0.2.1 — theo kết quả javac --version bạn cung cấp.
+  Dự kiến sử dụng Java 26 cho dự án, thay cho đề xuất Java 21 ban đầu.
+  Cần kiểm tra java --version và JAVA_HOME để bảo đảm Maven dùng cùng JDK.
+- PostgreSQL: 18.6 — phiên bản mục tiêu.
+  Kết quả psql --version xác nhận phiên bản client, chưa xác nhận server.
+  Sau khi kết nối, chạy SELECT version(); để kiểm tra server PostgreSQL.
+- Spring Boot: 4.1.1 — phiên bản đề xuất, hỗ trợ Java 26.
+- Apache Maven: 3.9.16 — phiên bản đề xuất cho build và quản lý thư viện.
+  Nên dùng Maven Wrapper để các máy chạy cùng phiên bản Maven.
+
+2. FRAMEWORK VÀ THƯ VIỆN JAVA
+
+Các thành phần dưới đây dùng phiên bản do Spring Boot 4.1.1 quản lý
+qua parent/BOM. Không tự ghép các phiên bản Spring, Hibernate hoặc JUnit.
+Phiên bản phụ thuộc chính xác sẽ được khóa và kiểm tra trong pom.xml
+và dependency tree khi khởi tạo dự án.
+
+- Spring MVC: theo BOM Spring Boot 4.1.1 — xử lý web.
+- Spring Security: theo BOM Spring Boot 4.1.1 — xác thực, phân quyền, session.
+- Spring Data JPA: theo BOM Spring Boot 4.1.1 — truy cập dữ liệu.
+- Hibernate ORM: theo BOM Spring Boot 4.1.1 — ánh xạ dữ liệu.
+- Jakarta Bean Validation / Hibernate Validator: theo BOM Spring Boot 4.1.1.
+- Thymeleaf: theo BOM Spring Boot 4.1.1 — giao diện HTML phía server.
+- PostgreSQL JDBC Driver: theo BOM Spring Boot 4.1.1.
+- Flyway Core và Flyway PostgreSQL module: theo BOM Spring Boot 4.1.1.
+- Spring Boot Test và JUnit: theo BOM Spring Boot 4.1.1.
+- MockMvc: theo phiên bản Spring Framework do Spring Boot quản lý.
+- Spring Mail: theo BOM Spring Boot 4.1.1, chỉ thêm khi chốt chức năng email.
+- Testcontainers: theo BOM Spring Boot 4.1.1, tùy chọn; cần Docker.
+- Apache POI: tùy chọn khi có xuất Excel; chốt phiên bản khi thêm tính năng.
+
+3. GIAO DIỆN
+
+- HTML5, CSS3, JavaScript chuẩn trình duyệt.
+- Bootstrap: nhánh 5.3.x; chốt bản vá cụ thể khi khởi tạo giao diện.
+- Thymeleaf: đã liệt kê ở phần thư viện Java.
+- Không bắt buộc Node.js/npm khi dùng Thymeleaf và tài nguyên tĩnh trực tiếp.
+
+4. CÔNG CỤ PHÁT TRIỂN
+
+- IDE: chọn IntelliJ IDEA hoặc VS Code có Extension Pack for Java.
+  Phiên bản: bản ổn định hỗ trợ JDK 26; không bắt buộc một bản IDE cụ thể.
+- Git: nhánh 2.x, bản ổn định; dùng quản lý mã nguồn.
+- Quản lý CSDL: chọn pgAdmin 4 hoặc DBeaver Community.
+  Phiên bản: bản ổn định hỗ trợ PostgreSQL 18.
+- Trình duyệt: Edge, Chrome hoặc Firefox, bản ổn định được cập nhật.
+- diagrams.net: bản web hoặc desktop ổn định, dùng vẽ ERD và quy trình.
+
+5. CÔNG CỤ TÙY CHỌN
+
+- Docker Desktop: bản ổn định tương thích Windows/WSL2 của máy.
+  Chỉ cần khi chạy container hoặc kiểm thử bằng Testcontainers.
+- Postman: bản ổn định, khi cần kiểm thử API.
+- Figma: bản web hoặc desktop ổn định, khi cần thiết kế nguyên mẫu.
+- GitHub: dịch vụ quản lý repository; không có phiên bản cần cài bắt buộc.
+- Máy chủ SMTP nội bộ: chỉ cần khi yêu cầu email được xác nhận.
+
+6. KIỂM TRA MÔI TRƯỜNG TRƯỚC KHI KHỞI TẠO
+
+Chạy trong PowerShell:
+  java --version
+  javac --version
+  mvn --version
+  psql --version
+  git --version
+
+Sau khi dự án có Maven Wrapper:
+  .\mvnw.cmd --version
+
+Trong phiên SQL đã kết nối PostgreSQL:
+  SELECT version();
+
+Đối chiếu Java home trong kết quả Maven với JDK dự kiến sử dụng.
+Các công cụ ngoài javac và psql chưa được xác nhận đã cài trên máy.
+
+7. LƯU Ý SỬ DỤNG
+
+- Đây là danh mục môi trường cho dự án Java, không phải tệp cài bằng pip.
+- Thư viện Java sẽ được khai báo trong pom.xml và tải qua Maven.
+- Danh mục này chưa thay thế pom.xml hoặc Maven Wrapper.
+- Không cần cài Spring Boot, Hibernate, Thymeleaf hoặc JDBC driver thủ công.
+- Chưa cần React, microservices, Redis hay Kubernetes cho bản đầu.
+- Chưa thực hiện cài đặt công cụ hoặc khởi tạo mã nguồn trong bước này.
+
+8. NGUỒN THAM KHẢO PHIÊN BẢN
+
+Spring Boot — System Requirements:
+https://docs.spring.io/spring-boot/system-requirements.html
+
+Apache Maven — Download:
+https://maven.apache.org/download.cgi
+
+Apache Maven — Release History:
+https://maven.apache.org/docs/history.html
+
+PostgreSQL — Versioning Policy:
+https://www.postgresql.org/support/versioning/
