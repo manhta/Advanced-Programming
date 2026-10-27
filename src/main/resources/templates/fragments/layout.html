@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head(title)">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title th:text="${title + ' | MRM'}">MRM</title>
+        <link rel="stylesheet" th:href="@{/css/app.css}">
+        <link rel="stylesheet" th:href="@{/css/portal.css}">
+        <script th:src="@{/js/portal.js}" defer></script>
+    </head>
+    <body>
+        <header class="site-header" th:fragment="header">
+            <a class="brand" th:href="@{/home}"><img th:src="@{/images/branding/hospital-logo.png}" alt="Logo trung tâm"><span class="brand-copy"><strong>Quản lý hồ sơ bệnh án</strong><small>TRUNG TÂM Y TẾ KHU VỰC KHÁNH SƠN</small></span></a>
+            <nav id="primary-navigation" aria-label="Điều hướng chính">
+                <a th:href="@{/home}">Trang chủ</a>
+                <a th:if="${recordBase != null and recordBase != ''}" th:href="@{${recordBase}}">Tra cứu hồ sơ</a>
+                <a th:if="${currentRole=='READER'}" th:href="@{/reader/requests/new}">Đăng ký mượn hồ sơ</a>
+                <a th:if="${currentRole == 'ARCHIVIST'}" th:href="@{/archivist/records/new}">Nhập hồ sơ</a>
+                <a th:if="${currentRole == 'ARCHIVIST'}" th:href="@{/archivist/locations}">Vị trí kho</a>
+                <a
+                    th:if="${currentRole=='READER' or currentRole=='ARCHIVIST' or currentRole=='DIRECTOR'}"
+                    th:href="@{${'/' + #strings.toLowerCase(currentRole) + '/requests'}}"
+                    th:text="${currentRole=='READER' ? 'Lịch sử yêu cầu' : 'Yêu cầu'}"
+                ></a>
+                <a
+                    th:if="${currentRole=='ARCHIVIST'}"
+                    th:href="@{/archivist/inventories}"
+                >Kiểm kê</a>
+                <a
+                    th:if="${currentRole=='ARCHIVIST' or currentRole=='ADMIN'}"
+                    th:href="@{${'/' + #strings.toLowerCase(currentRole) + '/reports'}}"
+                >Báo cáo</a>
+                <a th:if="${currentRole=='ADMIN'}" th:href="@{/admin/accounts/new}">Tạo tài khoản</a>
+                <a th:if="${currentRole=='ADMIN'}" th:href="@{/admin/accounts}">Quản lý tài khoản</a>
+                <a th:if="${currentRole=='DIRECTOR'}" th:href="@{/director/staff-change-requests}">Duyệt thay đổi nhân sự</a>
+                <a th:if="${currentRole=='READER'}" th:href="@{/reader/records/new}">Thêm bệnh án mới</a>
+            </nav>
+            <div class="header-controls">
+                <a
+                    class="notification-bell"
+                    th:href="@{/notifications}"
+                    th:aria-label="${'Thông báo: ' + unreadNotificationCount + ' chưa đọc'}"
+                    title="Mở thông báo nội bộ"
+                >
+                    <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        aria-hidden="true"
+                        focusable="false"
+                    ><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4M12 2V1"/></svg>
+                    <span
+                        class="notification-count"
+                        th:if="${unreadNotificationCount>0}"
+                        th:text="${unreadNotificationCount>99 ? '99+' : unreadNotificationCount}"
+                    ></span><span class="sr-only">Thông báo</span>
+                </a>
+                <details class="account-menu" data-account-menu th:if="${currentRole!='ADMIN'}">
+                    <summary class="account-chip" aria-label="Menu tài khoản">
+                        <span class="account-avatar" aria-hidden="true"
+                            th:text="${#strings.isEmpty(currentDisplayName) ? 'M' : #strings.substring(currentDisplayName,0,1)}"></span>
+                        <strong class="current-user-name" th:text="${currentDisplayName}"></strong>
+                        <span aria-hidden="true">⌄</span>
+                    </summary>
+                    <div class="account-dropdown">
+                        <a th:href="@{/account/profile}">Thông tin cá nhân</a>
+                        <a th:href="@{/account/password}">Thay đổi mật khẩu</a>
+                        <a th:if="${currentRole=='DIRECTOR'}" th:href="@{/director/approval-secret}">Đổi mật khẩu cấp 2</a>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Đăng xuất</button>
+                        </form>
+                    </div>
+                </details>
+                <div class="account-chip" th:if="${currentRole=='ADMIN'}">
+                    <span class="account-avatar" aria-hidden="true"
+                        th:text="${#strings.isEmpty(currentDisplayName) ? 'M' : #strings.substring(currentDisplayName,0,1)}"></span>
+                    <strong class="current-user-name" th:text="${currentDisplayName}"></strong>
+                </div>
+                <form th:if="${currentRole=='ADMIN'}" th:action="@{/logout}" method="post">
+                    <button type="submit">Đăng xuất</button>
+                </form>
+                <button
+                    class="menu-toggle"
+                    type="button"
+                    data-nav-toggle
+                    aria-controls="primary-navigation"
+                    aria-expanded="false"
+                    aria-label="Mở menu điều hướng"
+                >☰</button>
+            </div>
+        </header>
+        <footer th:fragment="footer">MRM · Dự án học tập quản lý hồ sơ bệnh án · Trung tâm Y tế khu vực Khánh Sơn</footer>
+        <nav th:fragment="breadcrumb(title)" class="page-breadcrumb" aria-label="Đường dẫn trang">
+            <a th:if="${title!='Trang chủ'}" th:href="@{/home}">Trang chủ</a>
+            <span th:if="${title!='Trang chủ'}" aria-hidden="true">/</span>
+            <bold><span aria-current="page" th:text="${title}"></span></bold>
+        </nav>
+    </body>
+</html>

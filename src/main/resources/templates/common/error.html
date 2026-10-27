@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Không thể thực hiện')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Không thể thực hiện')}"></nav>
+            <h1>Không thể thực hiện yêu cầu</h1>
+            <p role="alert" th:text="${message}"></p>
+            <a th:href="@{/home}">Về trang chủ</a>
+        </main>
+    </body>
+</html>

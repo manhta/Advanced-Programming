@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head(${currentRole=='READER' ? 'Lịch sử yêu cầu' : 'Yêu cầu mượn hồ sơ'})}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main class="request-statement-page">
+            <nav
+                th:replace="~{fragments/layout :: breadcrumb(${currentRole=='READER' ? 'Lịch sử yêu cầu' : 'Yêu cầu mượn hồ sơ'})}"
+            ></nav>
+            <div class="content-page-heading">
+                <div>
+                    <h1 th:text="${currentRole=='READER' ? 'Lịch sử yêu cầu' : 'Yêu cầu mượn hồ sơ'}"></h1>
+                    <p th:if="${currentRole=='DIRECTOR'}">Xem và xử lý các yêu cầu mượn hồ sơ được chuyển Giám đốc phê duyệt.</p>
+                    <p th:if="${currentRole!='DIRECTOR'}">Quản lý và theo dõi tiến trình xét duyệt các yêu cầu mượn hồ sơ bệnh án.</p>
+                </div>
+                <a th:if="${currentRole=='READER'}" class="button" th:href="@{/reader/requests/new}">＋ Đăng ký mượn hồ sơ</a>
+                <a th:if="${currentRole=='DIRECTOR'}" class="button secondary" th:href="@{/director/approval-secret}">Mật khẩu cấp 2</a>
+            </div>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <section class="request-guidance">
+                <p th:if="${currentRole=='READER'}">Bấm mã hồ sơ để xem thông tin bệnh nhân. Chọn <strong>Theo dõi tiến trình</strong> để xem các bước xử lý. Bạn có thể hủy yêu cầu khi chưa được phê duyệt hoặc từ chối.</p>
+                <p th:if="${currentRole!='READER'}">Mở từng yêu cầu để kiểm tra thông tin</p>
+            </section>
+            <form
+                th:if="${currentRole=='READER'}"
+                method="get"
+                th:action="@{/reader/requests}"
+                class="request-search-card"
+            >
+                <div class="request-search-fields">
+                    <div>
+                        <label for="request-q">Tên người bệnh / số lưu trữ</label>
+                        <input
+                            id="request-q"
+                            name="q"
+                            maxlength="200"
+                            th:value="${history.query}"
+                            placeholder="Nhập từ khóa tìm kiếm…"
+                        >
+                    </div>
+                    <div>
+                        <label for="request-from">Ngày đăng ký từ</label>
+                        <input
+                            id="request-from"
+                            name="from"
+                            type="date"
+                            th:value="${history.from}"
+                        >
+                    </div>
+                    <div>
+                        <label for="request-to">Đến ngày</label>
+                        <input
+                            id="request-to"
+                            name="to"
+                            type="date"
+                            th:value="${history.to}"
+                        >
+                    </div>
+                    <div>
+                        <label for="request-status">Trạng thái đăng ký</label>
+                        <select id="request-status" name="status">
+                            <option value="">Tất cả trạng thái</option>
+                            <option
+                                th:each="s:${history.availableStates}"
+                                th:value="${s}"
+                                th:selected="${history.status==s}"
+                                th:text="${@readingLabels.requestState(s)}"
+                            ></option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="sort" th:value="${history.sort}">
+                </div>
+                <div class="actions"><button>Tìm kiếm</button><a class="button secondary" th:href="@{/reader/requests}">↻ 7 ngày gần nhất</a></div>
+            </form>
+            <section class="request-table-card">
+                <div class="table-scroll">
+                    <table class="request-statement-table">
+                        <thead>
+                            <tr>
+                                <th>Hồ sơ</th>
+                                <th>Người yêu cầu</th>
+                                <th th:if="${currentRole!='DIRECTOR'}"
+                                    th:attr="aria-sort=${currentRole=='READER' ? (history.sort=='registered_asc' ? 'ascending' : (history.sort=='registered' ? 'descending' : 'none')) : 'none'}"
+                                >Ngày đăng ký<span class="column-sort-links" th:if="${currentRole=='READER'}"><a
+                                            th:href="@{/reader/requests(q=${history.query},from=${history.from},to=${history.to},status=${history.status},sort='registered_asc')}"
+                                            th:classappend="${history.sort=='registered_asc' ? 'sort-active' : ''}"
+                                            aria-label="Ngày đăng ký tăng dần"
+                                            title="Đăng ký cũ trước"
+                                        >▲</a><a
+                                            th:href="@{/reader/requests(q=${history.query},from=${history.from},to=${history.to},status=${history.status},sort='registered')}"
+                                            th:classappend="${history.sort=='registered' ? 'sort-active' : ''}"
+                                            aria-label="Ngày đăng ký giảm dần"
+                                            title="Đăng ký mới trước"
+                                        >▼</a></span></th>
+                                <th th:if="${currentRole!='DIRECTOR'}">Ngày nhận</th>
+                                <th>Trạng thái</th>
+                                <th th:text="${currentRole=='DIRECTOR' ? 'Xử lý' : 'Tiến trình xử lý'}"></th>
+                                <th>Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="q:${requests}" th:attr="data-request-state=${q.display_state}">
+                                <td>
+                                    <a
+                                        class="request-record-link"
+                                        th:href="@{${recordBase+'/'+q.record_id}}"
+                                        th:text="${q.archive_number}"
+                                    ></a>
+                                </td>
+                                <td>
+                                    <strong th:text="${q.requester}"></strong>
+                                </td>
+                                <td th:if="${currentRole!='DIRECTOR'}" th:text="${q.registered_on}"></td>
+                                <td th:if="${currentRole!='DIRECTOR'}"
+                                    th:text="${q.display_state=='CONFIRMED' or q.display_state=='BORROWED' or q.display_state=='COMPLETED' ? q.dates : ''}"
+                                ></td>
+                                <td>
+                                    <span
+                                        class="request-state-badge"
+                                        th:attr="data-state=${q.display_state}"
+                                        th:text="${@readingLabels.requestState(q.display_state)}"
+                                    ></span>
+                                </td>
+                                <td>
+                                    <div class="request-row-actions">
+                                        <a
+                                            th:href="@{${requestBase+'/'+q.id}}"
+                                            th:text="${currentRole=='READER' ? 'Theo dõi tiến trình' : (currentRole=='DIRECTOR' ? 'Mở yêu cầu' : 'Mở và xử lý')}"
+                                        ></a>
+                                        <form
+                                            th:if="${currentRole=='READER' and @readingLabels.pending(q.state)}"
+                                            th:action="@{/reader/requests/{id}/cancel(id=${q.id})}"
+                                            method="post"
+                                        >
+                                            <input type="hidden" name="version" th:value="${q.version}">
+                                            <input
+                                                type="hidden"
+                                                name="note"
+                                                value="Người yêu cầu hủy trước khi được phê duyệt hoặc từ chối."
+                                            >
+                                            <button type="submit" class="request-cancel-button">Hủy yêu cầu</button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="request-note">
+                                    <p th:if="${q.display_state=='BORROWED'}">Đang mượn</p>
+                                    <p th:if="${q.display_state=='COMPLETED'}" th:text="${'Ngày trả ' + q.returned_on}"></p>
+                                    <p th:if="${q.display_state=='CANCELLED'}">Đã hủy</p>
+                                    <details
+                                        th:if="${(@readingLabels.pending(q.state) or q.display_state=='APPROVED' or q.display_state=='CONFIRMED') and @readingLabels.hasBorrowReason(q.purpose)}"
+                                    >
+                                        <summary>Lý do mượn</summary>
+                                        <p class="preserve-lines" th:text="${q.purpose}"></p>
+                                    </details>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(requests)}">
+                                <td th:attr="colspan=${currentRole=='DIRECTOR' ? 5 : 7}">
+                                    <div class="request-empty-state">
+                                        <strong>Chưa có yêu cầu.</strong>
+                                        <p th:if="${currentRole=='READER'}">Thử thay đổi từ khóa, khoảng ngày hoặc tạo đăng ký mượn mới.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav
+                    th:if="${currentRole=='READER' and history.pages()>1}"
+                    class="pagination request-pagination"
+                    aria-label="Phân trang yêu cầu"
+                >
+                    <a
+                        th:if="${history.page>0}"
+                        th:href="@{/reader/requests(q=${history.query},from=${history.from},to=${history.to},status=${history.status},sort=${history.sort},page=${history.page-1})}"
+                    >← Trang trước</a>
+                    <span>Trang <span th:text="${history.page+1}"></span> / <span th:text="${history.pages()}"></span></span>
+                    <a
+                        th:if="${history.page+1<history.pages()}"
+                        th:href="@{/reader/requests(q=${history.query},from=${history.from},to=${history.to},status=${history.status},sort=${history.sort},page=${history.page+1})}"
+                    >Trang sau →</a>
+                </nav>
+            </section>
+        </main>
+    </body>
+</html>

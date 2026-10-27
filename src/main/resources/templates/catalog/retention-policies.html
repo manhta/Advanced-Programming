@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Chính sách lưu | MRM</title>
+        <style>
+        body { font: 16px/1.6 "Segoe UI", sans-serif; background: #f0f5f5; color: #18333f; margin: 0; }
+        main { max-width: 1200px; margin: 32px auto; padding: 24px; background: white; border-radius: 16px; }
+        a { color: #17665f; } label { display: block; margin-top: 12px; }
+        input, textarea, button { font: inherit; padding: 9px; border: 1px solid #b9ceca; border-radius: 6px; max-width: 100%; box-sizing: border-box; }
+        textarea { width: 100%; } button { background: #17665f; color: white; cursor: pointer; margin-top: 12px; }
+        .fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+        .table-scroll { overflow-x: auto; } table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 12px; border-bottom: 1px solid #dbe7e4; text-align: left; vertical-align: top; }
+        .basis { min-width: 220px; white-space: pre-wrap; overflow-wrap: anywhere; }
+        [role="alert"] { color: #a12f3c; } [role="status"] { color: #17665f; }
+    </style>
+        <link rel="stylesheet" th:href="@{/css/app.css}">
+        <link rel="stylesheet" th:href="@{/css/portal.css}">
+        <script th:src="@{/js/portal.js}" defer></script>
+    </head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chính sách lưu')}"></nav>
+            <a th:if="${!director}" th:href="@{/archivist/home}">← Trang nhân viên lưu trữ</a>
+            <a th:if="${director}" th:href="@{/director/home}">← Trang giám đốc</a>
+            <h1>Chính sách bảo quản hồ sơ</h1>
+            <p>Mỗi thay đổi quy tắc cần một phiên bản mới. Chính sách dự thảo chưa được dùng cho nhập kho.
+        Khoảng hiệu lực bao gồm cả ngày bắt đầu và ngày kết thúc; để trống ngày kết thúc nếu chưa xác định.</p>
+            <p>Quy ước mô phỏng học tập đã thống nhất: tính từ ngày đầu lưu kho; ngày 29/2 quy về 28/2
+        của năm đích; nhiều nhóm áp dụng thì chọn số năm dài nhất. Bốn nhóm mẫu không phải xác nhận quy định pháp lý hiện hành.</p>
+            <p>Hồ sơ hiện hữu phải giữ phiên bản chính sách đã áp dụng. Việc lưu snapshot vào bệnh án sẽ tích hợp khi xây dựng UC-04; không có chức năng tiêu hủy.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <section th:if="${!director}">
+                <h2>Tạo phiên bản dự thảo</h2>
+                <form th:action="@{/archivist/retention-policies}" th:object="${retentionPolicyForm}" method="post">
+                    <div class="fields">
+                        <div>
+                            <label for="code">Mã chính sách</label>
+                            <input
+                                id="code"
+                                th:field="*{code}"
+                                maxlength="32"
+                                required
+                            >
+                            <p th:errors="*{code}" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="name">Tên chính sách</label>
+                            <input
+                                id="name"
+                                th:field="*{name}"
+                                maxlength="200"
+                                required
+                            >
+                            <p th:errors="*{name}" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="versionNo">Phiên bản</label>
+                            <input
+                                id="versionNo"
+                                type="number"
+                                th:field="*{versionNo}"
+                                min="1"
+                                required
+                            >
+                            <p th:errors="*{versionNo}" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="years">Số năm bảo quản</label>
+                            <input
+                                id="years"
+                                type="number"
+                                th:field="*{years}"
+                                min="1"
+                                max="32767"
+                                required
+                            >
+                            <p th:errors="*{years}" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="effectiveFrom">Hiệu lực từ ngày</label>
+                            <input
+                                id="effectiveFrom"
+                                type="date"
+                                th:field="*{effectiveFrom}"
+                                required
+                            >
+                            <p th:errors="*{effectiveFrom}" role="alert"></p>
+                        </div>
+                        <div>
+                            <label for="effectiveTo">Hiệu lực đến ngày (không bắt buộc)</label>
+                            <input id="effectiveTo" type="date" th:field="*{effectiveTo}">
+                            <p th:errors="*{effectiveTo}" role="alert"></p>
+                        </div>
+                    </div>
+                    <label for="basis">Căn cứ và phạm vi áp dụng</label>
+                    <textarea id="basis" th:field="*{basis}" rows="3" maxlength="2000" required></textarea>
+                    <p th:errors="*{basis}" role="alert"></p>
+                    <button type="submit">Lưu dự thảo</button>
+                </form>
+            </section>
+            <h2>Các phiên bản chính sách</h2>
+            <p th:if="${director}">Xác nhận sau khi đã kiểm tra căn cứ và phạm vi. Nếu phiên bản cùng mã chồng thời gian,
+        cần ngừng dùng phiên bản cũ trước. Phiên bản đã xác nhận không được sửa trực tiếp.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã / tên</th>
+                            <th>Phiên bản / số năm</th>
+                            <th>Hiệu lực</th>
+                            <th>Căn cứ</th>
+                            <th>Trạng thái</th>
+                            <th>Người tạo / xác nhận</th>
+                            <th th:if="${director}">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${policies}">
+                            <td>
+                                <strong th:text="${item.code}"></strong>
+                                <br>
+                                <span th:text="${item.name}"></span>
+                            </td>
+                            <td><span th:text="${item.versionNo}"></span> / <span th:text="${item.years}"></span> năm</td>
+                            <td><span th:text="${item.effectiveFrom}"></span> → <span th:text="${item.effectiveTo ?: 'Không giới hạn'}"></span></td>
+                            <td class="basis" th:text="${item.basis}"></td>
+                            <td
+                                th:text="${item.status == 'DRAFT' ? 'Dự thảo' : (item.active ? 'Đã xác nhận — cho phép dùng khi đúng ngày hiệu lực' : 'Đã ngừng dùng')}"
+                            ></td>
+                            <td><span th:text="${item.createdBy}"></span> / <span th:text="${item.approvedBy ?: 'Chưa xác nhận'}"></span></td>
+                            <td th:if="${director}">
+                                <form
+                                    th:if="${item.status == 'DRAFT'}"
+                                    th:action="@{/director/retention-policies/{id}/approve(id=${item.id})}"
+                                    method="post"
+                                >
+                                    <button type="submit">Xác nhận</button>
+                                </form>
+                                <form
+                                    th:if="${item.active}"
+                                    th:action="@{/director/retention-policies/{id}/deactivate(id=${item.id})}"
+                                    method="post"
+                                >
+                                    <button type="submit">Ngừng dùng</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(policies)}">
+                            <td th:colspan="${director ? 7 : 6}">Chưa có chính sách. Archivist tạo dự thảo sau khi thống nhất quy tắc.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>

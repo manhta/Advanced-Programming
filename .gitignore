@@ -1,4 +1,6 @@
 /target/
+/tmp/
+/.secrets/
 /.idea/
 /.vscode/
 *.iml

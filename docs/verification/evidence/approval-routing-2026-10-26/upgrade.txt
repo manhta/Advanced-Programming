@@ -1,0 +1,59 @@
+08:13:19.035 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:19.177 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "e_upgrade_991563e6866042a6be0db77e9b1bd637"."flyway_schema_history" does not exist yet
+08:13:19.184 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.031s)
+08:13:19.220 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "e_upgrade_991563e6866042a6be0db77e9b1bd637"."flyway_schema_history" ...
+08:13:19.383 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": << Empty Schema >>
+08:13:19.396 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "1 - CreateAuthenticationTables"
+08:13:19.462 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "2 - InsertRoles"
+08:13:19.482 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "3 - CreateDepartments"
+08:13:19.508 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 3 migrations to schema "e_upgrade_991563e6866042a6be0db77e9b1bd637", now at version v3 (execution time 00:00.055s)
+08:13:19.768 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:19.819 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.019s)
+08:13:19.892 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": 3
+08:13:19.893 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "4 - InsertMainDepartments"
+08:13:19.924 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "5 - CreateRecordCatalogs"
+08:13:19.988 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "6 - CompleteReferenceCatalogs"
+08:13:20.012 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "7 - CreateMedicalRecordStorage"
+08:13:20.111 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "8 - CreateAccessWorkflow"
+08:13:20.203 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "9 - CreateInternalNotifications"
+08:13:20.230 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "10 - RouteWorkflowNotifications"
+08:13:20.249 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "11 - SnapshotRequestingPerson"
+08:13:20.264 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "12 - UseRequesterUsernameSnapshot"
+08:13:20.273 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "13 - CreateEmployees"
+08:13:20.294 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "14 - CreateBorrowingBatches"
+08:13:20.341 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 11 migrations to schema "e_upgrade_991563e6866042a6be0db77e9b1bd637", now at version v14 (execution time 00:00.346s)
+08:13:21.015 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:21.072 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.024s)
+08:13:21.244 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": 14
+08:13:21.253 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "15 - CreateElectronicRecords"
+08:13:21.341 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 1 migration to schema "e_upgrade_991563e6866042a6be0db77e9b1bd637", now at version v15 (execution time 00:00.083s)
+08:13:21.522 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:21.580 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.021s)
+08:13:21.645 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": 15
+08:13:21.645 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "16 - ExtendElectronicRecordDetails"
+08:13:21.677 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 1 migration to schema "e_upgrade_991563e6866042a6be0db77e9b1bd637", now at version v16 (execution time 00:00.013s)
+08:13:22.036 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:22.091 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.025s)
+08:13:22.157 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": 16
+08:13:22.158 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "17 - UnifyMedicalRecords"
+08:13:22.228 [main] ERROR org.flywaydb.core.internal.command.DbMigrate -- Migration of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "17 - UnifyMedicalRecords" failed! Changes successfully rolled back.
+PASS: conflicting merge aborts atomically and leaves both original datasets intact
+08:13:22.508 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_991563e6866042a6be0db77e9b1bd637 (PostgreSQL 18.6)
+08:13:22.552 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 19 migrations (execution time 00:00.015s)
+08:13:22.629 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_991563e6866042a6be0db77e9b1bd637": 16
+08:13:22.630 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "17 - UnifyMedicalRecords"
+08:13:22.744 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "18 - AddPatientBirthDate"
+08:13:22.767 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_991563e6866042a6be0db77e9b1bd637" to version "19 - RouteBorrowingApproval"
+08:13:22.774 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 3 migrations to schema "e_upgrade_991563e6866042a6be0db77e9b1bd637", now at version v19 (execution time 00:00.121s)
+PASS: V14 data upgraded to V19
+PASS: V18 preserves legacy year without inventing a birth day or month
+PASS: existing paper record preserved
+PASS: existing reading request preserved
+PASS: V19 preserves historical Director approval route
+PASS: old notification target and content preserved
+PASS: migration merges representations into one canonical table without changing old IDs
+PASS: electronic notification and event retain original foreign keys after merge
+PASS: upgrade preserves V15 electronic record without synthesizing more records
+PASS: V16 preserves existing electronic record and safely defaults new fields
+PASS: upgrade test schema removed
+PASSED 12 electronic upgrade checks.

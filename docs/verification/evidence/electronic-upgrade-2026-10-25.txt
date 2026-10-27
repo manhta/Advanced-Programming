@@ -1,0 +1,36 @@
+10:49:37.785 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_b164afed30764c03a821adc3e4bd2c3c (PostgreSQL 18.6)
+10:49:37.956 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Schema history table "e_upgrade_b164afed30764c03a821adc3e4bd2c3c"."flyway_schema_history" does not exist yet
+10:49:37.966 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 15 migrations (execution time 00:00.035s)
+10:49:37.999 [main] INFO org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory -- Creating Schema History table "e_upgrade_b164afed30764c03a821adc3e4bd2c3c"."flyway_schema_history" ...
+10:49:38.177 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c": << Empty Schema >>
+10:49:38.191 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "1 - CreateAuthenticationTables"
+10:49:38.272 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "2 - InsertRoles"
+10:49:38.294 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "3 - CreateDepartments"
+10:49:38.325 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 3 migrations to schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c", now at version v3 (execution time 00:00.075s)
+10:49:38.581 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_b164afed30764c03a821adc3e4bd2c3c (PostgreSQL 18.6)
+10:49:38.629 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 15 migrations (execution time 00:00.019s)
+10:49:38.704 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c": 3
+10:49:38.705 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "4 - InsertMainDepartments"
+10:49:38.736 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "5 - CreateRecordCatalogs"
+10:49:38.792 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "6 - CompleteReferenceCatalogs"
+10:49:38.823 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "7 - CreateMedicalRecordStorage"
+10:49:38.984 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "8 - CreateAccessWorkflow"
+10:49:39.072 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "9 - CreateInternalNotifications"
+10:49:39.096 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "10 - RouteWorkflowNotifications"
+10:49:39.120 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "11 - SnapshotRequestingPerson"
+10:49:39.136 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "12 - UseRequesterUsernameSnapshot"
+10:49:39.146 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "13 - CreateEmployees"
+10:49:39.166 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "14 - CreateBorrowingBatches"
+10:49:39.212 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 11 migrations to schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c", now at version v14 (execution time 00:00.400s)
+10:49:39.833 [main] INFO org.flywaydb.core.FlywayExecutor -- Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=e_upgrade_b164afed30764c03a821adc3e4bd2c3c (PostgreSQL 18.6)
+10:49:39.896 [main] INFO org.flywaydb.core.internal.command.DbValidate -- Successfully validated 15 migrations (execution time 00:00.024s)
+10:49:39.976 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Current version of schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c": 14
+10:49:39.977 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Migrating schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c" to version "15 - CreateElectronicRecords"
+10:49:40.060 [main] INFO org.flywaydb.core.internal.command.DbMigrate -- Successfully applied 1 migration to schema "e_upgrade_b164afed30764c03a821adc3e4bd2c3c", now at version v15 (execution time 00:00.071s)
+PASS: V14 data upgraded to V15
+PASS: existing paper record preserved
+PASS: existing reading request preserved
+PASS: old notification target and content preserved
+PASS: upgrade does not synthesize electronic patient records
+PASS: upgrade test schema removed
+PASSED 6 electronic upgrade checks.

@@ -1,0 +1,45 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-22T07:30:09.530+07:00  INFO 34332 --- [medical-record-management] [           main] mrm.features.SampleMedicalRecordSeeder   : Starting SampleMedicalRecordSeeder using Java 26.0.2.1 with PID 34332 (C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code\target\test-classes started by admin in C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code)
+2026-10-22T07:30:09.537+07:00  INFO 34332 --- [medical-record-management] [           main] mrm.features.SampleMedicalRecordSeeder   : The following 1 profile is active: "dev"
+2026-10-22T07:30:12.647+07:00  INFO 34332 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-22T07:30:12.684+07:00  INFO 34332 --- [medical-record-management] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-22T07:30:12.685+07:00  INFO 34332 --- [medical-record-management] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-22T07:30:12.865+07:00  INFO 34332 --- [medical-record-management] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3216 ms
+2026-10-22T07:30:13.595+07:00  INFO 34332 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-22T07:30:14.047+07:00  INFO 34332 --- [medical-record-management] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e7b265e
+2026-10-22T07:30:14.051+07:00  INFO 34332 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-22T07:30:14.097+07:00  INFO 34332 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm (PostgreSQL 18.6)
+2026-10-22T07:30:14.274+07:00  INFO 34332 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 9 migrations (execution time 00:00.061s)
+2026-10-22T07:30:14.306+07:00  INFO 34332 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 9
+2026-10-22T07:30:14.316+07:00  INFO 34332 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-10-22T07:30:14.960+07:00  INFO 34332 --- [medical-record-management] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name databaseUserDetailsService
+2026-10-22T07:30:15.434+07:00  INFO 34332 --- [medical-record-management] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-10-22T07:30:16.224+07:00  INFO 34332 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 58446 (http) with context path '/'
+2026-10-22T07:30:16.241+07:00  INFO 34332 --- [medical-record-management] [           main] mrm.features.SampleMedicalRecordSeeder   : Started SampleMedicalRecordSeeder in 7.631 seconds (process running for 8.514)
+TARGET mrm/public
+BEFORE_RECORDS 0
+POLICY {code=ACCIDENT, status=APPROVED, active=true, effective_from=2026-10-20, effective_to=null}
+POLICY {code=DECEASED, status=APPROVED, active=true, effective_from=2026-10-20, effective_to=null}
+POLICY {code=GENERAL, status=APPROVED, active=false, effective_from=2026-10-20, effective_to=null}
+POLICY {code=PSYCHIATRIC, status=APPROVED, active=true, effective_from=2026-10-20, effective_to=null}
+COMMITTED_RECORDS 15
+SAMPLE_GROUP {code=GYNECOLOGY, name=B?nh �n Ph? khoa, samples=2}
+SAMPLE_GROUP {code=INFECTIOUS, name=B?nh �n Truy?n nhi?m, samples=2}
+SAMPLE_GROUP {code=INTERNAL_MEDICINE, name=B?nh �n N?i khoa, samples=3}
+SAMPLE_GROUP {code=OBSTETRICS, name=B?nh �n S?n khoa, samples=2}
+SAMPLE_GROUP {code=PEDIATRICS, name=B?nh �n Nhi khoa, samples=3}
+SAMPLE_GROUP {code=SURGERY, name=B?nh �n Ngo?i khoa, samples=3}
+SAMPLE_IMPORT_COMPLETE; original catalog and account permissions preserved.
+2026-10-22T07:30:17.103+07:00  INFO 34332 --- [medical-record-management] [           main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-22T07:30:17.118+07:00  INFO 34332 --- [medical-record-management] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-10-22T07:30:17.128+07:00  INFO 34332 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-22T07:30:17.141+07:00  INFO 34332 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

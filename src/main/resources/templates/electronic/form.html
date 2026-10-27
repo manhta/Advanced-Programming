@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Thêm hồ sơ bệnh án')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main class="record-entry-page">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Thêm hồ sơ bệnh án')}"></nav>
+            <div class="content-page-heading">
+                <div>
+                    <h1 th:text="${editId==null ? 'Thêm hồ sơ bệnh án mới' : 'Bổ sung hồ sơ bệnh án'}"></h1>
+                    <p>Khai báo thông tin quản lý người bệnh và đợt điều trị.</p>
+                </div>
+                <span
+                    class="entry-code-badge"
+                    th:text="${editId==null ? 'Cấp mã tự động sau khi gửi' : 'Giữ nguyên mã hồ sơ hiện có'}"
+                ></span>
+            </div>
+            <section class="entry-guidelines">
+                <span class="entry-info-icon" aria-hidden="true">i</span>
+                <div>
+                    <h2>Quy trình khai báo bệnh án điện tử</h2>
+                    <p>Nhập thông tin người bệnh. Hệ thống tự cấp mã khi gửi thành công; nhân viên lưu trữ kiểm tra và trình Giám đốc. Hồ sơ điện tử được công bố ngay khi được duyệt, không có bước nhập kho giấy.</p>
+                </div>
+            </section>
+            <div class="record-entry-grid">
+                <form
+                    class="record-entry-card"
+                    data-record-entry
+                    th:action="${editId==null} ? @{/reader/records} : @{/reader/records/{id}/edit(id=${editId})}"
+                    th:object="${electronicForm}"
+                    method="post"
+                >
+                    <input type="hidden" th:field="*{token}">
+                    <input type="hidden" th:field="*{version}">
+                    <div th:if="${#fields.hasAnyErrors()}" role="alert">
+                        <strong>Vui lòng kiểm tra lại thông tin</strong>
+                        <ul>
+                            <li th:each="error:${#fields.allErrors()}" th:text="${error}"></li>
+                        </ul>
+                    </div>
+                    <fieldset class="entry-section">
+                        <legend><span>1</span> Nhận diện người bệnh</legend>
+                        <div class="entry-fields">
+                            <div>
+                                <label for="patientName">Họ tên người bệnh <span class="required-mark">*</span></label>
+                                <input
+                                    id="patientName"
+                                    th:field="*{patientName}"
+                                    maxlength="200"
+                                    required
+                                    placeholder="Ví dụ: Nguyễn Văn An"
+                                    autocomplete="off"
+                                >
+                            </div>
+                            <div>
+                                <label id="patient-birth-label">Ngày sinh <span class="required-mark">*</span></label>
+                                <div class="patient-birth-inputs" role="group" aria-labelledby="patient-birth-label"><input
+                                        id="birthDay"
+                                        type="number"
+                                        th:field="*{birthDay}"
+                                        min="1"
+                                        max="31"
+                                        step="1"
+                                        inputmode="numeric"
+                                        required
+                                        placeholder="Ngày"
+                                        aria-label="Ngày sinh"
+                                    ><span aria-hidden="true">/</span><input
+                                        id="birthMonth"
+                                        type="number"
+                                        th:field="*{birthMonth}"
+                                        min="1"
+                                        max="12"
+                                        step="1"
+                                        inputmode="numeric"
+                                        required
+                                        placeholder="Tháng"
+                                        aria-label="Tháng sinh"
+                                    ><span aria-hidden="true">/</span><input
+                                        id="birthYear"
+                                        type="number"
+                                        th:field="*{birthYear}"
+                                        min="1800"
+                                        th:max="${T(java.time.LocalDate).now(T(java.time.ZoneId).of('Asia/Bangkok')).year}"
+                                        step="1"
+                                        inputmode="numeric"
+                                        required
+                                        placeholder="Năm"
+                                        aria-label="Năm sinh"
+                                    ></div>
+                                <p
+                                    class="birth-precision-note"
+                                    th:if="${editId!=null and electronicForm.birthDay==null and electronicForm.birthMonth==null}"
+                                >Hồ sơ cũ chỉ có năm sinh. Bổ sung ngày/tháng chính xác trước khi gửi lại.</p>
+                            </div>
+                            <div>
+                                <label for="sex">Giới tính <span class="required-mark">*</span></label>
+                                <select id="sex" th:field="*{sex}" required>
+                                    <option value="UNKNOWN">Chưa xác định</option>
+                                    <option value="MALE">Nam</option>
+                                    <option value="FEMALE">Nữ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="patientCode">Mã người bệnh (nếu có)</label>
+                                <input
+                                    id="patientCode"
+                                    th:field="*{patientCode}"
+                                    maxlength="64"
+                                    placeholder="Mã định danh người bệnh từ hệ thống nguồn"
+                                >
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="entry-section">
+                        <legend><span>2</span> Đợt điều trị</legend>
+                        <div class="entry-fields">
+                            <div>
+                                <label for="departmentId">Khoa điều trị cuối</label>
+                                <select id="departmentId" th:field="*{departmentId}">
+                                    <option value="">Chưa xác định</option>
+                                    <option th:each="item:${departments}" th:value="${item.id}" th:text="${item.name}"></option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="recordTypeId">Loại bệnh án</label>
+                                <select id="recordTypeId" th:field="*{recordTypeId}">
+                                    <option value="">Chưa xác định</option>
+                                    <option
+                                        th:each="item:${recordTypes}"
+                                        th:if="${item.active or item.id==electronicForm.recordTypeId}"
+                                        th:value="${item.id}"
+                                        th:text="${item.name}"
+                                    ></option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="admissionDate">Ngày vào viện</label>
+                                <input id="admissionDate" type="date" th:field="*{admissionDate}">
+                            </div>
+                            <div>
+                                <label for="dischargeDate">Ngày ra viện</label>
+                                <input id="dischargeDate" type="date" th:field="*{dischargeDate}">
+                            </div>
+                        </div>
+                        <div class="deceased-option">
+                            <label class="checkbox-label"><input type="checkbox" th:field="*{deceased}"> Người bệnh tử vong</label>
+                            <p data-deceased-warning hidden>Đánh dấu trường hợp tử vong để nhân viên lưu trữ và Giám đốc kiểm tra đúng nhóm hồ sơ.</p>
+                        </div>
+                    </fieldset>
+                    <fieldset class="entry-section">
+                        <legend><span>3</span> Thông tin bổ sung</legend>
+                        <label for="sourceNote">Nguồn dữ liệu / căn cứ đối chiếu</label>
+                        <textarea id="sourceNote" th:field="*{sourceNote}" maxlength="1000" rows="2" placeholder="Nguồn hồ sơ, thông tin đối chiếu hoặc hệ thống quản lý trước đây…"></textarea>
+                        <label for="note">Ghi chú (không bắt buộc)</label>
+                        <textarea id="note" th:field="*{note}" maxlength="2000" rows="4" placeholder="Thông tin bổ sung về người bệnh hoặc đợt điều trị…"></textarea>
+                    </fieldset>
+                    <div class="entry-disclaimer">Mã người bệnh khác mã bệnh án. Hệ thống không tự gộp hai người trùng tên. Đây là khai báo thông tin quản lý, chưa có nội dung khám/chẩn đoán/điều trị đầy đủ.</div>
+                    <div class="entry-form-actions">
+                        <div><button type="submit">Gửi kiểm tra →</button><button type="reset" class="secondary">Nhập lại</button></div>
+                        <a th:href="@{/reader/records}">Tra cứu hồ sơ bệnh án</a>
+                    </div>
+                </form>
+                <aside class="entry-preview-panel">
+                    <section class="entry-preview-card">
+                        <div class="entry-preview-heading">
+                            <h2>Xem trước hồ sơ</h2>
+                            <span class="badge" th:text="${editId==null ? 'Đang nhập' : 'Đang bổ sung'}"></span>
+                        </div>
+                        <div class="entry-preview-sheet">
+                            <small>MÃ HỒ SƠ</small>
+                            <strong
+                                class="entry-preview-code"
+                                th:text="${editId==null ? 'Cấp sau khi gửi thành công' : 'Giữ nguyên mã đã cấp'}"
+                            ></strong>
+                            <h3 data-preview-field="patientName">Chưa nhập tên người bệnh</h3>
+                            <p><span data-preview-birthdate>Chưa nhập ngày sinh</span> · <span data-preview-field="sex">Chưa xác định</span></p>
+                            <dl>
+                                <dt>Mã người bệnh</dt>
+                                <dd data-preview-field="patientCode">Chưa có</dd>
+                                <dt>Khoa</dt>
+                                <dd data-preview-field="departmentId">Chưa xác định</dd>
+                                <dt>Loại bệnh án</dt>
+                                <dd data-preview-field="recordTypeId">Chưa xác định</dd>
+                                <dt>Ngày vào viện</dt>
+                                <dd data-preview-field="admissionDate">Chưa có</dd>
+                                <dt>Ngày ra viện</dt>
+                                <dd data-preview-field="dischargeDate">Chưa có</dd>
+                                <dt>Tử vong</dt>
+                                <dd data-preview-deceased>Không</dd>
+                            </dl>
+                        </div>
+                        <div class="entry-processing-steps">
+                            <h2>Tiến trình sau khi gửi</h2>
+                            <ol>
+                                <li>Hệ thống ghi nhận hồ sơ và cấp mã cho khai báo mới.</li>
+                                <li>Nhân viên lưu trữ kiểm tra, yêu cầu bổ sung hoặc chuyển duyệt.</li>
+                                <li>Giám đốc xét duyệt công bố bản điện tử.</li>
+                            </ol>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+            <script th:src="@{/js/record-form-preview.js}" defer></script>
+        </main>
+    </body>
+</html>

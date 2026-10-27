@@ -1,0 +1,7 @@
+mrm | public | 
+16 | 3 | 3 | 15 | 
+DEMO-MRM-006 | f | PUBLISHED | t | null | 
+DEMO-MRM-008 | f | PUBLISHED | t | null | 
+DEMO-MRM-009 | t | STORED | t | 30 | 
+DECEASED | t | APPROVED | 
+20 | 

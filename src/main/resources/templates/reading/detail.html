@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Theo dõi yêu cầu đọc')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main th:with="q=${request}">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Theo dõi yêu cầu đọc')}"></nav>
+            <h1>Yêu cầu đọc <span th:text="${q.archive_number}"></span></h1>
+            <p th:text="${q.patient_name}"></p>
+            <p>Người yêu cầu: <strong th:text="${q.requester}"></strong> · <span th:text="${@readingLabels.requestState(q.state)}"></span> · Phiên bản nội dung <span th:text="${q.revision}"></span></p>
+            <p th:text="${q.purpose}"></p>
+            <p>Ngày đăng ký: <strong th:text="${q.registered_on}"></strong> · Hạn nhận theo đăng ký: <strong th:text="${q.pickup_deadline}"></strong></p>
+            <p th:if="${q.scheduling_mode=='LEGACY'}">Yêu cầu trước nâng cấp: lịch cũ được giữ nguyên; đăng ký mới áp dụng quy tắc nhân viên lưu trữ xếp ngày nhận.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <dl>
+                <dt>Kết quả kiểm tra</dt>
+                <dd th:text="${q.review_note ?: 'Chưa có'}"></dd>
+                <dt>Quyết định</dt>
+                <dd th:text="${q.decision_note ?: 'Chưa có'}"></dd>
+                <dt>Phòng đọc / lịch xác nhận</dt>
+                <dd th:text="${q.confirmation_note ?: 'Chưa có'}"></dd>
+            </dl>
+            <section class="card request-review-card" th:if="${currentRole=='ARCHIVIST' and q.state=='SUBMITTED'}">
+                <h2>Kiểm tra và phê duyệt</h2>
+                <p th:text="${q.requires_director ? 'Lượt này cần trình Giám đốc duyệt toàn bộ. Chưa xếp ngày và phòng nhận ở bước kiểm tra.' : 'Phê duyệt và xác nhận lịch nhận trong cùng một lần gửi.'}"></p>
+                <form th:action="@{/archivist/requests/{id}/review(id=${q.id})}" method="post" data-request-review>
+                    <input type="hidden" name="version" th:value="${q.version}">
+                    <label for="review-result">Kết quả</label>
+                    <select id="review-result" name="result" data-review-result>
+                        <option th:if="${q.requires_director}" value="PENDING_APPROVAL">Đủ điều kiện — trình Giám đốc</option>
+                        <option th:unless="${q.requires_director}" value="APPROVED">Phê duyệt cho mượn</option>
+                        <option th:unless="${q.requires_director}" value="REJECTED">Từ chối</option>
+                        <option value="NEEDS_INFO">Trả bổ sung</option>
+                    </select>
+                    <label for="review-note" data-review-note-label
+                        th:text="${q.requires_director ? 'Nhận xét trình Giám đốc' : 'Ghi chú phê duyệt'}"></label>
+                    <textarea id="review-note" name="note" rows="4" maxlength="2000" data-review-note></textarea>
+                    <fieldset th:unless="${q.requires_director}" data-review-schedule>
+                        <legend>Xác nhận phê duyệt và lịch nhận</legend>
+                        <label class="review-approval-confirmation">
+                            <input type="checkbox" name="approvalConfirmed" value="true" data-approval-confirmed required>
+                            Tôi xác nhận phê duyệt cho mượn hồ sơ này.
+                        </label>
+                        <div class="review-pickup-grid">
+                            <label>Ngày nhận
+                                <input type="date" name="pickupOn" th:min="${pickupMinDate}"
+                                    th:max="${q.pickup_deadline}" data-pickup-field required>
+                            </label>
+                            <label>Phòng nhận
+                                <input type="text" name="pickupRoom" maxlength="2000"
+                                    placeholder="Ví dụ: Phòng đọc hồ sơ" data-pickup-field required>
+                            </label>
+                        </div>
+                    </fieldset>
+                    <noscript><p>Bật JavaScript để các trường cập nhật theo kết quả xét duyệt được chọn.</p></noscript>
+                    <button type="submit" data-review-submit
+                        th:text="${q.requires_director ? 'Trình Giám đốc phê duyệt' : 'Xác nhận phê duyệt và lịch nhận'}"></button>
+                </form>
+            </section>
+            <section class="card" th:if="${currentRole=='DIRECTOR' and q.requires_director and q.state=='PENDING_APPROVAL'}">
+                <h2>Quyết định theo phiên bản hiện tại</h2>
+                <form th:action="@{/director/requests/{id}/decide(id=${q.id})}" method="post">
+                    <input type="hidden" name="version" th:value="${q.version}">
+                    <label>Quyết định<select name="approve"><option value="true">Phê duyệt</option><option value="false">Từ chối</option></select></label>
+                    <label>Căn cứ / lý do<textarea name="note" maxlength="2000" required></textarea></label>
+                    <label>Mật khẩu cấp 2<input
+                            name="secret"
+                            type="password"
+                            maxlength="128"
+                            required
+                            autocomplete="off"
+                        ></label>
+                    <button>Ghi quyết định</button>
+                </form>
+                <a th:href="@{/director/approval-secret}">Thiết lập mật khẩu cấp 2</a>
+            </section>
+            <section class="card" th:if="${currentRole=='ARCHIVIST' and q.state=='APPROVED'}">
+                <h2>Xác nhận lịch</h2>
+                <form th:action="@{/archivist/requests/{id}/confirm(id=${q.id})}" method="post">
+                    <input type="hidden" name="version" th:value="${q.version}">
+                    <label th:if="${q.scheduling_mode=='ARCHIVIST'}">Ngày nhận do nhân viên lưu trữ chỉ định<input
+                            type="date"
+                            name="pickupOn"
+                            th:min="${pickupMinDate}"
+                            th:max="${q.pickup_deadline}"
+                            required
+                        ></label>
+                    <label>Phòng đọc / hướng dẫn nhận<textarea name="note" maxlength="2000" required></textarea></label>
+                    <button>Xác nhận ngày nhận</button>
+                </form>
+            </section>
+            <p th:if="${currentRole=='ARCHIVIST' and q.state=='CONFIRMED'}">
+                <a class="button" th:href="@{/archivist/requests/{id}/circulation(id=${q.id})}">Quản lý giao–trả hồ sơ</a>
+            </p>
+            <a th:href="@{${requestBase}}">← Danh sách yêu cầu</a>
+            <script th:src="@{/js/request-review.js}" defer></script>
+        </main>
+    </body>
+</html>

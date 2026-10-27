@@ -6,9 +6,11 @@ Ngày lập: 15/10/2026
 - Java JDK: 26.0.2.1 — theo kết quả javac --version bạn cung cấp.
   Dự kiến sử dụng Java 26 cho dự án, thay cho đề xuất Java 21 ban đầu.
   Cần kiểm tra java --version và JAVA_HOME để bảo đảm Maven dùng cùng JDK.
-- PostgreSQL: 18.6 — phiên bản mục tiêu.
-  Kết quả psql --version xác nhận phiên bản client, chưa xác nhận server.
-  Sau khi kết nối, chạy SELECT version(); để kiểm tra server PostgreSQL.
+- PostgreSQL server: 16.5 — môi trường hiện có, đã xác nhận ngày 18/10/2026
+  qua kết quả SELECT version(); do người dùng cung cấp:
+  PostgreSQL 16.5, compiled by Visual C++ build 1941, 64-bit.
+- PostgreSQL client (psql): 18.6 — công cụ kết nối, không phải phiên bản server.
+  Kế hoạch ban đầu đề xuất server 18.6; hiện chưa thực hiện nâng cấp server.
 - Spring Boot: 4.1.1 — phiên bản đề xuất, hỗ trợ Java 26.
 - Apache Maven: 3.9.16 — phiên bản đề xuất cho build và quản lý thư viện.
   Nên dùng Maven Wrapper để các máy chạy cùng phiên bản Maven.
@@ -47,7 +49,7 @@ và dependency tree khi khởi tạo dự án.
   Phiên bản: bản ổn định hỗ trợ JDK 26; không bắt buộc một bản IDE cụ thể.
 - Git: nhánh 2.x, bản ổn định; dùng quản lý mã nguồn.
 - Quản lý CSDL: chọn pgAdmin 4 hoặc DBeaver Community.
-  Phiên bản: bản ổn định hỗ trợ PostgreSQL 18.
+  Phiên bản: bản ổn định hỗ trợ PostgreSQL server 16.
 - Trình duyệt: Edge, Chrome hoặc Firefox, bản ổn định được cập nhật.
 - diagrams.net: bản web hoặc desktop ổn định, dùng vẽ ERD và quy trình.
 

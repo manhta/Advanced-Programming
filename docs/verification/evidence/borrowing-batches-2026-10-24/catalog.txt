@@ -1,0 +1,51 @@
+19:47:23.095 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.1.3.Final
+PASS: invalid type fields rejected
+PASS: invalid policy fields rejected
+PASS: type normalization and Unicode preserved
+PASS: type soft deactivation preserves row
+PASS: type creation and update audited
+PASS: expected DuplicateKeyException
+PASS: expected CatalogException
+PASS: new policy remains inactive draft
+PASS: approval records director and activates version
+PASS: deactivation preserves approved policy history
+PASS: expected CatalogException
+PASS: non-overlapping policy versions allowed
+PASS: expected DuplicateKeyException
+PASS: expected DataIntegrityViolationException
+PASS: all checks rolled back, including failed audit transaction
+PASS: anonymous redirected to login
+PASS: login page renders for archivist
+PASS: authentication succeeds for archivist
+PASS: record type template renders list and forms
+PASS: policy creation template renders
+PASS: archivist cannot access director approval
+PASS: POST without CSRF rejected
+PASS: invalid form redisplays validation errors
+PASS: login page renders for admin
+PASS: authentication succeeds for admin
+PASS: admin denied archivist catalog
+PASS: admin director page permissions
+PASS: login page renders for reader
+PASS: authentication succeeds for reader
+PASS: reader denied archivist catalog
+PASS: reader director page permissions
+PASS: login page renders for director
+PASS: authentication succeeds for director
+PASS: director denied archivist catalog
+PASS: director director page permissions
+PASS: valid type form binds and redirects
+PASS: type edit form binds and redirects
+PASS: HTTP type deactivation persisted
+PASS: stale type form redirects with conflict message
+PASS: stale HTTP form cannot overwrite newer type
+PASS: fixed department page renders without creation form
+PASS: fixed department POST rejected
+PASS: valid policy form binds dates and redirects
+PASS: nonempty policy table and approval forms render
+PASS: archivist cannot POST director approval
+PASS: director approval POST succeeds
+PASS: approved policy table renders
+PASS: director deactivation POST succeeds
+PASS: HTTP verification data cleaned up
+PASSED 49 catalog checks; temporary data removed/rolled back.

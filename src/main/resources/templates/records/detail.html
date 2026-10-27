@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Hồ sơ nghiệp vụ kho')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Hồ sơ nghiệp vụ kho')}"></nav>
+            <h1 th:text="${record.form.patientName}"></h1>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <div class="actions"><a class="button" th:href="@{/archivist/records/{id}/edit(id=${record.id})}">Sửa / đối soát</a><a th:href="@{/archivist/records}">← Danh sách</a></div>
+            <div class="grid">
+                <section class="card">
+                    <h2>Thông tin hồ sơ</h2>
+                    <dl>
+                        <dt>Số lưu trữ</dt>
+                        <dd th:text="${record.form.archiveNumber ?: 'Chưa cấp'}"></dd>
+                        <dt>Số bệnh án</dt>
+                        <dd th:text="${record.form.medicalRecordNumber}"></dd>
+                        <dt>Mã người bệnh</dt>
+                        <dd th:text="${record.form.patientCode}"></dd>
+                        <dt>Ngày sinh / giới</dt>
+                        <dd><span
+                                th:text="${birthDate!=null ? #dates.format(birthDate,'dd/MM/yyyy') : record.form.birthYear+' (chỉ biết năm)'}"
+                            ></span> / <span th:text="${record.form.sex}"></span></dd>
+                        <dt>Khoa</dt>
+                        <dd th:text="${record.departmentName}"></dd>
+                        <dt>Loại</dt>
+                        <dd th:text="${record.recordTypeName}"></dd>
+                        <dt>Tử vong</dt>
+                        <dd th:text="${record.form.deceased ? 'Có' : 'Không'}"></dd>
+                        <dt>Vào / ra viện</dt>
+                        <dd><span th:text="${record.form.admissionDate}"></span> → <span th:text="${record.form.dischargeDate}"></span></dd>
+                    </dl>
+                </section>
+                <section class="card">
+                    <h2>Lưu trữ</h2>
+                    <dl>
+                        <dt>Trạng thái nhập</dt>
+                        <dd th:text="${record.state}"></dd>
+                        <dt>Khả dụng</dt>
+                        <dd th:text="${record.physicalStatus}"></dd>
+                        <dt>Chất lượng</dt>
+                        <dd th:text="${record.form.qualityStatus}"></dd>
+                        <dt>Vị trí</dt>
+                        <dd th:text="${locationPath ?: 'Chưa nhập kho'}"></dd>
+                        <dt>Ngày đầu lưu</dt>
+                        <dd th:text="${record.form.firstStoredOn}"></dd>
+                        <dt>Số năm áp dụng</dt>
+                        <dd th:text="${record.retentionYears}"></dd>
+                        <dt>Ngày hạn dự kiến</dt>
+                        <dd th:text="${record.retentionDueOn}"></dd>
+                    </dl>
+                    <p class="muted">Mốc bảo quản mô phỏng không phải lệnh tiêu hủy.</p>
+                </section>
+            </div>
+            <h2>Snapshot chính sách đã áp dụng</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã / phiên bản</th>
+                            <th>Tên / số năm</th>
+                            <th>Căn cứ tại thời điểm lưu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${record.policies}">
+                            <td><span th:text="${item.code}"></span> v<span th:text="${item.version}"></span></td>
+                            <td><span th:text="${item.name}"></span> / <span th:text="${item.years}"></span> năm</td>
+                            <td th:text="${item.basis}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(record.policies)}">
+                            <td colspan="3">Nháp chưa áp dụng chính sách chính thức.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2>Nguồn và ghi chú nội bộ</h2>
+            <p th:text="${record.form.sourceNote ?: 'Chưa xác định nguồn'}"></p>
+            <p th:text="${record.form.note}"></p>
+            <p class="muted">Tạo bởi <span th:text="${record.createdBy}"></span> lúc <span th:text="${record.createdAt}"></span>; sửa bởi <span th:text="${record.updatedBy}"></span> lúc <span th:text="${record.updatedAt}"></span>. Version <span th:text="${record.form.version}"></span>.</p>
+            <section th:if="${record.state == 'STORED'}" class="grid">
+                <div class="card">
+                    <h2>Chuyển vị trí</h2>
+                    <form th:action="@{/archivist/records/{id}/move(id=${record.id})}" method="post">
+                        <input type="hidden" name="version" th:value="${record.form.version}">
+                        <input type="hidden" name="operationKey" th:value="${moveKey}">
+                        <label for="destination">Ngăn đích</label>
+                        <select id="destination" name="destination" required>
+                            <option value="">Chọn ngăn khác</option>
+                            <option
+                                th:each="item : ${locations}"
+                                th:if="${item.type == 'COMPARTMENT' and item.active and item.id != record.form.locationId}"
+                                th:value="${item.id}"
+                                th:text="${item.path}"
+                            ></option>
+                        </select>
+                        <label for="moveReason">Lý do</label>
+                        <textarea id="moveReason" name="reason" maxlength="1000" required></textarea>
+                        <div class="actions"><button type="submit">Xác nhận chuyển</button></div>
+                    </form>
+                </div>
+                <div class="card">
+                    <h2>Xác nhận khả dụng</h2>
+                    <p>Không tự coi hồ sơ đã trả hoặc đã tìm thấy. Chỉ xác nhận sau kiểm tra vật lý.</p>
+                    <form th:action="@{/archivist/records/{id}/availability(id=${record.id})}" method="post">
+                        <input type="hidden" name="version" th:value="${record.form.version}">
+                        <label for="status">Trạng thái</label>
+                        <select id="status" name="status">
+                            <option value="UNAVAILABLE">Tạm không khả dụng</option>
+                            <option value="IN_STORAGE">Trong kho / khả dụng</option>
+                        </select>
+                        <label for="availabilityReason">Căn cứ kiểm tra vật lý</label>
+                        <textarea id="availabilityReason" name="reason" maxlength="1000" required></textarea>
+                        <div class="actions"><button type="submit">Lưu xác nhận</button></div>
+                    </form>
+                </div>
+            </section>
+            <h2>Lịch sử vị trí</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Từ</th>
+                            <th>Đến</th>
+                            <th>Người / thời điểm</th>
+                            <th>Lý do</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="event : ${locationHistory}">
+                            <td th:text="${event.from_path ?: 'Nhập kho lần đầu'}"></td>
+                            <td th:text="${event.to_path}"></td>
+                            <td>
+                                <span th:text="${event.actor_username}"></span>
+                                <br>
+                                <span th:text="${event.occurred_at}"></span>
+                            </td>
+                            <td th:text="${event.reason}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2>Lịch sử thao tác và đối soát</h2>
+            <article class="card" th:each="event : ${history}"><strong th:text="${event.action}"></strong> · <span th:text="${event.actor_username}"></span> · <span th:text="${event.occurred_at}"></span><p th:text="${event.reason}"></p>
+                <details th:if="${event.before_data != null}"><summary>Dữ liệu trước</summary><pre th:text="${event.before_data}"></pre></details><details th:if="${event.after_data != null}"><summary>Dữ liệu sau</summary><pre th:text="${event.after_data}"></pre></details></article>
+            <section th:if="${submissionEvents!=null}">
+                <h2>Lịch sử khai báo và phê duyệt</h2>
+                <article class="card" th:each="event:${submissionEvents}"><strong th:text="${@readingLabels.action(event.action)}"></strong> · <span th:text="${event.actor_name}"></span><p th:text="${event.details}"></p></article>
+            </section>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

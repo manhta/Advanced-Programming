@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Tạo tài khoản thành công')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Tạo tài khoản thành công')}"></nav>
+            <h1>Tạo tài khoản thành công</h1>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="success" role="status"></p>
+            <section class="card">
+                <h2>Thông tin bàn giao tài khoản</h2>
+                <p>Mật khẩu ban đầu chỉ hiển thị một lần tại trang này. Nhân viên phải đổi mật khẩu khi đăng nhập lần đầu.</p>
+                <dl>
+                    <dt>Tên tài khoản</dt>
+                    <dd><code th:text="${issued.username}"></code></dd>
+                    <dt>Mật khẩu ban đầu</dt>
+                    <dd><code th:text="${issued.initialPassword}"></code></dd>
+                </dl>
+            </section>
+            <div class="actions">
+                <a class="button" th:href="@{/admin/accounts/new}">Đến trang tạo tài khoản</a>
+                <a class="button secondary" th:href="@{/admin/accounts}">Quản lý tài khoản</a>
+            </div>
+        </main>
+    </body>
+</html>

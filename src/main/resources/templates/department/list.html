@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Danh mục khoa/phòng</title>
+        <link rel="stylesheet" th:href="@{/css/app.css}">
+        <link rel="stylesheet" th:href="@{/css/portal.css}">
+        <script th:src="@{/js/portal.js}" defer></script>
+    </head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Danh mục khoa/phòng')}"></nav>
+            <h1>Danh mục khoa/phòng</h1>
+            <p>
+                <a th:href="@{/archivist/home}">Quay về trang nhân viên lưu trữ</a>
+            </p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p>Danh mục năm khoa được cố định cho dự án học tập.
+            Thông tin người tạo và thời điểm khởi tạo được giữ để bảo toàn lịch sử.</p>
+            <h2>Danh sách hiện có</h2>
+            <p th:if="${#lists.isEmpty(departments)}">Chưa có khoa/phòng.</p>
+            <table th:unless="${#lists.isEmpty(departments)}">
+                <thead>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Tên</th>
+                        <th>Trạng thái</th>
+                        <th>Người tạo</th>
+                        <th>Thời điểm tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="department : ${departments}">
+                        <td th:text="${department.code}"></td>
+                        <td th:text="${department.name}"></td>
+                        <td th:text="${department.active ? 'Đang hoạt động' : 'Ngừng hoạt động'}"></td>
+                        <td th:text="${department.createdBy}"></td>
+                        <td th:text="${department.createdAt}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

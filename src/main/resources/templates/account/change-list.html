@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Danh sách thay đổi vai trò/khoa')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Danh sách thay đổi vai trò/khoa')}"></nav>
+            <h1 th:text="${mode=='ADMIN' ? 'Áp dụng thay đổi vai trò/khoa' : (mode=='DIRECTOR' ? 'Duyệt thay đổi nhân sự' : 'Đề nghị thay đổi vai trò/khoa')}"></h1>
+            <nav th:if="${mode=='ADMIN'}" class="actions" aria-label="Quản lý nhân sự">
+                <a class="button secondary" th:href="@{/admin/accounts}">Tài khoản</a>
+                <a class="button" th:href="@{/admin/accounts/changes}">Áp dụng thay đổi vai trò/khoa</a>
+                <a class="button secondary" th:href="@{/admin/accounts/new}">Tạo tài khoản</a>
+            </nav>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="success" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error" role="alert"></p>
+            <section th:if="${mode=='SELF'}" class="card">
+                <h2>Gửi đề nghị</h2>
+                <p>Chọn vai trò và khoa mong muốn. Giám đốc xét duyệt, sau đó Admin cập nhật. Bạn vẫn dùng quyền và khoa hiện tại trong lúc chờ.</p>
+                <form th:action="@{/account/change-requests}" method="post">
+                    <input type="hidden" name="token" th:value="${token}">
+                    <div class="grid">
+                        <label>Vai trò đề nghị
+                            <select name="role" required>
+                                <option value="READER" th:selected="${profile.role=='READER'}">Bác sĩ</option>
+                                <option value="ARCHIVIST" th:selected="${profile.role=='ARCHIVIST'}">Nhân viên lưu trữ</option>
+                            </select>
+                        </label>
+                        <label>Khoa đề nghị
+                            <select name="department" required>
+                                <option value="">Chọn khoa</option>
+                                <option th:each="d:${departments}" th:if="${d.active}" th:value="${d.id}" th:text="${d.name}" th:selected="${profile.department_id==d.id}"></option>
+                            </select>
+                        </label>
+                    </div>
+                    <label>Lý do đề nghị<textarea name="reason" rows="3" maxlength="2000" required></textarea></label>
+                    <button>Gửi Giám đốc</button>
+                </form>
+            </section>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr><th>Nhân viên</th><th>Vai trò đề nghị</th><th>Khoa đề nghị</th><th>Ngày gửi</th><th>Trạng thái</th><th>Chi tiết</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="q:${requests}">
+                            <td th:text="${q.requester_name}"></td>
+                            <td th:text="${T(mrm.account.StaffChangeService).roleName(q.requested_role)}"></td>
+                            <td th:text="${q.requested_department_name}"></td>
+                            <td th:text="${#dates.format(q.created_at,'dd/MM/yyyy HH:mm')}"></td>
+                            <td th:text="${T(mrm.account.StaffChangeService).stateName(q.state)}"></td>
+                            <td><a th:href="${mode=='SELF' ? '/account/change-requests/'+q.id : (mode=='DIRECTOR' ? '/director/staff-change-requests/'+q.id : '/admin/accounts/changes/'+q.id)}">Xem đề nghị</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(requests)}"><td colspan="6">Không có đề nghị.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

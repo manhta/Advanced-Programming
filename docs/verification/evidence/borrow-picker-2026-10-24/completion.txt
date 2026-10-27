@@ -1,0 +1,4 @@
+Completion excerpt from FunctionalRequirementsCheck, 2026-10-24 Asia/Bangkok.
+Executed with --preview in a disposable PostgreSQL schema; screenshot uses synthetic data.
+PASS: temporary schema removed
+PASSED 289 functional requirement checks; email intentionally deferred.

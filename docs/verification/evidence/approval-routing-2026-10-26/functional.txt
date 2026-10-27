@@ -1,0 +1,634 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-26T08:17:18.924+07:00  INFO 7876 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : Starting FunctionalRequirementsCheck using Java 26.0.2.1 with PID 7876 (C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code\target\test-classes started by admin in C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code)
+2026-10-26T08:17:18.929+07:00  INFO 7876 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : The following 2 profiles are active: "dev", "seed-users"
+2026-10-26T08:17:21.264+07:00  INFO 7876 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-26T08:17:21.299+07:00  INFO 7876 --- [medical-record-management] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-26T08:17:21.300+07:00  INFO 7876 --- [medical-record-management] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-26T08:17:21.414+07:00  INFO 7876 --- [medical-record-management] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2395 ms
+2026-10-26T08:17:21.941+07:00  INFO 7876 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-26T08:17:22.033+07:00  INFO 7876 --- [medical-record-management] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5a08b084
+2026-10-26T08:17:22.035+07:00  INFO 7876 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-26T08:17:22.069+07:00  INFO 7876 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_3d2695afa2204b31bf11e232a0e5bf24 (PostgreSQL 18.6)
+2026-10-26T08:17:22.181+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "fr_check_3d2695afa2204b31bf11e232a0e5bf24"."flyway_schema_history" does not exist yet
+2026-10-26T08:17:22.254+07:00  INFO 7876 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_3d2695afa2204b31bf11e232a0e5bf24 (PostgreSQL 18.6)
+2026-10-26T08:17:22.277+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "fr_check_3d2695afa2204b31bf11e232a0e5bf24"."flyway_schema_history" does not exist yet
+2026-10-26T08:17:22.281+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 19 migrations (execution time 00:00.008s)
+2026-10-26T08:17:22.298+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "fr_check_3d2695afa2204b31bf11e232a0e5bf24"."flyway_schema_history" ...
+2026-10-26T08:17:22.368+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24": << Empty Schema >>
+2026-10-26T08:17:22.373+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "1 - CreateAuthenticationTables"
+2026-10-26T08:17:22.416+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "2 - InsertRoles"
+2026-10-26T08:17:22.429+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "3 - CreateDepartments"
+2026-10-26T08:17:22.452+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24", now at version v3 (execution time 00:00.039s)
+2026-10-26T08:17:22.652+07:00  INFO 7876 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_3d2695afa2204b31bf11e232a0e5bf24 (PostgreSQL 18.6)
+2026-10-26T08:17:22.672+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 19 migrations (execution time 00:00.007s)
+2026-10-26T08:17:22.677+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24": 3
+2026-10-26T08:17:22.678+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "4 - InsertMainDepartments"
+2026-10-26T08:17:22.697+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "5 - CreateRecordCatalogs"
+2026-10-26T08:17:22.734+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "6 - CompleteReferenceCatalogs"
+2026-10-26T08:17:22.759+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "7 - CreateMedicalRecordStorage"
+2026-10-26T08:17:22.835+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "8 - CreateAccessWorkflow"
+2026-10-26T08:17:22.892+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "9 - CreateInternalNotifications"
+2026-10-26T08:17:22.910+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "10 - RouteWorkflowNotifications"
+2026-10-26T08:17:22.925+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "11 - SnapshotRequestingPerson"
+2026-10-26T08:17:22.938+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "12 - UseRequesterUsernameSnapshot"
+2026-10-26T08:17:22.943+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "13 - CreateEmployees"
+2026-10-26T08:17:22.956+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "14 - CreateBorrowingBatches"
+2026-10-26T08:17:22.993+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "15 - CreateElectronicRecords"
+2026-10-26T08:17:23.036+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "16 - ExtendElectronicRecordDetails"
+2026-10-26T08:17:23.044+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "17 - UnifyMedicalRecords"
+2026-10-26T08:17:23.104+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "18 - AddPatientBirthDate"
+2026-10-26T08:17:23.115+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24" to version "19 - RouteBorrowingApproval"
+2026-10-26T08:17:23.133+07:00  INFO 7876 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 16 migrations to schema "fr_check_3d2695afa2204b31bf11e232a0e5bf24", now at version v19 (execution time 00:00.353s)
+2026-10-26T08:17:23.576+07:00  INFO 7876 --- [medical-record-management] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name databaseUserDetailsService
+2026-10-26T08:17:23.842+07:00  INFO 7876 --- [medical-record-management] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-10-26T08:17:24.353+07:00  INFO 7876 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 49152 (http) with context path '/'
+2026-10-26T08:17:24.362+07:00  INFO 7876 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : Started FunctionalRequirementsCheck in 6.193 seconds (process running for 7.458)
+Demo accounts initialized; existing accounts were preserved.
+PASS: all mutations confined to disposable schema
+PASS: fresh V1-V19 boot succeeds
+PASS: 100-record search returns complete count
+PASS: admin creates single-role account
+PASS: expected AccessDeniedException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: account lock persisted
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: request stores real authenticated requester ID
+PASS: request stores authenticated requester login username
+PASS: account rename preserves original request username
+PASS: request list returns original requester username
+PASS: request amendment preserves original requester identity
+PASS: new request uses login username instead of renamed display name
+PASS: Reader submission does not assign a reading session
+PASS: request token replay creates one request
+PASS: expected BusinessException
+PASS: expected ResponseStatusException
+PASS: archivist returns for additional information
+PASS: amend creates new revision and resets review
+PASS: expected BusinessException
+PASS: wrong second password leaves decision unchanged
+PASS: failed step-up audit survives rollback
+PASS: director approves with separate password
+PASS: expected BusinessException
+PASS: Archivist assigns one pickup day after approval
+PASS: expected BusinessException
+PASS: handover atomically sets physical READING
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: return updates status and actual return compartment
+PASS: return to different compartment writes movement history
+PASS: expected BusinessException
+PASS: cancel preserves completed daily session
+PASS: cancel does not invent another pickup session
+PASS: deceased submission routes to Director
+PASS: expected AccessDeniedException
+PASS: rejection records state and reason
+PASS: editing confirmed request invalidates old approval
+PASS: concurrent Readers cannot register the same free record twice
+PASS: expected BusinessException
+PASS: overdue exception never pretends record was returned
+PASS: damaged return blocks further access
+PASS: no-show retained without false handover
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: five failed step-up attempts block even correct secret during lock window
+PASS: ordinary batch is approved by Archivist
+PASS: ordinary timeline omits Director stage
+PASS: expected BusinessException
+PASS: Archivist decision records actual approver
+PASS: ordinary approval sends no Director notification
+PASS: Archivist approval notifies requester
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: missing reason rolls back entire deceased batch
+PASS: expected BusinessException
+PASS: mixed batch retry preserves route and request IDs
+PASS: every mixed child requires Director including ordinary record
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected DataAccessException
+PASS: Director-approved mixed child can receive a pickup schedule
+PASS: every mixed child requires Director including ordinary record
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected DataAccessException
+PASS: Director-approved mixed child can receive a pickup schedule
+PASS: deceased record completes authorized handover and return
+2026-10-26T08:17:29.958+07:00  INFO 7876 --- [medical-record-management] [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-26T08:17:29.958+07:00  INFO 7876 --- [medical-record-management] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-26T08:17:29.961+07:00  INFO 7876 --- [medical-record-management] [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+PASS: HTTP login reader1
+PASS: preselected deceased record requires reason without depending on JavaScript
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: later deceased correction cannot bypass Director routing
+PASS: HTTP login archivist1
+PASS: ordinary review UI offers Archivist approval instead of forwarding
+PASS: paper drafts page explains unpublished temporary records
+PASS: batch token replay with same selected set returns same requests
+PASS: one registration creates independently tracked child requests
+PASS: Reader registration never creates dates or sessions
+PASS: pickup deadline is two calendar days after registration
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: invalid selected record leaves no partial registration batch
+PASS: expected AccessDeniedException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: invalid Archivist pickup dates roll back without sessions
+PASS: Archivist may choose deadline day inclusive
+PASS: expected DataIntegrityViolationException
+PASS: expected BusinessException
+PASS: unscheduled approval expires at original pickup deadline
+PASS: amend clears assigned pickup and approval
+PASS: amended borrowing request notifies Archivist
+PASS: pre-upgrade LEGACY schedule is preserved without retroactive two-day limit
+PASS: unregistered available record appears in picker
+PASS: expandable picker preview includes allowed identity and treatment dates
+PASS: pending registration hides record from every Reader
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: needs-info request continues reserving the record
+PASS: cancellation releases an available record
+PASS: rejection releases the record
+PASS: approved unscheduled registration remains reserved
+PASS: confirmed uncollected record remains reserved
+PASS: physically borrowed record is excluded
+PASS: fully returned available record can be selected again
+PASS: expired unresolved request stays reserved until explicitly closed
+PASS: Reader submission notifies active Archivist
+PASS: expected ResponseStatusException
+PASS: Archivist can read own work notification
+PASS: no result notification before a result exists
+PASS: needs-info creates correctly titled internal notice
+PASS: notification routed to request owner
+PASS: other reader cannot list owner's notice
+PASS: expected ResponseStatusException
+PASS: unauthorized read cannot mutate read state
+PASS: mark-read decreases own unread badge
+PASS: mark-read is idempotent and preserves timestamp
+PASS: resubmitted revision notifies Archivist again
+PASS: expected BusinessException
+PASS: failed transaction rolls back decision, event and notification together
+PASS: Archivist submission notifies both active Directors
+PASS: staff mark-all-read preserves other role notifications
+PASS: approval and schedule confirmation each create notice
+PASS: expected BusinessException
+PASS: repeated confirmation does not create duplicate notice
+PASS: unread filter only returns unread rows
+PASS: admin inbox has no reader clinical notifications
+PASS: archivist cancellation notifies requester
+PASS: new cancellation notice only has short Vietnamese title
+PASS: old cancellation notices also render short title without details
+PASS: display normalization preserves historical notification data
+PASS: rejection produces internal result notification
+PASS: role change to admin hides previous clinical notices
+PASS: read-all affects only current recipient
+PASS: read-all remains idempotent
+PASS: expected BusinessException
+PASS: notification inbox paginates at twenty
+PASS: stable notification pagination has no duplicates
+PASS: unique recipient/event suppresses duplicate notification creation
+PASS: read-all tolerates notification committed after marking transaction started
+PASS: expected BusinessException
+PASS: invalid employee ID leaves no partial account
+PASS: expected BusinessException
+PASS: expected AccessDeniedException
+PASS: employee ID preserves leading zeros
+PASS: expected DataIntegrityViolationException
+PASS: duplicate employee ID rolls back account and audit
+PASS: employee name and role stay synchronized with account updates
+PASS: expected DataIntegrityViolationException
+PASS: Admin can update employee demographics
+PASS: employee citizen ID is not copied into audit details
+PASS: inventory captures scope and expected locations
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: complete inventory closes
+PASS: expected BusinessException
+PASS: stocktake does not silently change medical record location
+PASS: report query executes: records
+PASS: report query executes: status
+PASS: report query executes: requests
+PASS: report query executes: sessions
+PASS: report query executes: locations
+PASS: report query executes: audit
+PASS: report query executes: inventory
+PASS: report query executes: request-statistics
+PASS: director report excludes storage path: records
+PASS: director report excludes storage path: status
+PASS: director report excludes storage path: requests
+PASS: director report excludes storage path: sessions
+PASS: director report excludes storage path: audit
+PASS: director report excludes storage path: inventory
+PASS: director report excludes storage path: request-statistics
+PASS: expected AccessDeniedException
+PASS: expected AccessDeniedException
+PASS: admin audit limited to technical accounts/authentication
+PASS: report search is parameterized
+PASS: audit filters actor and action
+PASS: CSV neutralizes spreadsheet formulas
+PASS: CSV formula protection covers multiline cells
+PASS: HTTP login reader1
+PASS: login routes through home for reader
+PASS: successful login prepares dismissible toast for reader
+PASS: home reload never repeats login success toast for reader
+PASS: HTTP login archivist1
+PASS: login routes through home for archivist
+PASS: successful login prepares dismissible toast for archivist
+PASS: home reload never repeats login success toast for archivist
+PASS: HTTP login director1
+PASS: login routes through home for director
+PASS: successful login prepares dismissible toast for director
+PASS: home reload never repeats login success toast for director
+PASS: HTTP login admin1
+PASS: login routes through home for admin
+PASS: successful login prepares dismissible toast for admin
+PASS: home reload never repeats login success toast for admin
+PASS: initial login succeeds before testing stale form
+PASS: stale login CSRF redirects to fresh form instead of 403
+PASS: expired login renders helpful message and fresh CSRF
+PASS: fresh login form switches to archivist successfully
+PASS: archivist home accessible after refreshing stale login
+PASS: login CSRF recovery does not grant another role access
+PASS: login without CSRF cannot authenticate and recovers to fresh form
+PASS: HTTP login reader1
+PASS: HTTP login archivist1
+PASS: HTTP login director1
+PASS: HTTP login admin1
+PASS: published patient metadata opens directly without a paper borrowing approval
+PASS: basic published metadata is independent of the paper borrowing workflow
+PASS: permission form shows minimal preview without detailed metadata
+PASS: SUBMITTED does not grant record detail
+PASS: Archivist bell opens work in Archivist namespace
+PASS: pending borrowing approval does not hide published patient metadata
+PASS: Director bell opens pending approval in Director namespace
+PASS: approval exposes authorized patient metadata without internal notes
+PASS: HTTP login fr_reader2
+PASS: other Reader can open basic published metadata without inheriting a loan permission
+PASS: approved request retains record and progress links without cancellation
+PASS: expected BusinessException
+PASS: Reader cannot cancel after Director approval
+PASS: request states localized without code legend
+PASS: approved timeline hides Reader cancellation
+PASS: approved progress waits for staff schedule without completion button
+PASS: amending revokes loan permission but published metadata stays available
+PASS: confirmed valid request provides record detail button
+PASS: approval expires after last reading day
+PASS: expired reading permission never shows record button
+PASS: approval grants access before future reading day starts
+PASS: cancellation revokes detail permission
+PASS: admin home accessible with fresh login form
+PASS: anonymous cannot access internal notifications
+PASS: notification inbox and bell render with nonempty rows
+PASS: timeline never renders executable processing notes
+PASS: HTTP login fr_reader2
+PASS: Reader cannot view another Reader timeline
+PASS: notification body escapes script content
+PASS: notification mark-read requires CSRF
+PASS: HTTP login fr_reader2
+PASS: another reader cannot open notification by guessing UUID
+PASS: another reader cannot mark notification read
+PASS: forbidden HTTP operations preserve unread state
+PASS: opening own notice marks read and redirects to server-owned request
+PASS: open request persists read timestamp
+PASS: unread inbox filter renders
+PASS: second notification page renders
+PASS: admin notification page does not expose reader messages
+PASS: HTTP mark-all-read updates own badge count
+PASS: bell accessible label updates after mark-all-read
+PASS: legacy catalog page includes notification bell: /archivist/departments
+PASS: legacy catalog page includes notification bell: /archivist/record-types
+PASS: legacy catalog page includes notification bell: /archivist/retention-policies
+PASS: request list renders archivist
+PASS: request list renders director
+PASS: request list renders reader
+PASS: account management template renders
+PASS: second-secret template renders
+PASS: Admin home has one account creation entry
+PASS: unified form displays localized role labels
+PASS: HTTP account create binds and persists
+PASS: unified HTTP form saves linked employee profile
+PASS: HTTP login fr_http_reader
+PASS: newly created Reader can log in to Reader home
+PASS: Admin creates Archivist using account form
+PASS: HTTP login fr_http_archivist
+PASS: new Archivist receives storage permissions
+PASS: new Archivist cannot manage accounts
+PASS: duplicate username does not create a second account
+PASS: management contains table and filters without inline edit/create forms
+PASS: create page does not contain account list
+PASS: account name links to separate edit page
+PASS: separate edit page loads selected account and employee without password
+PASS: name-only account search matches usernames
+PASS: role-only account search accepts blank name
+PASS: combined name and role search applies both filters
+PASS: empty search fields return all accounts
+PASS: citizen ID search preserves leading zeros and matches linked employee
+PASS: citizen ID combines with name and role using AND
+PASS: unknown citizen ID returns no accounts
+PASS: expected BusinessException
+PASS: empty citizen ID keeps legacy accounts without employee profiles
+PASS: HTTP citizen ID filter binds and retains input
+PASS: search treats wildcard and SQL syntax as literal text
+PASS: HTTP filters bind independently and combine correctly
+PASS: empty account results render helpful message
+PASS: unknown account edit returns 404
+PASS: Reader cannot access separate create/edit pages
+PASS: HTTP account edit locks or disables without revealing hash
+PASS: HTTP second-password setup accepts correct current password
+PASS: reader cannot manage accounts
+PASS: admin cannot access clinical requests
+PASS: request form renders
+PASS: Reader registration shows record attachment picker without dates
+PASS: registration menu opens without a preselected record
+PASS: record picker search only exposes minimal published candidate metadata
+PASS: expanded identity API preserves approval boundary and excludes private fields
+PASS: preselected record renders accessible expandable information
+PASS: Reader navigation follows requested order
+PASS: deceased records available in borrow picker with guarded approval route
+PASS: Admin cannot call Reader record picker API
+PASS: Reader cannot inject a chosen date into registration POST
+PASS: HTTP multi-record selection creates batch and opens tracking list
+PASS: HTTP submit reading request
+PASS: Reader history renders
+PASS: pending timeline shows actual and remaining approval nodes with responsible roles
+PASS: new request has no premature record button
+PASS: Reader tracking allows cancellation without editing controls
+PASS: request list removes result count summary
+PASS: pending request has localized state and inline cancellation
+PASS: pending request retains tracking link
+PASS: cancellation requires CSRF in SUBMITTED
+PASS: HTTP login fr_reader2
+PASS: another Reader cannot cancel in SUBMITTED
+PASS: timeline offers cancellation in SUBMITTED
+PASS: Reader cancels SUBMITTED from list and returns to list
+PASS: cancellation records Reader history in SUBMITTED
+PASS: stale cancellation cannot create duplicate history
+PASS: cancelled timeline hides cancellation form
+PASS: cancelled row retains registration date, hides pickup and purpose
+PASS: cancellation inbox uses short Vietnamese title
+PASS: cancelled request retains progress link without cancellation control
+PASS: cancellation requires CSRF in NEEDS_INFO
+PASS: HTTP login fr_reader2
+PASS: another Reader cannot cancel in NEEDS_INFO
+PASS: timeline offers cancellation in NEEDS_INFO
+PASS: Reader cancels NEEDS_INFO from list and returns to list
+PASS: cancellation records Reader history in NEEDS_INFO
+PASS: stale cancellation cannot create duplicate history
+PASS: cancelled timeline hides cancellation form
+PASS: cancelled row retains registration date, hides pickup and purpose
+PASS: cancellation inbox uses short Vietnamese title
+PASS: cancelled request retains progress link without cancellation control
+PASS: cancellation requires CSRF in PENDING_APPROVAL
+PASS: HTTP login fr_reader2
+PASS: another Reader cannot cancel in PENDING_APPROVAL
+PASS: timeline offers cancellation in PENDING_APPROVAL
+PASS: Reader cancels PENDING_APPROVAL from list and returns to list
+PASS: cancellation records Reader history in PENDING_APPROVAL
+PASS: stale cancellation cannot create duplicate history
+PASS: cancelled timeline hides cancellation form
+PASS: cancelled row retains registration date, hides pickup and purpose
+PASS: cancellation inbox uses short Vietnamese title
+PASS: cancelled request retains progress link without cancellation control
+PASS: HTTP review submits to director
+PASS: HTTP step-up approval succeeds
+PASS: HTTP confirms reading schedule
+PASS: HTTP handover executes
+PASS: reader request response has no location UUID
+PASS: HTTP return executes
+PASS: HTTP report template records
+PASS: HTTP report template status
+PASS: HTTP report template requests
+PASS: HTTP report template sessions
+PASS: HTTP report template locations
+PASS: HTTP report template audit
+PASS: HTTP report template inventory
+PASS: HTTP report template request-statistics
+PASS: HTTP authorized CSV exports selected dataset
+PASS: reader cannot export clinical reports
+PASS: admin cannot export clinical metadata
+PASS: admin technical audit renders
+PASS: inventory list renders
+PASS: HTTP inventory creates batch
+PASS: HTTP inventory check binds result
+PASS: closed inventory detail renders
+PASS: director sees inventory summary
+PASS: director cannot access exact inventory locations
+PASS: HTTP login fr_reader2
+PASS: existing session revoked after administrative account lock
+PASS: login audit persisted
+PASS: report export audited
+PASS: workflow POST requires CSRF
+PASS: logout persists audit and ends session
+PASS: statement paginates ten requests and returns all remaining rows
+PASS: statement pages do not overlap
+PASS: statement defaults to seven calendar days inclusive
+PASS: default statement excludes day before seven-day window
+PASS: date-only boundaries are inclusive and historical range is selectable
+PASS: name and date filters combine
+PASS: empty statement handled
+PASS: expected BusinessException
+PASS: HTTP login reader1
+PASS: statement HTML renders registration date without patient subtitle
+PASS: invalid statement date range shows useful error
+PASS: status filtering combines with oldest registration first within same state
+PASS: default registration sort puts newer registrations before older ones
+PASS: date ascending arrow selects oldest registrations first
+PASS: status choices contain only states of current reader, not other readers
+PASS: own status choices remain stable when text and date filters yield no rows
+PASS: scheduled and physically borrowed requests filter independently
+PASS: notes show purpose only while processing and borrowed label after handover
+PASS: all returned sessions derive completed state and actual return date
+PASS: state descending arrow reverses lifecycle groups
+PASS: reversed status groups still keep oldest first within each state
+PASS: completed HTML shows return date without borrowing purpose
+PASS: partially returned multi-session request is not falsely complete
+PASS: cancelled requests retain registration date but omit pickup and purpose
+PASS: pagination retains status filter and sort order
+PASS: sorting dropdown and state arrows absent; accessible date arrows retained
+PASS: HTTP login fr_snapshot_reader
+PASS: rendered status menu excludes states present only for other readers
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: up to five records can register without a reason
+PASS: expected BusinessException
+PASS: missing reason above five creates no partial batch
+PASS: more than five records accepted with required reason
+PASS: registration page removes tracking footer
+PASS: registration field style hides maximum and marks conditional reason
+PASS: record search shows a single localized status and aligned filter grid
+PASS: Reader gets automatic code and unpublished electronic record
+PASS: duplicate electronic submit token does not create another record
+PASS: expected BusinessException
+PASS: expected AccessDeniedException
+PASS: expected ResponseStatusException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: electronic staff bell opens electronic work, not reading request
+PASS: Archivist can request electronic record corrections
+PASS: resubmission preserves generated code
+PASS: expected BusinessException
+PASS: expected AccessDeniedException
+PASS: Archivist confirmation never publishes before Director approval
+PASS: Director electronic notification routes correctly
+PASS: expected BusinessException
+PASS: wrong step-up password leaves electronic record unpublished
+PASS: Director approval immediately publishes electronic record in same transaction
+PASS: electronic publication neither creates paper record nor occupies physical storage
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: electronic approval and event not duplicated
+PASS: rejected electronic record never publishes
+PASS: Reader can cancel own pending electronic record
+PASS: concurrent electronic submissions receive unique automatic codes
+PASS: electronic search combines name/state and isolates other doctors
+PASS: HTTP login reader1
+PASS: HTTP login archivist1
+PASS: HTTP login director1
+PASS: HTTP login admin1
+PASS: Reader patient-only form never asks for archive number or storage location
+PASS: other roles cannot use doctor creation endpoint
+PASS: electronic lists render for all three clinical roles
+PASS: Archivist retains paper intake form
+PASS: electronic creation requires CSRF
+PASS: HTTP doctor submits electronic patient form
+PASS: forged code/state/publication inputs cannot bypass workflow
+PASS: electronic detail escapes patient data
+PASS: HTTP login fr_electronic_other
+PASS: HTTP ownership protects electronic patient information
+PASS: Archivist sees electronic verification form
+PASS: HTTP Archivist submits electronic record to Director
+PASS: HTTP Director publishes electronic record
+PASS: Reader sees electronic publication immediately after Director approval
+PASS: publication bell opens correct electronic record for its owner
+PASS: electronic workflow records all three actions in audit
+PASS: electronic event snapshots retain automatic record code
+PASS: expanded electronic fields persist with optional note
+PASS: electronic metadata snapshots retain department and type names
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: blank note accepted and normalized to null
+PASS: edit updates full clinical metadata without changing code
+PASS: extended metadata retains immediate electronic publication flow
+PASS: HTTP login reader1
+PASS: HTTP login archivist1
+PASS: HTTP login director1
+PASS: HTTP login admin1
+PASS: expanded doctor form contains departmentId
+PASS: expanded doctor form contains recordTypeId
+PASS: expanded doctor form contains admissionDate
+PASS: expanded doctor form contains dischargeDate
+PASS: expanded doctor form contains deceased
+PASS: expanded doctor form contains sourceNote
+PASS: expanded doctor form contains note
+PASS: doctor note textarea has no required attribute
+PASS: doctor form excludes physical storage metadata
+PASS: expanded metadata visible to reader
+PASS: expanded metadata visible to archivist
+PASS: expanded metadata visible to director
+PASS: shared emerald dashboard renders for director
+PASS: shared emerald dashboard renders for reader
+PASS: shared emerald dashboard renders for admin
+PASS: shared emerald dashboard renders for archivist
+PASS: dashboard values come from live database rather than prototype constants
+PASS: Reader recent records link only to owned namespace
+PASS: Admin dashboard never exposes clinical record data or actions
+PASS: Admin dashboard links retain account and audit responsibilities
+PASS: valid leap-day birth date is persisted without losing day or month
+PASS: compatibility projection exposes full birth date
+PASS: creation history preserves full birth date snapshot
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: HTTP login reader1
+PASS: doctor form contains separate accessible day/month/year controls
+PASS: edit form restores the saved day and month
+PASS: server rejects invalid calendar dates even when client validation is bypassed
+PASS: server rejects missing birthday components without partial writes
+PASS: revision updates date and derived year atomically
+PASS: HTTP login fr_electronic_other
+PASS: public patient metadata displays full birthday in day/month/year order
+PASS: expected DataIntegrityViolationException
+PASS: legacy year-only record is not silently assigned a fabricated day or month
+PASS: doctor intake writes directly to single canonical record table
+PASS: official search excludes unpublished declarations even for owner and Director
+PASS: separate declaration search restricts unpublished records to owner and reviewers
+PASS: HTTP login reader1
+PASS: pending declaration appears only in separate table, not official page
+PASS: Reader cannot access Archivist paper drafts tab
+PASS: pending dashboard card count matches both work queues
+PASS: Reader stat links target all-time borrowed requests and own declarations
+PASS: pending card opens real queue including own unpublished declaration
+PASS: pending work queue never includes another doctor's declarations
+PASS: home stat links and Reader history navigation render
+PASS: Reader history renamed and status header no longer sortable
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: published electronic record appears in same shared search
+PASS: HTTP login reader1
+PASS: HTTP login fr_electronic_other
+PASS: HTTP login archivist1
+PASS: published electronic metadata opens directly without exposing internal notes to another doctor
+PASS: electronic-only row never shows borrow button
+PASS: unified results use code heading and omit treatment episode column
+PASS: results replace status column with notes after borrowing action
+PASS: shared pages render accessible secondary breadcrumb
+PASS: shared navigation displays employee name without username and role subtitle
+PASS: navigation no longer has separate electronic record section
+PASS: old electronic list URL redirects to unified search
+PASS: Archivist paper intake sets both representation flags
+PASS: paper-only representation renders Gi?y and supports exact format filter
+PASS: available paper row has separate borrowing action
+PASS: paper code opens patient information rather than request form
+PASS: active request removes paper borrow action for all search users
+PASS: reserved paper displays registered rather than borrowed
+PASS: reservation description belongs to notes cell
+PASS: cancelled request releases paper borrow action
+PASS: confirmed pickup displays scheduled rather than physically borrowed
+PASS: handed-over paper displays borrowed
+PASS: returned paper restores borrow action without stale reservation label
+PASS: Archivist can open physical attachment form for approved electronic record
+PASS: attaching paper keeps one record and immutable automatic code
+PASS: physical attachment records storage position and both flags
+PASS: physical attachment preserves original submission and approval history
+PASS: expected BusinessException
+PASS: same electronic code becomes borrowable after physical attachment
+PASS: electronic_records is only a read-only projection, not redundant storage
+PASS: expected DataAccessException
+PASS: compatibility projection cannot create divergent record contents
+PASS: automatic generator skips a historical paper code in its namespace
+PASS: expected DataIntegrityViolationException
+PASS: approval secret never appears in audit details
+PASS: 100+ synthetic records retained for acceptance checks
+PREVIEW_URL http://localhost:49152
+2026-10-26T08:20:42.030+07:00  INFO 7876 --- [medical-record-management] [           main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-26T08:20:42.046+07:00  INFO 7876 --- [medical-record-management] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-10-26T08:20:42.055+07:00  INFO 7876 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-26T08:20:42.058+07:00  INFO 7876 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+PASS: temporary schema removed
+PASSED 570 functional requirement checks; email intentionally deferred.

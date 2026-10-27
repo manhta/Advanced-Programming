@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Giao và nhận trả hồ sơ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main th:with="q=${request}">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Giao và nhận trả hồ sơ')}"></nav>
+            <h1>Giao và nhận trả <span th:text="${q.archive_number}"></span></h1>
+            <p>Người nhận: <strong th:text="${q.requester}"></strong></p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <section th:fragment="sessions">
+                <h2>Lịch nhận và giao–trả</h2>
+                <p th:if="${#lists.isEmpty(q.sessions)}">Chờ nhân viên lưu trữ chỉ định ngày nhận sau khi được duyệt.</p>
+                <article class="card" th:each="s:${q.sessions}">
+                    <h3><span th:text="${s.reading_on}"></span> · <span th:text="${s.state}"></span></h3>
+                    <p>Giao: <span th:text="${s.handed_at ?: 'Chưa giao'}"></span> · Trả: <span th:text="${s.returned_at ?: 'Chưa trả'}"></span></p>
+                    <p th:if="${s.exception_note}" th:text="${s.exception_note}" role="alert"></p>
+                    <div th:if="${currentRole=='ARCHIVIST'}">
+                        <form
+                            th:if="${s.state=='CONFIRMED' and q.state=='CONFIRMED'}"
+                            th:action="@{/archivist/requests/{id}/sessions/{sid}/handover(id=${q.id},sid=${s.id})}"
+                            method="post"
+                        >
+                            <input type="hidden" name="version" th:value="${q.version}">
+                            <label>Tình trạng khi giao (xác nhận đúng người đọc)<textarea name="condition" maxlength="1000" required></textarea></label>
+                            <button>Giao hồ sơ tại phòng đọc hôm nay</button>
+                        </form>
+                        <form
+                            th:if="${s.state=='READING'}"
+                            th:action="@{/archivist/requests/{id}/sessions/{sid}/return(id=${q.id},sid=${s.id})}"
+                            method="post"
+                        >
+                            <input type="hidden" name="version" th:value="${q.version}">
+                            <label>Ngăn cất lại<select name="destination" required><option value="">Chọn ngăn</option><option
+                                        th:each="l:${locations}"
+                                        th:if="${l.type=='COMPARTMENT' and l.active}"
+                                        th:value="${l.id}"
+                                        th:text="${l.displayPath}"
+                                    ></option></select></label>
+                            <label>Chất lượng<select name="quality"><option value="NORMAL">Bình thường</option><option value="DAMAGED">Hư hỏng</option><option value="INCOMPLETE">Thiếu</option></select></label>
+                            <label>Tình trạng thực tế nhận trả<textarea name="condition" maxlength="1000" required></textarea></label>
+                            <button>Nhận trả và cất lại</button>
+                        </form>
+                    </div>
+                </article>
+            </section>
+            <a th:href="@{/archivist/requests/{id}(id=${q.id})}">← Yêu cầu mượn</a>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

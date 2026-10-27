@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Tạo tài khoản')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Tạo tài khoản')}"></nav>
+            <h1>Tạo tài khoản</h1>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <section class="card" id="create-account">
+                <h2>Tạo tài khoản và hồ sơ nhân viên</h2>
+                <form th:action="@{/admin/accounts}" method="post" autocomplete="off">
+                    <div class="grid">
+                        <label>Tên nhân viên<input name="displayName" th:value="${form!=null ? form.displayName : ''}" maxlength="200" required></label>
+                        <label>Căn cước công dân<input
+                                name="citizenId"
+                                th:value="${form!=null ? form.citizenId : ''}"
+                                type="text"
+                                inputmode="numeric"
+                                pattern="[0-9]{10}"
+                                minlength="10"
+                                maxlength="10"
+                                required
+                                placeholder="10 chữ số"
+                            ></label>
+                        <label>Ngày sinh<input name="birthDate" th:value="${form!=null ? form.birthDate : ''}" type="date" required></label>
+                        <label>Giới tính
+                            <select name="gender" required>
+                                <option value="">Chọn giới tính</option>
+                                <option value="MALE" th:selected="${form!=null and form.gender=='MALE'}">Nam</option>
+                                <option value="FEMALE" th:selected="${form!=null and form.gender=='FEMALE'}">Nữ</option>
+                                <option value="OTHER" th:selected="${form!=null and form.gender=='OTHER'}">Khác</option>
+                            </select>
+                        </label>
+                        <label>Vai trò
+                            <select name="role" required>
+                                <option value="READER" th:selected="${form!=null and form.role=='READER'}">Bác sĩ</option>
+                                <option value="ARCHIVIST" th:selected="${form!=null and form.role=='ARCHIVIST'}">Nhân viên lưu trữ</option>
+                                <option value="DIRECTOR" th:selected="${form!=null and form.role=='DIRECTOR'}">Giám đốc</option>
+                                <option value="ADMIN" th:selected="${form!=null and form.role=='ADMIN'}">Quản trị viên</option>
+                            </select>
+                        </label>
+                        <label>Khoa
+                            <select name="department" required>
+                                <option value="">Chọn khoa</option>
+                                <option th:each="d:${departments}" th:if="${d.active}" th:value="${d.id}" th:text="${d.name}" th:selected="${form!=null and form.department==d.id}"></option>
+                            </select>
+                        </label>
+                        <label>Email<input name="email" th:value="${form!=null ? form.email : ''}" type="email" maxlength="254"></label>
+                    </div>
+                    <button>Tạo tài khoản</button>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>

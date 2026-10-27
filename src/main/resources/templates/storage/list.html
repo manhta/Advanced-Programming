@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Vị trí lưu trữ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Vị trí lưu trữ')}"></nav>
+            <h1>Vị trí lưu trữ</h1>
+            <p class="help">Kho → Kệ → Ngăn. Một ngăn chứa nhiều hồ sơ. Mã, loại và vị trí cha giữ nguyên sau khi tạo; không xóa vị trí đã dùng.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <section class="card">
+                <h2>Thêm vị trí</h2>
+                <form th:action="@{/archivist/locations}" th:object="${locationForm}" method="post">
+                    <div th:if="${#fields.hasAnyErrors()}" role="alert">
+                        <p th:each="error : ${#fields.allErrors()}" th:text="${error}"></p>
+                    </div>
+                    <div class="grid">
+                        <div>
+                            <label for="code">Mã vị trí</label>
+                            <input
+                                id="code"
+                                th:field="*{code}"
+                                maxlength="32"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="name">Tên vị trí</label>
+                            <input
+                                id="name"
+                                th:field="*{name}"
+                                maxlength="200"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="type">Loại</label>
+                            <select id="type" th:field="*{type}">
+                                <option value="WAREHOUSE">Kho</option>
+                                <option value="SHELF">Kệ</option>
+                                <option value="COMPARTMENT">Ngăn</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="parentId">Vị trí cha (Kho để trống)</label>
+                            <select id="parentId" th:field="*{parentId}">
+                                <option value="">Không có</option>
+                                <option
+                                    th:each="item : ${locations}"
+                                    th:if="${item.active and item.type != 'COMPARTMENT'}"
+                                    th:value="${item.id}"
+                                    th:text="${item.path}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="capacity">Sức chứa ngăn (không bắt buộc)</label>
+                            <input
+                                id="capacity"
+                                type="number"
+                                min="1"
+                                th:field="*{capacity}"
+                            >
+                        </div>
+                    </div>
+                    <div class="actions"><button type="submit">Thêm vị trí</button></div>
+                </form>
+            </section>
+            <h2>Danh sách vị trí</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Đường dẫn</th>
+                            <th>Loại / trạng thái</th>
+                            <th>Đang chứa / sức chứa</th>
+                            <th>Cập nhật</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${locations}">
+                            <td th:text="${item.path}"></td>
+                            <td>
+                                <span th:text="${item.type}"></span>
+                                <br>
+                                <span th:text="${item.active ? 'Hoạt động' : 'Ngừng dùng'}"></span>
+                            </td>
+                            <td><span th:text="${item.occupied}"></span> / <span th:text="${item.capacity ?: 'Không giới hạn'}"></span></td>
+                            <td>
+                                <form th:action="@{/archivist/locations/{id}(id=${item.id})}" method="post">
+                                    <input type="hidden" name="version" th:value="${item.version}">
+                                    <label th:for="${'name-' + item.id}">Tên</label>
+                                    <input
+                                        th:id="${'name-' + item.id}"
+                                        name="name"
+                                        th:value="${item.name}"
+                                        maxlength="200"
+                                        required
+                                    >
+                                    <label th:for="${'active-' + item.id}">Trạng thái</label>
+                                    <select th:id="${'active-' + item.id}" name="active">
+                                        <option value="true" th:selected="${item.active}">Hoạt động</option>
+                                        <option value="false" th:selected="${!item.active}">Ngừng dùng</option>
+                                    </select>
+                                    <div th:if="${item.type == 'COMPARTMENT'}">
+                                        <label th:for="${'capacity-' + item.id}">Sức chứa</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            th:id="${'capacity-' + item.id}"
+                                            name="capacity"
+                                            th:value="${item.capacity}"
+                                        >
+                                    </div>
+                                    <div class="actions"><button type="submit">Lưu</button></div>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(locations)}">
+                            <td colspan="4">Chưa có vị trí. Tạo Kho, sau đó Kệ và Ngăn.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

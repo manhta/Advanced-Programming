@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Trang chủ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main class="dashboard-page">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Trang chủ')}"></nav>
+            <section class="welcome-banner">
+                <div>
+                    <span class="workspace-label">● Bàn làm việc <span th:text="${currentRoleLabel}"></span></span>
+                    <h1>Xin chào, <span th:text="${currentDisplayName}"></span>!</h1>
+                    <p>Chào mừng bạn trở lại hệ thống Quản lý hồ sơ bệnh án. Chọn tác vụ bên dưới để bắt đầu.</p>
+                </div>
+                <div class="dashboard-stats" th:classappend="${currentRole=='READER' ? 'reader-dashboard-stats' : ''}"><th:block th:each="stat:${dashboard.stats}"><a
+                            th:if="${stat.url!=null}"
+                            th:href="@{${stat.url}}"
+                            th:aria-label="${stat.label + ': ' + stat.value}"
+                        ><span th:text="${stat.label}"></span><strong th:text="${stat.value}"></strong></a><div th:unless="${stat.url!=null}"><span th:text="${stat.label}"></span><strong th:text="${stat.value}"></strong></div></th:block></div>
+            </section>
+            <section>
+                <div class="dashboard-section-heading">
+                    <h2>✧ Tác vụ nhanh</h2>
+                    <span>Các lối tắt dịch vụ chính</span>
+                </div>
+                <div class="quick-action-grid"><a
+                        class="quick-action-card"
+                        th:each="action:${dashboard.actions}"
+                        th:href="@{${action.url}}"
+                        th:classappend="${action.tone}"
+                    >
+                        <span class="action-icon" aria-hidden="true"><svg
+                                width="26"
+                                height="26"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            ><use th:href="${'#icon-'+action.icon}"></use></svg></span>
+                        <h3 th:text="${action.title}"></h3><p th:text="${action.description}"></p><span class="action-footer">Mở chức năng <span aria-hidden="true">→</span></span></a></div>
+            </section>
+            <section class="dashboard-recent">
+                <div class="dashboard-section-heading">
+                    <div>
+                        <h2 th:text="${dashboard.recentTitle}"></h2>
+                    </div>
+                    <form method="get" th:action="@{${dashboard.searchUrl}}" class="dashboard-search">
+                        <input
+                            th:if="${currentRole!='ADMIN'}"
+                            type="hidden"
+                            name="scope"
+                            value="DECLARATIONS"
+                        >
+                        <label class="sr-only" for="dashboard-query">Tìm kiếm</label>
+                        <input
+                            id="dashboard-query"
+                            th:name="${dashboard.searchParameter}"
+                            placeholder="Tìm theo tên hoặc mã…"
+                            maxlength="200"
+                        >
+                        <button>Tìm kiếm</button>
+                    </form>
+                </div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã / tài khoản</th>
+                                <th>Tên</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item:${dashboard.recent}">
+                                <td>
+                                    <a th:href="@{${item.url}}" th:text="${item.code}"></a>
+                                </td>
+                                <td th:text="${item.name}"></td>
+                                <td>
+                                    <span class="badge" th:text="${item.state}"></span>
+                                </td>
+                                <td th:text="${item.date}"></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(dashboard.recent)}">
+                                <td colspan="4" class="empty-state">Chưa có dữ liệu gần đây. Chọn một tác vụ phía trên để bắt đầu.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <a class="view-all" th:href="@{${dashboard.searchUrl}}">Xem tất cả →</a>
+            </section>
+        </main>
+        <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol><symbol id="icon-record" viewBox="0 0 24 24"><path d="M14 2H5v20h14V7Z M14 2v6h5 M8 12h8 M8 16h8"/></symbol><symbol id="icon-plus" viewBox="0 0 24 24"><path d="M3 6h7l2 3h9v12H3Z M3 6V3h6l3 3 M12 12v6 M9 15h6"/></symbol><symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 21v-3a7 7 0 0 1 14 0v3 M17 3a4 4 0 0 1 0 8 M20 14a6 6 0 0 1 2 7"/></symbol><symbol id="icon-chart" viewBox="0 0 24 24"><path d="M3 3v18h18 M7 17v-5 M12 17V7 M17 17v-8"/></symbol><symbol id="icon-archive" viewBox="0 0 24 24"><path d="M3 3h18v5H3Z M5 8v13h14V8 M9 12h6"/></symbol></svg>
+        <div
+            th:if="${showLoginToast}"
+            class="login-toast"
+            data-login-toast
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            hidden
+        ><span aria-hidden="true">✓</span><span>Bạn đã đăng nhập thành công.</span><button type="button" data-dismiss-toast aria-label="Đóng thông báo đăng nhập">×</button></div>
+        <script th:if="${showLoginToast}" th:src="@{/js/login-toast.js}" defer></script>
+    </body>
+</html>

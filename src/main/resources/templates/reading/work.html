@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Chờ xử lý')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chờ xử lý')}"></nav>
+            <h1>Danh mục chờ xử lý</h1>
+            <p>Các yêu cầu mượn và bệnh án bạn đã khai báo đang chờ xử lý. Danh sách gồm toàn bộ thời gian, không giới hạn 7 ngày.</p>
+            <section class="reader-work-section">
+                <h2>Yêu cầu mượn <span class="badge" th:text="${#lists.size(work.requests)}"></span></h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã hồ sơ</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày đăng ký</th>
+                                <th>Tiến trình</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item:${work.requests}">
+                                <td th:text="${item.code}"></td>
+                                <td>
+                                    <span class="badge" th:text="${item.state}"></span>
+                                </td>
+                                <td th:text="${item.date}"></td>
+                                <td>
+                                    <a th:href="@{${item.url}}">Theo dõi tiến trình</a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(work.requests)}">
+                                <td colspan="4">Không có yêu cầu mượn chờ xử lý.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <a th:href="@{/reader/requests}">Lịch sử yêu cầu →</a>
+                </p>
+            </section>
+            <section class="reader-work-section">
+                <h2>Bệnh án đã khai báo <span class="badge" th:text="${#lists.size(work.declarations)}"></span></h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã hồ sơ</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày khai báo</th>
+                                <th>Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item:${work.declarations}">
+                                <td>
+                                    <a th:href="@{${item.url}}" th:text="${item.code}"></a>
+                                </td>
+                                <td>
+                                    <span class="badge" th:text="${item.state}"></span>
+                                </td>
+                                <td th:text="${item.date}"></td>
+                                <td>
+                                    <a th:href="@{${item.url}}">Xem / bổ sung</a>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(work.declarations)}">
+                                <td colspan="4">Không có bệnh án khai báo chờ xử lý.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    <a th:href="@{/reader/records(scope='DECLARATIONS')}">Toàn bộ bệnh án đã khai báo →</a>
+                </p>
+            </section>
+        </main>
+    </body>
+</html>

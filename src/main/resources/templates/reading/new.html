@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Đăng ký mượn hồ sơ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main class="borrow-registration-page">
+            <div class="borrow-page-heading">
+                <div>
+                    <nav th:replace="~{fragments/layout :: breadcrumb('Đăng ký mượn hồ sơ')}"></nav>
+                    <h1><span aria-hidden="true">✎</span> Đăng ký mượn hồ sơ bệnh án</h1>
+                </div>
+                <div class="pickup-badge">
+                    <span aria-hidden="true">◷</span>
+                    <div><small>THỜI GIAN NHẬN DỰ KIẾN</small><strong>Tối đa 2 ngày</strong></div>
+                </div>
+            </div>
+            <section class="borrow-guidelines">
+                <div class="guideline-icon" aria-hidden="true"><svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                    ><path d="m12 2 8 4v6c0 5-8 10-8 10S4 17 4 12V6Z"/><path d="M12 7v6m0 3v1"/></svg></div>
+                <div>
+                    <h2>Quy định &amp; Quy trình mượn hồ sơ giấy</h2>
+                    <p>Bạn có thể đăng ký nhiều hồ sơ trong một lần gửi. <strong class="reason-emphasis">Bắt buộc nhập lý do khi chọn trên 5 hồ sơ hoặc có bất kỳ hồ sơ tử vong nào.</strong> Các trường hợp còn lại không bắt buộc nhập lý do.</p>
+                    <p>Nhân viên lưu trữ duyệt lượt đăng ký thông thường. Nếu có hồ sơ tử vong, toàn bộ hồ sơ trong lượt phải được Giám đốc duyệt. Nhân viên lưu trữ xác nhận ngày nhận trong <strong>2 ngày</strong> kể từ ngày đăng ký (tính cả cuối tuần). Chỉ đọc tại phòng đọc và trả trong ngày.</p>
+                </div>
+            </section>
+            <p
+                class="error"
+                th:if="${errorMessage}"
+                th:text="${errorMessage}"
+                role="alert"
+            ></p>
+            <form
+                th:action="@{/reader/requests}"
+                method="post"
+                data-borrow-form
+                class="borrow-registration-grid"
+            >
+                <input type="hidden" name="token" th:value="${token}">
+                <div class="borrow-form-card">
+                    <section
+                        class="borrow-picker borrow-field"
+                        data-borrow-picker
+                        th:attr="data-search-url=@{/reader/requests/records}"
+                    >
+                        <div class="borrow-field-heading">
+                            <h2>Danh sách hồ sơ bệnh án cần mượn <span class="required-mark">*</span></h2>
+                            <span class="selection-count"><span data-selected-count th:text="${#lists.size(selectedRecords)}"></span> hồ sơ đã chọn</span>
+                        </div>
+                        <div class="borrow-selection-box">
+                            <ul data-selected-records class="borrow-selections">
+                                <li
+                                    th:each="record:${selectedRecords}"
+                                    data-selected-record
+                                    th:classappend="${record.deceased ? 'borrow-deceased' : ''}"
+                                    th:attr="data-id=${record.id},data-archive=${record.archiveNumber},data-patient=${record.patientName},data-deceased=${record.deceased}"
+                                >
+                                    <input type="hidden" name="recordIds" th:value="${record.id}">
+                                    <span th:text="${record.archiveNumber + ' · ' + record.patientName}"></span>
+                                    <button
+                                        type="button"
+                                        class="secondary"
+                                        data-remove-record
+                                        th:attr="data-id=${record.id}"
+                                    >Bỏ chọn</button>
+                                    <details class="borrow-record-details">
+                                        <summary>Thông tin hồ sơ</summary>
+                                        <dl>
+                                            <dt>Số bệnh án</dt>
+                                            <dd th:text="${record.medicalRecordNumber}"></dd>
+                                            <dt>Khoa</dt>
+                                            <dd th:text="${record.departmentName}"></dd>
+                                            <dt>Loại bệnh án</dt>
+                                            <dd th:text="${record.recordTypeName}"></dd>
+                                            <dt>Ngày vào viện</dt>
+                                            <dd th:text="${record.admissionDate}"></dd>
+                                            <dt>Ngày ra viện</dt>
+                                            <dd th:text="${record.dischargeDate}"></dd>
+                                        </dl>
+                                    </details>
+                                </li>
+                            </ul>
+                            <div class="borrow-selection-actions"><button type="button" data-open-picker aria-haspopup="dialog">＋ Chọn hồ sơ mượn…</button><button type="button" class="text-button" data-clear-records>Xóa tất cả</button></div>
+                            <p data-picker-error role="alert"></p>
+                        </div>
+                        <dialog data-record-dialog aria-labelledby="record-dialog-title">
+                            <div class="borrow-dialog-header">
+                                <h2 id="record-dialog-title">Chọn hồ sơ mượn</h2>
+                                <button
+                                    type="button"
+                                    class="secondary"
+                                    data-close-picker
+                                    aria-label="Đóng danh sách hồ sơ"
+                                >Đóng</button>
+                            </div>
+                            <label>Tìm hồ sơ<input
+                                    type="search"
+                                    data-record-search
+                                    maxlength="200"
+                                    placeholder="Mã hồ sơ, số bệnh án, mã người bệnh hoặc tên"
+                                ></label>
+                            <p data-record-status role="status" aria-live="polite"></p>
+                            <div data-record-results class="borrow-results"></div>
+                            <div class="actions"><button type="button" class="secondary" data-record-prev>Trang trước</button><span data-record-page></span><button type="button" class="secondary" data-record-next>Trang sau</button><button type="button" data-close-picker>Xong</button></div>
+                        </dialog>
+                        <noscript>
+                            <p>Bật JavaScript để mở danh sách và chọn nhiều hồ sơ. Hồ sơ được chọn sẵn từ trang tra cứu vẫn có thể gửi bằng form này.</p>
+                        </noscript>
+                    </section>
+                    <div class="borrow-field-heading">
+                        <label for="borrow-purpose">Lý do mượn hồ sơ</label>
+                        <span data-purpose-hint>(không bắt buộc khi chọn tối đa 5 hồ sơ)</span>
+                    </div>
+                    <textarea
+                        id="borrow-purpose"
+                        name="purpose"
+                        th:required="${!#lists.isEmpty(selectedRecords.?[deceased]) or #lists.size(selectedRecords)>5}"
+                        data-borrow-purpose
+                        maxlength="2000"
+                        rows="5"
+                        placeholder="Nhập mục đích mượn: nghiên cứu, hội chẩn, đối chiếu lâm sàng…"
+                        th:text="${purpose}"
+                    ></textarea>
+                    <p class="reason-warning" data-reason-warning hidden>Bắt buộc nhập lý do vì chọn trên 5 hồ sơ hoặc có hồ sơ tử vong. Lượt có hồ sơ tử vong sẽ trình Giám đốc duyệt toàn bộ.</p>
+                    <div class="borrow-submit-actions"><button type="button" class="secondary" data-reset-borrow>↻ Làm lại</button><button type="submit">Gửi đăng ký mượn hồ sơ →</button></div>
+                </div>
+                <aside class="borrow-side-panel">
+                    <section class="borrow-summary">
+                        <h2>Tóm tắt phiếu đăng ký</h2>
+                        <dl>
+                            <dt>Nhân viên đăng ký</dt>
+                            <dd th:text="${currentDisplayName}"></dd>
+                            <dt>Số lượng đã chọn</dt>
+                            <dd><strong data-summary-count th:text="${#lists.size(selectedRecords)}"></strong> hồ sơ</dd>
+                            <dt>Lý do mượn</dt>
+                            <dd data-summary-reason>Không bắt buộc</dd>
+                            <dt>Nơi giao nhận</dt>
+                            <dd>Phòng đọc lưu trữ</dd>
+                        </dl>
+                    </section>
+                    <section class="borrow-next-steps">
+                        <h2>Các bước tiếp theo</h2>
+                        <ol>
+                            <li>Gửi đăng ký qua hệ thống.</li>
+                            <li>Nhân viên lưu trữ kiểm tra và duyệt lượt thông thường.</li>
+                            <li>Chỉ khi có hồ sơ tử vong: trình Giám đốc duyệt tất cả hồ sơ trong lượt.</li>
+                            <li>Nhân viên lưu trữ xác nhận lịch nhận. Theo dõi tại <a th:href="@{/reader/requests}">Yêu cầu mượn</a> và đến phòng đọc theo lịch.</li>
+                        </ol>
+                    </section>
+                </aside>
+            </form>
+            <script th:src="@{/js/borrow-record-picker.js}" defer></script>
+        </main>
+    </body>
+</html>

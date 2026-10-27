@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Tiến trình xử lý yêu cầu')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main th:with="q=${request}">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Tiến trình xử lý yêu cầu')}"></nav>
+            <div class="request-progress-heading">
+                <div>
+                    <p class="muted">Theo dõi tiến trình</p>
+                    <h1>Lịch sử xử lý yêu cầu <span th:text="${q.archive_number}"></span></h1>
+                </div>
+                <span class="badge" th:text="${@readingLabels.requestState(q.state)}"></span>
+            </div>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <div th:if="${@readingLabels.pending(q.state)}" class="actions">
+                <form th:action="@{/reader/requests/{id}/cancel(id=${q.id})}" method="post" data-cancel-request>
+                    <input type="hidden" name="version" th:value="${q.version}">
+                    <input
+                        type="hidden"
+                        name="note"
+                        value="Người yêu cầu hủy tại trang theo dõi tiến trình trước khi được phê duyệt hoặc từ chối."
+                    >
+                    <button type="submit">Hủy yêu cầu</button>
+                </form>
+            </div>
+            <ol class="request-timeline" aria-label="Tiến trình xử lý yêu cầu">
+                <li
+                    th:each="node,position:${progress}"
+                    class="request-timeline-node"
+                    th:classappend="${node.state}"
+                    th:attr="aria-current=${node.state=='current' ? 'step' : null}"
+                >
+                    <span
+                        class="request-timeline-dot"
+                        aria-hidden="true"
+                        th:text="${node.state=='done' ? '✓' : position.count}"
+                    ></span>
+                    <article class="request-timeline-card">
+                        <div class="request-timeline-title">
+                            <h2 th:text="${node.title}"></h2>
+                            <span class="request-step-label" th:text="${node.label}"></span>
+                        </div>
+                        <p>
+                            <strong
+                                th:text="${node.state=='done' or node.state=='stopped' ? 'Người xử lý: ' : 'Phụ trách: '}"
+                            ></strong>
+                            <span th:text="${node.actor}"></span>
+                        </p>
+                        <div th:if="${node.pickupDates!=null}" class="request-pickup-information">
+                            <p><strong>Ngày nhận:</strong> <span th:text="${node.pickupDates}"></span></p>
+                            <p><strong>Phòng nhận:</strong> <span class="preserve-lines" th:text="${node.pickupRoom}"></span></p>
+                        </div>
+                        <time th:if="${!#strings.isEmpty(node.time)}" th:text="${node.time}"></time>
+                    </article>
+                </li>
+            </ol>
+            <section th:if="${canOpenRecord}" class="request-ready">
+                <h2>Đã hoàn tất duyệt và xác nhận lịch</h2>
+                <p>Bạn có thể mở thông tin hồ sơ theo quyền được cấp. Việc giao–trả thực tế tiếp tục được cập nhật trong tiến trình.</p>
+                <a class="button" data-open-approved-record th:href="@{/reader/records/{id}(id=${q.record_id})}">Xem thông tin hồ sơ</a>
+            </section>
+            <p th:if="${q.state=='CONFIRMED' and !canOpenRecord}" class="muted">Lịch đã được xác nhận, nhưng quyền xem thông tin hồ sơ hiện không còn hiệu lực.</p>
+            <p>
+                <a th:href="@{/reader/requests}">← Danh sách yêu cầu</a>
+            </p>
+        </main>
+    </body>
+</html>

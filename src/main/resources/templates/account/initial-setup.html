@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Thiết lập mật khẩu lần đầu')}"></head>
+    <body>
+        <main style="max-width: 760px; margin: 40px auto; padding: 24px;">
+            <section class="card">
+                <h1>Thiết lập mật khẩu lần đầu</h1>
+                <p>Xin chào <strong th:text="${setup.display_name}"></strong>.</p>
+                <p>Hoàn thành thiết lập trước khi sử dụng hệ thống. Bạn không cần nhập lại mật khẩu ban đầu.</p>
+                <p>Mỗi mật khẩu dài 12–128 ký tự. Mật khẩu mới phải khác mật khẩu ban đầu.</p>
+                <p class="error" th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+                <form class="personal-password" th:action="@{/account/initial-setup}" method="post">
+                    <fieldset th:if="${setup.must_change_password}">
+                        <legend>Mật khẩu đăng nhập</legend>
+                        <label>Mật khẩu mới
+                            <input type="password" name="newPassword" minlength="12" maxlength="128" autocomplete="new-password" required>
+                        </label>
+                        <label>Xác nhận mật khẩu mới
+                            <input type="password" name="confirmPassword" minlength="12" maxlength="128" autocomplete="new-password" required>
+                        </label>
+                    </fieldset>
+                    <fieldset th:if="${setup.needs_approval_secret}">
+                        <legend>Mật khẩu cấp 2 của Giám đốc</legend>
+                        <p>Dùng khi phê duyệt. Phải khác mật khẩu đăng nhập và mật khẩu ban đầu.</p>
+                        <label>Mật khẩu cấp 2
+                            <input type="password" name="approvalSecret" minlength="12" maxlength="128" autocomplete="new-password" required>
+                        </label>
+                        <label>Xác nhận mật khẩu cấp 2
+                            <input type="password" name="confirmApprovalSecret" minlength="12" maxlength="128" autocomplete="new-password" required>
+                        </label>
+                    </fieldset>
+                    <button type="submit">Lưu và tiếp tục</button>
+                </form>
+                <form th:action="@{/logout}" method="post" style="margin-top: 16px;">
+                    <button class="secondary" type="submit">Đăng xuất</button>
+                </form>
+            </section>
+        </main>
+    </body>
+</html>

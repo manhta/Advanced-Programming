@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Danh mục Giám đốc')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Danh mục Giám đốc')}"></nav>
+            <h1 th:text="${queue=='pending' ? 'Danh mục chờ duyệt' : (queue=='approved' ? 'Các hồ sơ tôi đã duyệt' : 'Bệnh án điện tử đã công bố')}"></h1>
+            <p>Danh sách tương ứng với ô thống kê trên trang chủ. Nhấp Mở yêu cầu hoặc Mở bệnh án để xem và xử lý theo quyền.</p>
+            <section class="card" th:if="${queue!='published'}">
+                <h2 th:text="${queue=='pending' ? 'Yêu cầu mượn chờ duyệt' : 'Yêu cầu mượn đã duyệt'}"></h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã hồ sơ</th>
+                                <th>Trạng thái</th>
+                                <th th:text="${queue=='pending' ? 'Ngày đăng ký' : 'Ngày quyết định'}"></th>
+                                <th>Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item:${work.requests}">
+                                <td th:text="${item.code}"></td>
+                                <td th:text="${item.state}"></td>
+                                <td th:text="${item.date}"></td>
+                                <td><a th:href="@{${item.url}}">Mở yêu cầu</a></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(work.requests)}">
+                                <td colspan="4">Không có yêu cầu trong danh mục này.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2 th:text="${queue=='pending' ? 'Bệnh án khai báo chờ duyệt' : 'Bệnh án điện tử đã công bố'}"></h2>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã hồ sơ</th>
+                                <th>Trạng thái</th>
+                                <th th:text="${queue=='pending' ? 'Ngày khai báo' : 'Ngày quyết định'}"></th>
+                                <th>Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item:${work.declarations}">
+                                <td th:text="${item.code}"></td>
+                                <td th:text="${item.state}"></td>
+                                <td th:text="${item.date}"></td>
+                                <td><a th:href="@{${item.url}}">Mở bệnh án</a></td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(work.declarations)}">
+                                <td colspan="4">Không có bệnh án trong danh mục này.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <a th:href="@{/director/home}">← Trang chủ</a>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

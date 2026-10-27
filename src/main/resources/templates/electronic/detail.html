@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Chi tiết hồ sơ điện tử')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main th:with="r=${record}">
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chi tiết hồ sơ điện tử')}"></nav>
+            <h1 th:text="${r.record_code}"></h1>
+            <p>
+                <span class="badge" th:text="${@readingLabels.electronicState(r.state)}"></span>
+            </p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <dl>
+                <dt>Họ tên người bệnh</dt>
+                <dd th:text="${r.patient_name}"></dd>
+                <dt>Ngày sinh</dt>
+                <dd
+                    th:text="${r.birth_date!=null ? #dates.format(r.birth_date,'dd/MM/yyyy') : r.birth_year+' (chỉ biết năm)'}"
+                ></dd>
+                <dt>Giới tính</dt>
+                <dd th:text="${r.sex=='MALE' ? 'Nam' : (r.sex=='FEMALE' ? 'Nữ' : 'Chưa xác định')}"></dd>
+                <dt>Mã người bệnh</dt>
+                <dd th:text="${r.patient_code ?: 'Chưa có'}"></dd>
+                <dt>Bác sĩ khai báo</dt>
+                <dd th:text="${r.creator}"></dd>
+                <dt>Ngày khai báo</dt>
+                <dd th:text="${r.created_at}"></dd>
+                <dt>Ngày công bố</dt>
+                <dd th:text="${r.published_at ?: 'Chưa công bố'}"></dd>
+            </dl>
+            <section class="card">
+                <h2>Đợt điều trị và ghi chú</h2>
+                <dl>
+                    <dt>Khoa điều trị cuối</dt>
+                    <dd th:text="${r.department_name_snapshot ?: 'Chưa xác định'}"></dd>
+                    <dt>Loại bệnh án</dt>
+                    <dd th:text="${r.record_type_name_snapshot ?: 'Chưa xác định'}"></dd>
+                    <dt>Ngày vào viện</dt>
+                    <dd th:text="${r.admission_date ?: 'Chưa có'}"></dd>
+                    <dt>Ngày ra viện</dt>
+                    <dd th:text="${r.discharge_date ?: 'Chưa có'}"></dd>
+                    <dt>Người bệnh tử vong</dt>
+                    <dd th:text="${r.deceased ? 'Có' : 'Không'}"></dd>
+                    <dt>Nguồn dữ liệu</dt>
+                    <dd class="preserve-lines" th:text="${r.source_note ?: 'Chưa có'}"></dd>
+                    <dt>Ghi chú</dt>
+                    <dd class="preserve-lines" th:text="${r.note ?: 'Không có ghi chú'}"></dd>
+                </dl>
+            </section>
+            <p th:if="${r.state=='APPROVED'}" role="status">Hồ sơ điện tử đã được công bố ngay sau quyết định của Giám đốc. Không có bước xác nhận hồ sơ giấy hoặc nhập kho.</p>
+            <div th:if="${currentRole=='READER'}" class="actions">
+                <a
+                    class="button secondary"
+                    th:if="${r.state=='SUBMITTED' or r.state=='NEEDS_INFO'}"
+                    th:href="@{/reader/records/{id}/edit(id=${r.id})}"
+                >Bổ sung / gửi lại</a>
+                <form
+                    th:if="${@readingLabels.pending(r.state)}"
+                    th:action="@{/reader/records/{id}/cancel(id=${r.id})}"
+                    method="post"
+                >
+                    <input type="hidden" name="version" th:value="${r.version}">
+                    <button>Hủy khai báo</button>
+                </form>
+            </div>
+            <section class="card" th:if="${currentRole=='ARCHIVIST' and r.state=='SUBMITTED'}">
+                <h2>Kiểm tra hồ sơ mới</h2>
+                <form th:action="@{/archivist/records/{id}/review(id=${r.id})}" method="post">
+                    <input type="hidden" name="version" th:value="${r.version}">
+                    <label>Kết quả<select name="ready"><option value="true">Xác nhận và trình Giám đốc</option><option value="false">Yêu cầu bác sĩ bổ sung</option></select></label>
+                    <label>Nội dung kiểm tra<textarea name="note" maxlength="2000" required></textarea></label>
+                    <button>Gửi kết quả kiểm tra</button>
+                </form>
+            </section>
+            <section class="card" th:if="${currentRole=='DIRECTOR' and r.state=='PENDING_APPROVAL'}">
+                <h2>Quyết định công bố</h2>
+                <form th:action="@{/director/records/{id}/decide(id=${r.id})}" method="post">
+                    <input type="hidden" name="version" th:value="${r.version}">
+                    <label>Quyết định<select name="approve"><option value="true">Duyệt và công bố hồ sơ điện tử</option><option value="false">Từ chối</option></select></label>
+                    <label>Căn cứ quyết định<textarea name="note" maxlength="2000" required></textarea></label>
+                    <label>Mật khẩu cấp 2<input
+                            type="password"
+                            name="secret"
+                            maxlength="128"
+                            autocomplete="off"
+                            required
+                        ></label>
+                    <button>Ghi quyết định</button>
+                </form>
+                <a th:href="@{/director/approval-secret}">Thiết lập mật khẩu cấp 2</a>
+            </section>
+            <h2>Lịch sử xử lý</h2>
+            <article class="card" th:each="e:${r.events}"><strong th:text="${@readingLabels.action(e.action)}"></strong> · <span th:text="${e.actor_name}"></span> · <span th:text="${e.occurred_at}"></span><p th:text="${e.details}"></p></article>
+            <p th:if="${currentRole=='ARCHIVIST' and r.state=='APPROVED'}">
+                <a class="button" th:href="@{/archivist/records/{id}/attach-paper(id=${r.id})}">Bổ sung bản giấy</a>
+            </p>
+            <p>
+                <a th:href="@{${electronicBase}}">← Tra cứu hồ sơ bệnh án</a>
+            </p>
+        </main>
+    </body>
+</html>

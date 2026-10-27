@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Chi tiết hồ sơ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chi tiết hồ sơ')}"></nav>
+            <h1>Thông tin hồ sơ bệnh án</h1>
+            <dl>
+                <dt>Mã hồ sơ</dt>
+                <dd th:text="${record.recordCode}"></dd>
+                <dt>Số lưu trữ</dt>
+                <dd th:text="${record.archiveNumber ?: 'Không có bản giấy / chưa cấp'}"></dd>
+                <dt>Hình thức</dt>
+                <dd th:text="${record.formatLabel()}"></dd>
+                <dt>Số bệnh án</dt>
+                <dd th:text="${record.medicalRecordNumber}"></dd>
+                <dt>Mã người bệnh</dt>
+                <dd th:text="${record.patientCode ?: 'Không có'}"></dd>
+                <dt>Họ tên</dt>
+                <dd th:text="${record.patientName}"></dd>
+                <dt>Ngày sinh / giới</dt>
+                <dd><span th:text="${record.birthLabel()}"></span> / <span th:text="${record.sex=='MALE' ? 'Nam' : (record.sex=='FEMALE' ? 'Nữ' : 'Chưa xác định')}"></span></dd>
+                <dt>Khoa điều trị cuối</dt>
+                <dd th:text="${record.departmentName}"></dd>
+                <dt>Loại bệnh án</dt>
+                <dd th:text="${record.recordTypeName}"></dd>
+                <dt>Ngày vào viện</dt>
+                <dd th:text="${record.admissionDate}"></dd>
+                <dt>Ngày ra viện</dt>
+                <dd th:text="${record.dischargeDate}"></dd>
+                <dt>Trạng thái</dt>
+                <dd th:text="${@readingLabels.recordState(record.state,record.physicalStatus)}"></dd>
+                <dt>Hồ sơ tử vong</dt>
+                <dd th:text="${record.deceased ? 'Có' : 'Không'}"></dd>
+            </dl>
+            <p th:if="${!readerHasPaper and record.deceased}" class="help">Đăng ký mượn hồ sơ tử vong phải có lý do. Tất cả hồ sơ trong cùng lượt đăng ký sẽ cần Giám đốc phê duyệt.</p>
+            <a
+                class="button"
+                th:if="${!readerHasPaper and currentRole=='READER' and record.borrowable}"
+                th:href="@{/reader/requests/new(recordId=${record.id})}"
+            >Mượn hồ sơ giấy</a>
+            <p th:if="${!readerHasPaper and record.hasPaperCopy}" class="help">Yêu cầu mượn bản giấy được kiểm tra, trình duyệt và xác nhận trước khi giao tại phòng đọc.</p>
+            <a th:href="@{${recordBase}}">← Tra cứu</a>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

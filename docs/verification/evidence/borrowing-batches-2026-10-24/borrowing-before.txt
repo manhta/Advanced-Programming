@@ -1,0 +1,34 @@
+DATABASE mrm | schema=public | PostgreSQL 18.6
+MIGRATION 1 | CreateAuthenticationTables | true
+MIGRATION 2 | InsertRoles | true
+MIGRATION 3 | CreateDepartments | true
+MIGRATION 4 | InsertMainDepartments | true
+MIGRATION 5 | CreateRecordCatalogs | true
+MIGRATION 6 | CompleteReferenceCatalogs | true
+MIGRATION 7 | CreateMedicalRecordStorage | true
+MIGRATION 8 | CreateAccessWorkflow | true
+MIGRATION 9 | CreateInternalNotifications | true
+MIGRATION 10 | RouteWorkflowNotifications | true
+MIGRATION 11 | SnapshotRequestingPerson | true
+MIGRATION 12 | UseRequesterUsernameSnapshot | true
+MIGRATION 13 | CreateEmployees | true
+TABLE roles | rows=4
+TABLE app_users | rows=5
+TABLE employees | rows=1
+TABLE departments | rows=5
+TABLE record_types | rows=6
+TABLE retention_policies | rows=4
+TABLE catalog_events | rows=16
+TABLE storage_locations | rows=8
+TABLE medical_records | rows=15
+TABLE medical_record_policies | rows=15
+TABLE record_events | rows=21
+TABLE record_location_history | rows=15
+TABLE audit_events | rows=96
+TABLE reading_request_batches | absent
+TABLE reading_requests | rows=2
+TABLE reading_sessions | rows=4
+TABLE request_events | rows=6
+TABLE inventory_batches | rows=0
+TABLE inventory_items | rows=0
+TABLE notifications | rows=4

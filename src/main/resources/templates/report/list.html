@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Báo cáo và nhật ký')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Báo cáo và nhật ký')}"></nav>
+            <h1>Báo cáo và nhật ký</h1>
+            <form method="get" class="card">
+                <div class="grid">
+                    <label>Loại báo cáo<select name="type"><option
+                                th:each="entry:${types}"
+                                th:if="${(currentRole!='ADMIN' or entry.key=='audit') and (currentRole=='ARCHIVIST' or entry.key!='locations') and (currentRole!='DIRECTOR' or entry.key!='inventory')}"
+                                th:value="${entry.key}"
+                                th:text="${entry.value}"
+                                th:selected="${entry.key==type}"
+                            ></option></select></label>
+                    <label>Tìm trong dữ liệu được phép<input name="q" th:value="${filter.q}" maxlength="200"></label>
+                    <label>Từ ngày<input type="date" name="from" th:value="${filter.from}"></label>
+                    <label>Đến ngày<input type="date" name="to" th:value="${filter.to}"></label>
+                    <label>Trạng thái (mã, tùy loại)<input
+                            name="state"
+                            th:value="${filter.state}"
+                            maxlength="32"
+                            placeholder="READING, CONFIRMED, IN_STORAGE..."
+                        ></label>
+                    <label>Người thao tác (nhật ký)<input name="actor" th:value="${filter.actor}" maxlength="64"></label>
+                    <label>Hành động (nhật ký)<input
+                            name="action"
+                            th:value="${filter.action}"
+                            maxlength="64"
+                            placeholder="LOGIN, MOVE, APPROVE..."
+                        ></label>
+                    <label>ID đối tượng (nhật ký)<input name="entity" th:value="${filter.entity}" maxlength="100"></label>
+                </div>
+                <div class="actions"><button>Xem báo cáo</button><button name="download" value="true">Xuất CSV (mở bằng Excel)</button><button name="print" value="true">In / lưu PDF bằng trình duyệt</button></div>
+            </form>
+            <p th:if="${currentRole!='DIRECTOR'}">Có <strong th:text="${#lists.size(rows)}"></strong> dòng. Ngày lọc: hồ sơ theo thời điểm cập nhật, yêu cầu theo ngày tạo, phiên theo ngày đọc, vị trí/nhật ký theo thời điểm thao tác, kiểm kê theo ngày tạo đợt.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th th:each="c:${columns}" th:text="${@reportLabels.column(c)}"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="row:${rows}">
+                            <td th:each="c:${columns}" th:text="${row.get(c)}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(rows)}">
+                            <td>Không có dữ liệu phù hợp.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script th:if="${print}">window.addEventListener('load',function(){window.print();});</script>
+        </main>
+    </body>
+</html>

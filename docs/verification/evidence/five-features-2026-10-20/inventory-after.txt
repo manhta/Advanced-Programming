@@ -1,0 +1,19 @@
+DATABASE mrm | schema=public | PostgreSQL 18.6
+MIGRATION 1 | CreateAuthenticationTables | true
+MIGRATION 2 | InsertRoles | true
+MIGRATION 3 | CreateDepartments | true
+MIGRATION 4 | InsertMainDepartments | true
+MIGRATION 5 | CreateRecordCatalogs | true
+MIGRATION 6 | CompleteReferenceCatalogs | true
+MIGRATION 7 | CreateMedicalRecordStorage | true
+TABLE roles | rows=4
+TABLE app_users | rows=4
+TABLE departments | rows=5
+TABLE record_types | rows=6
+TABLE retention_policies | rows=4
+TABLE catalog_events | rows=15
+TABLE storage_locations | rows=0
+TABLE medical_records | rows=0
+TABLE medical_record_policies | rows=0
+TABLE record_events | rows=0
+TABLE record_location_history | rows=0

@@ -1,6 +1,6 @@
 # Development baseline verification
 
-Ngày kiểm tra: 18/10/2026, múi giờ Asia/Bangkok.
+
 
 ## Build và khởi động
 
@@ -8,7 +8,7 @@ Ngày kiểm tra: 18/10/2026, múi giờ Asia/Bangkok.
 - Package/class: `mrm.MedicalRecordApplication`.
 - Lệnh build: `.\mvnw.cmd -o -B -ntp clean package`.
 - Kết quả: BUILD SUCCESS; biên dịch lại 1 file Java và tạo `target/medical-record-management-0.0.1-SNAPSHOT.jar`.
-- Build kết thúc lúc 11:23:37 +07:00. Chưa có bài kiểm thử tự động; kết quả build không đồng nghĩa nghiệp vụ đã được kiểm thử.
+- Build hoàn tất. Chưa có bài kiểm thử tự động; kết quả build không đồng nghĩa nghiệp vụ đã được kiểm thử.
 - Lệnh chạy: `java -jar target/medical-record-management-0.0.1-SNAPSHOT.jar --server.port=18080`.
 - Kiểm tra: `Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:18080'`.
 - Kết quả: HTTP 200, nội dung trang có HSBA. Đã dừng tiến trình sau khi kiểm tra.
@@ -18,8 +18,11 @@ Ngày kiểm tra: 18/10/2026, múi giờ Asia/Bangkok.
 
 - Đã thử kết nối chỉ đọc: `psql -X -w -h localhost -p 5432 -U postgres -d postgres -c 'SELECT version();'`.
 - Server phản hồi yêu cầu xác thực: `fe_sendauth: no password supplied`.
-- Chưa xác nhận phiên bản server. Không thay đổi mật khẩu hoặc cấu hình xác thực.
-- Người dùng cần chạy `SELECT version();` trong phiên đã đăng nhập và cung cấp kết quả; không gửi mật khẩu vào tài liệu/Git.
+- Ngày, người dùng cung cấp kết quả từ phiên `psql -U postgres` đã đăng nhập và chạy `SELECT version();`.
+- Kết quả server: `PostgreSQL 16.5, compiled by Visual C++ build, 64-bit`.
+- Client: `psql 18.6`; thông báo kết nối xác nhận `server 16.5`.
+- Đã xác nhận phiên bản server dựa trên kết quả người dùng cung cấp, không phải suy ra từ client. Không thay đổi mật khẩu, cấu hình xác thực hoặc nâng cấp server.
+- Giai đoạn 0 đã hoàn thành. Kết nối PostgreSQL từ ứng dụng vẫn là công việc của giai đoạn sau.
 
 ## Git và mốc nền tảng
 

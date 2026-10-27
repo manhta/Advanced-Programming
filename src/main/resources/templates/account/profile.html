@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Thông tin cá nhân')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Thông tin cá nhân')}"></nav>
+            <h1>Thông tin cá nhân</h1>
+            <p class="muted">Bạn có thể tự sửa thông tin cá nhân. Đổi vai trò hoặc khoa cần Giám đốc phê duyệt và Admin áp dụng.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="success" role="status"></p>
+            <section class="card personal-profile">
+                <h2 th:text="${profile.full_name}"></h2>
+                <dl>
+                    <dt>Tên đăng nhập</dt>
+                    <dd th:text="${profile.username}"></dd>
+                    <dt>Họ tên</dt>
+                    <dd th:text="${profile.full_name}"></dd>
+                    <dt>Căn cước công dân</dt>
+                    <dd th:text="${profile.citizen_id ?: 'Chưa cập nhật'}"></dd>
+                    <dt>Ngày sinh</dt>
+                    <dd th:text="${profile.birth_date==null ? 'Chưa cập nhật' : #dates.format(profile.birth_date,'dd/MM/yyyy')}"></dd>
+                    <dt>Giới tính</dt>
+                    <dd th:text="${profile.gender==null ? 'Chưa cập nhật' : (profile.gender=='MALE' ? 'Nam' : (profile.gender=='FEMALE' ? 'Nữ' : 'Khác'))}"></dd>
+                    <dt>Vai trò</dt>
+                    <dd th:text="${profile.role=='READER' ? 'Bác sĩ' : (profile.role=='ARCHIVIST' ? 'Nhân viên lưu trữ' : 'Giám đốc')}"></dd>
+                    <dt>Khoa/phòng</dt>
+                    <dd th:text="${profile.department_name ?: 'Chưa gán'}"></dd>
+                    <dt>Email</dt>
+                    <dd th:text="${profile.email ?: 'Chưa cập nhật'}"></dd>
+                </dl>
+            </section>
+            <a class="button" th:href="@{/account/profile/edit}">Chỉnh sửa thông tin cá nhân</a>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

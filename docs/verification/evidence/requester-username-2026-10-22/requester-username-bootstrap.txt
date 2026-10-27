@@ -1,0 +1,79 @@
+PASS: five fixed departments
+PASS: four simulation policies exist; preserve user approval state
+PASS: expected DataIntegrityViolationException
+PASS: expected DataIntegrityViolationException
+PASS: expected DataIntegrityViolationException
+PASS: expected CatalogException
+PASS: longest applicable retention group selected
+PASS: leap day adjusts to February 28
+PASS: agreed February 28 rule also applies when target year is leap
+PASS: eligible approved policy lookup
+PASS: policies not yet effective excluded
+PASS: snapshot unchanged after catalog deactivation/rename
+PASS: expected UnsupportedOperationException
+PASS: inactive type excluded from new choices
+PASS: expected CatalogException
+PASS: expected CatalogException
+PASS: expected CatalogException
+PASS: two concurrent edits: one success, one stale conflict
+PASS: version incremented exactly once
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-22T08:22:27.006+07:00  INFO 3196 --- [medical-record-management] [           main] mrm.catalog.CompleteCatalogCheck         : Starting CompleteCatalogCheck using Java 26.0.2.1 with PID 3196 (C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code\target\test-classes started by admin in C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code)
+2026-10-22T08:22:27.018+07:00  INFO 3196 --- [medical-record-management] [           main] mrm.catalog.CompleteCatalogCheck         : The following 2 profiles are active: "dev", "seed-users"
+2026-10-22T08:22:30.192+07:00  INFO 3196 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-22T08:22:30.237+07:00  INFO 3196 --- [medical-record-management] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-22T08:22:30.238+07:00  INFO 3196 --- [medical-record-management] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-22T08:22:30.413+07:00  INFO 3196 --- [medical-record-management] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 3290 ms
+2026-10-22T08:22:31.357+07:00  INFO 3196 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-22T08:22:31.470+07:00  INFO 3196 --- [medical-record-management] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@1d6a8386
+2026-10-22T08:22:31.475+07:00  INFO 3196 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-22T08:22:31.523+07:00  INFO 3196 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804 (PostgreSQL 18.6)
+2026-10-22T08:22:31.724+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804"."flyway_schema_history" does not exist yet
+2026-10-22T08:22:31.833+07:00  INFO 3196 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804 (PostgreSQL 18.6)
+2026-10-22T08:22:31.871+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804"."flyway_schema_history" does not exist yet
+2026-10-22T08:22:31.875+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 12 migrations (execution time 00:00.010s)
+2026-10-22T08:22:31.898+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804"."flyway_schema_history" ...
+2026-10-22T08:22:31.983+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804": << Empty Schema >>
+2026-10-22T08:22:31.991+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "1 - CreateAuthenticationTables"
+2026-10-22T08:22:32.059+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "2 - InsertRoles"
+2026-10-22T08:22:32.077+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "3 - CreateDepartments"
+2026-10-22T08:22:32.117+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804", now at version v3 (execution time 00:00.061s)
+2026-10-22T08:22:32.380+07:00  INFO 3196 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804 (PostgreSQL 18.6)
+2026-10-22T08:22:32.417+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 12 migrations (execution time 00:00.013s)
+2026-10-22T08:22:32.426+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804": 3
+2026-10-22T08:22:32.427+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "4 - InsertMainDepartments"
+2026-10-22T08:22:32.455+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "5 - CreateRecordCatalogs"
+2026-10-22T08:22:32.522+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "6 - CompleteReferenceCatalogs"
+2026-10-22T08:22:32.553+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "7 - CreateMedicalRecordStorage"
+2026-10-22T08:22:32.673+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "8 - CreateAccessWorkflow"
+2026-10-22T08:22:32.780+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "9 - CreateInternalNotifications"
+2026-10-22T08:22:32.808+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "10 - RouteWorkflowNotifications"
+2026-10-22T08:22:32.831+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "11 - SnapshotRequestingPerson"
+2026-10-22T08:22:32.847+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804" to version "12 - UseRequesterUsernameSnapshot"
+2026-10-22T08:22:32.859+07:00  INFO 3196 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 9 migrations to schema "p2_bootstrap_51e072d52dee4cb2bdc81085f1f5f804", now at version v12 (execution time 00:00.342s)
+2026-10-22T08:22:33.644+07:00  INFO 3196 --- [medical-record-management] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name databaseUserDetailsService
+2026-10-22T08:22:34.091+07:00  INFO 3196 --- [medical-record-management] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-10-22T08:22:34.815+07:00  INFO 3196 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 53860 (http) with context path '/'
+2026-10-22T08:22:34.831+07:00  INFO 3196 --- [medical-record-management] [           main] mrm.catalog.CompleteCatalogCheck         : Started CompleteCatalogCheck in 8.779 seconds (process running for 12.423)
+Demo accounts initialized; existing accounts were preserved.
+PASS: fresh boot confined to disposable schema
+PASS: fresh V1-V12 migrations succeed
+PASS: four demo accounts bootstrapped with supplied passwords
+PASS: fresh schema has five departments
+PASS: fresh schema has six record types
+PASS: fresh schema has four simulation drafts
+2026-10-22T08:22:35.536+07:00  INFO 3196 --- [medical-record-management] [           main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-22T08:22:35.556+07:00  INFO 3196 --- [medical-record-management] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-10-22T08:22:35.565+07:00  INFO 3196 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-22T08:22:35.569+07:00  INFO 3196 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+PASS: disposable schema removed
+PASSED 26 extended P2 checks.

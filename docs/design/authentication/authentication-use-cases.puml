@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+skinparam shadowing false
+actor "Người dùng nội bộ" as User
+actor "DIRECTOR" as Director
+actor "ADMIN" as Admin
+Director --|> User
+Admin --|> User
+rectangle "Hệ thống MRM — Nhóm xác thực và tài khoản" {
+  usecase "Đăng nhập\nUC-01.A" as Login
+  usecase "Đăng xuất\nUC-01.B" as Logout
+  usecase "Tự đổi mật khẩu\nUC-01.C" as ChangePassword
+  usecase "Kiểm soát thử sai\nD-22" as Attempts
+  usecase "Ghi nhận sự kiện\nxác thực" as Audit
+  usecase "Đổi secret cấp 2\nThiết kế UC-10" as ChangeSecret
+  usecase "Đặt lại mật khẩu\nUC-02" as ResetPassword
+}
+User -- Login
+User -- Logout
+User -- ChangePassword
+Director -- ChangeSecret
+Admin -- ResetPassword
+Login ..> Attempts : <<include>>
+Login ..> Audit : <<include>>
+Logout ..> Audit : <<include>>
+ChangePassword ..> Audit : <<include>>
+ChangeSecret ..> Audit : <<include>>
+ResetPassword ..> Audit : <<include>>
+note bottom of Logout
+  Vô hiệu session hiện tại là bước logout.
+  Không cần oval kỹ thuật riêng.
+end note
+note bottom of ChangePassword
+  Đổi password đề xuất thu hồi các session.
+  Secret cấp 2 chỉ áp dụng DIRECTOR;
+  thay secret phải vô hiệu proof cũ.
+end note
+@enduml

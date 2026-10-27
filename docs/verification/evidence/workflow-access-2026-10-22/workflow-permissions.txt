@@ -1,0 +1,254 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.1.1)
+
+2026-10-22T08:03:24.062+07:00  INFO 19300 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : Starting FunctionalRequirementsCheck using Java 26.0.2.1 with PID 19300 (C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code\target\test-classes started by admin in C:\Users\admin\Desktop\Project\HUST\Master\SUB\Advanced Programming\Code)
+2026-10-22T08:03:24.068+07:00  INFO 19300 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : The following 2 profiles are active: "dev", "seed-users"
+2026-10-22T08:03:26.796+07:00  INFO 19300 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-10-22T08:03:26.828+07:00  INFO 19300 --- [medical-record-management] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-10-22T08:03:26.831+07:00  INFO 19300 --- [medical-record-management] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-10-22T08:03:26.970+07:00  INFO 19300 --- [medical-record-management] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2825 ms
+2026-10-22T08:03:27.767+07:00  INFO 19300 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-10-22T08:03:27.889+07:00  INFO 19300 --- [medical-record-management] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4a9a878
+2026-10-22T08:03:27.889+07:00  INFO 19300 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-10-22T08:03:27.944+07:00  INFO 19300 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_662bb268726a4a4cb22d062833378d73 (PostgreSQL 18.6)
+2026-10-22T08:03:28.086+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "fr_check_662bb268726a4a4cb22d062833378d73"."flyway_schema_history" does not exist yet
+2026-10-22T08:03:28.218+07:00  INFO 19300 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_662bb268726a4a4cb22d062833378d73 (PostgreSQL 18.6)
+2026-10-22T08:03:28.262+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Schema history table "fr_check_662bb268726a4a4cb22d062833378d73"."flyway_schema_history" does not exist yet
+2026-10-22T08:03:28.266+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 10 migrations (execution time 00:00.012s)
+2026-10-22T08:03:28.288+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.c.i.s.JdbcTableSchemaHistory         : Creating Schema History table "fr_check_662bb268726a4a4cb22d062833378d73"."flyway_schema_history" ...
+2026-10-22T08:03:28.593+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "fr_check_662bb268726a4a4cb22d062833378d73": << Empty Schema >>
+2026-10-22T08:03:28.603+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "1 - CreateAuthenticationTables"
+2026-10-22T08:03:28.681+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "2 - InsertRoles"
+2026-10-22T08:03:28.696+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "3 - CreateDepartments"
+2026-10-22T08:03:28.721+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 3 migrations to schema "fr_check_662bb268726a4a4cb22d062833378d73", now at version v3 (execution time 00:00.066s)
+2026-10-22T08:03:28.989+07:00  INFO 19300 --- [medical-record-management] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://127.0.0.1:5433/mrm?currentSchema=fr_check_662bb268726a4a4cb22d062833378d73 (PostgreSQL 18.6)
+2026-10-22T08:03:29.012+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 10 migrations (execution time 00:00.008s)
+2026-10-22T08:03:29.019+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "fr_check_662bb268726a4a4cb22d062833378d73": 3
+2026-10-22T08:03:29.021+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "4 - InsertMainDepartments"
+2026-10-22T08:03:29.043+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "5 - CreateRecordCatalogs"
+2026-10-22T08:03:29.083+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "6 - CompleteReferenceCatalogs"
+2026-10-22T08:03:29.105+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "7 - CreateMedicalRecordStorage"
+2026-10-22T08:03:29.239+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "8 - CreateAccessWorkflow"
+2026-10-22T08:03:29.341+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "9 - CreateInternalNotifications"
+2026-10-22T08:03:29.362+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Migrating schema "fr_check_662bb268726a4a4cb22d062833378d73" to version "10 - RouteWorkflowNotifications"
+2026-10-22T08:03:29.381+07:00  INFO 19300 --- [medical-record-management] [           main] o.f.core.internal.command.DbMigrate      : Successfully applied 7 migrations to schema "fr_check_662bb268726a4a4cb22d062833378d73", now at version v10 (execution time 00:00.303s)
+2026-10-22T08:03:29.936+07:00  INFO 19300 --- [medical-record-management] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name databaseUserDetailsService
+2026-10-22T08:03:30.379+07:00  INFO 19300 --- [medical-record-management] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-10-22T08:03:31.093+07:00  INFO 19300 --- [medical-record-management] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 53593 (http) with context path '/'
+2026-10-22T08:03:31.108+07:00  INFO 19300 --- [medical-record-management] [           main] m.features.FunctionalRequirementsCheck   : Started FunctionalRequirementsCheck in 7.787 seconds (process running for 8.871)
+Demo accounts initialized; existing accounts were preserved.
+PASS: all mutations confined to disposable schema
+PASS: fresh V1-V10 boot succeeds
+PASS: 100-record search returns complete count
+PASS: admin creates single-role account
+PASS: expected AccessDeniedException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: account lock persisted
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: request token replay creates one request
+PASS: expected BusinessException
+PASS: expected ResponseStatusException
+PASS: archivist returns for additional information
+PASS: amend creates new revision and resets review
+PASS: expected BusinessException
+PASS: wrong second password leaves decision unchanged
+PASS: failed step-up audit survives rollback
+PASS: director approves with separate password
+PASS: expected BusinessException
+PASS: each approved day confirmed separately
+PASS: expected BusinessException
+PASS: handover atomically sets physical READING
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: return updates status and actual return compartment
+PASS: return to different compartment writes movement history
+PASS: expected BusinessException
+PASS: cancel preserves completed daily session
+PASS: cancel releases only unperformed days
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: rejection records state and reason
+PASS: editing confirmed request invalidates old approval
+PASS: concurrent confirmation reserves one record/day once
+PASS: expected BusinessException
+PASS: overdue exception never pretends record was returned
+PASS: damaged return blocks further access
+PASS: no-show retained without false handover
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: five failed step-up attempts block even correct secret during lock window
+PASS: Reader submission notifies active Archivist
+PASS: expected ResponseStatusException
+PASS: Archivist can read own work notification
+PASS: no result notification before a result exists
+PASS: needs-info creates correctly titled internal notice
+PASS: notification routed to request owner
+PASS: other reader cannot list owner's notice
+PASS: expected ResponseStatusException
+PASS: unauthorized read cannot mutate read state
+PASS: mark-read decreases own unread badge
+PASS: mark-read is idempotent and preserves timestamp
+PASS: resubmitted revision notifies Archivist again
+PASS: expected BusinessException
+PASS: failed transaction rolls back decision, event and notification together
+PASS: Archivist submission notifies both active Directors
+PASS: staff mark-all-read preserves other role notifications
+PASS: approval and schedule confirmation each create notice
+PASS: expected BusinessException
+PASS: repeated confirmation does not create duplicate notice
+PASS: unread filter only returns unread rows
+PASS: admin inbox has no reader clinical notifications
+PASS: archivist cancellation notifies requester
+PASS: rejection produces internal result notification
+PASS: role change to admin hides previous clinical notices
+PASS: read-all affects only current recipient
+PASS: read-all remains idempotent
+PASS: expected BusinessException
+PASS: notification inbox paginates at twenty
+PASS: stable notification pagination has no duplicates
+PASS: unique recipient/event suppresses duplicate notification creation
+PASS: read-all tolerates notification committed after marking transaction started
+PASS: inventory captures scope and expected locations
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: complete inventory closes
+PASS: expected BusinessException
+PASS: stocktake does not silently change medical record location
+PASS: report query executes: records
+PASS: report query executes: status
+PASS: report query executes: requests
+PASS: report query executes: sessions
+PASS: report query executes: locations
+PASS: report query executes: audit
+PASS: report query executes: inventory
+PASS: report query executes: request-statistics
+PASS: director report excludes storage path: records
+PASS: director report excludes storage path: status
+PASS: director report excludes storage path: requests
+PASS: director report excludes storage path: sessions
+PASS: director report excludes storage path: audit
+PASS: director report excludes storage path: inventory
+PASS: director report excludes storage path: request-statistics
+PASS: expected AccessDeniedException
+PASS: expected AccessDeniedException
+PASS: admin audit limited to technical accounts/authentication
+PASS: report search is parameterized
+PASS: audit filters actor and action
+PASS: CSV neutralizes spreadsheet formulas
+PASS: CSV formula protection covers multiline cells
+2026-10-22T08:03:39.623+07:00  INFO 19300 --- [medical-record-management] [o-auto-1-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-10-22T08:03:39.623+07:00  INFO 19300 --- [medical-record-management] [o-auto-1-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-10-22T08:03:39.626+07:00  INFO 19300 --- [medical-record-management] [o-auto-1-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+PASS: initial login succeeds before testing stale form
+PASS: stale login CSRF redirects to fresh form instead of 403
+PASS: expired login renders helpful message and fresh CSRF
+PASS: fresh login form switches to archivist successfully
+PASS: archivist home accessible after refreshing stale login
+PASS: login CSRF recovery does not grant another role access
+PASS: login without CSRF cannot authenticate and recovers to fresh form
+PASS: HTTP login reader1
+PASS: HTTP login archivist1
+PASS: HTTP login director1
+PASS: HTTP login admin1
+PASS: unapproved record URL redirects to permission form
+PASS: expected AccessDeniedException
+PASS: permission form shows minimal preview without detailed metadata
+PASS: SUBMITTED does not grant record detail
+PASS: Archivist bell opens work in Archivist namespace
+PASS: pending Director approval still requires permission
+PASS: Director bell opens pending approval in Director namespace
+PASS: approval exposes authorized patient metadata without internal notes
+PASS: HTTP login fr_reader2
+PASS: another Reader cannot use owner's record approval
+PASS: request list separates record and workflow links
+PASS: amending invalidates approved detail access
+PASS: approval expires after last reading day
+PASS: approval grants access before future reading day starts
+PASS: cancellation revokes detail permission
+PASS: admin home accessible with fresh login form
+PASS: anonymous cannot access internal notifications
+PASS: notification inbox and bell render with nonempty rows
+PASS: notification body escapes script content
+PASS: notification mark-read requires CSRF
+PASS: HTTP login fr_reader2
+PASS: another reader cannot open notification by guessing UUID
+PASS: another reader cannot mark notification read
+PASS: forbidden HTTP operations preserve unread state
+PASS: opening own notice marks read and redirects to server-owned request
+PASS: open request persists read timestamp
+PASS: unread inbox filter renders
+PASS: second notification page renders
+PASS: admin notification page does not expose reader messages
+PASS: HTTP mark-all-read updates own badge count
+PASS: bell accessible label updates after mark-all-read
+PASS: legacy catalog page includes notification bell: /archivist/departments
+PASS: legacy catalog page includes notification bell: /archivist/record-types
+PASS: legacy catalog page includes notification bell: /archivist/retention-policies
+PASS: request list renders director
+PASS: request list renders archivist
+PASS: request list renders reader
+PASS: account management template renders
+PASS: second-secret template renders
+PASS: HTTP account create binds and persists
+PASS: HTTP account edit locks or disables without revealing hash
+PASS: HTTP second-password setup accepts correct current password
+PASS: reader cannot manage accounts
+PASS: admin cannot access clinical requests
+PASS: request form renders
+PASS: HTTP submit reading request
+PASS: reader detail with revision and session renders
+PASS: HTTP review submits to director
+PASS: HTTP step-up approval succeeds
+PASS: HTTP confirms reading schedule
+PASS: HTTP handover executes
+PASS: reader request response has no location UUID
+PASS: HTTP return executes
+PASS: HTTP report template records
+PASS: HTTP report template status
+PASS: HTTP report template requests
+PASS: HTTP report template sessions
+PASS: HTTP report template locations
+PASS: HTTP report template audit
+PASS: HTTP report template inventory
+PASS: HTTP report template request-statistics
+PASS: HTTP authorized CSV exports selected dataset
+PASS: reader cannot export clinical reports
+PASS: admin cannot export clinical metadata
+PASS: admin technical audit renders
+PASS: inventory list renders
+PASS: HTTP inventory creates batch
+PASS: HTTP inventory check binds result
+PASS: closed inventory detail renders
+PASS: director sees inventory summary
+PASS: director cannot access exact inventory locations
+PASS: HTTP login fr_reader2
+PASS: existing session revoked after administrative account lock
+PASS: login audit persisted
+PASS: report export audited
+PASS: workflow POST requires CSRF
+PASS: logout persists audit and ends session
+PASS: approval secret never appears in audit details
+PASS: 100+ synthetic records retained for acceptance checks
+PREVIEW_URL http://localhost:53593
+2026-10-22T08:03:45.529+07:00  INFO 19300 --- [medical-record-management] [           main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-10-22T08:03:45.545+07:00  INFO 19300 --- [medical-record-management] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-10-22T08:03:45.555+07:00  INFO 19300 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-10-22T08:03:45.561+07:00  INFO 19300 --- [medical-record-management] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+PASS: temporary schema removed
+PASSED 199 functional requirement checks; email intentionally deferred.

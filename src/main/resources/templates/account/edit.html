@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Chỉnh sửa tài khoản')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chỉnh sửa tài khoản')}"></nav>
+            <h1>Chỉnh sửa tài khoản</h1>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <p>Mỗi tài khoản một vai trò. Để trống mật khẩu mới để giữ mật khẩu hiện tại.</p>
+            <article class="card" th:with="a=${account}">
+                <h3 th:text="${a.username}"></h3>
+                <form th:action="@{/admin/accounts/{id}(id=${a.id})}" method="post" autocomplete="off">
+                    <input type="hidden" name="version" th:value="${a.version}">
+                    <div class="grid">
+                        <label>Họ tên<input
+                                name="displayName"
+                                th:value="${a.display_name}"
+                                maxlength="200"
+                                required
+                            ></label>
+                        <label>Vai trò<select name="role"><option
+                                    th:each="r:${ {'READER','ARCHIVIST','DIRECTOR','ADMIN'} }"
+                                    th:value="${r}"
+                                    th:text="${r=='READER' ? 'Bác sĩ' : (r=='ARCHIVIST' ? 'Nhân viên lưu trữ' : (r=='DIRECTOR' ? 'Giám đốc' : 'Quản trị viên'))}"
+                                    th:selected="${r==a.role}"
+                                ></option></select></label>
+                        <label>Trạng thái<select name="status"><option
+                                    th:each="s:${ {'ACTIVE','LOCKED','DISABLED'} }"
+                                    th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${s==a.status}"
+                                ></option></select></label>
+                        <label>Khoa<select name="department"><option value="">Chưa gán</option><option
+                                    th:each="d:${departments}"
+                                    th:value="${d.id}"
+                                    th:text="${d.name}"
+                                    th:selected="${d.id==a.department_id}"
+                                ></option></select></label>
+                        <label>Email<input
+                                name="email"
+                                type="email"
+                                th:value="${a.email}"
+                                maxlength="254"
+                            ></label>
+                        <label>Mật khẩu mới (không bắt buộc)<input
+                                name="password"
+                                type="password"
+                                minlength="12"
+                                maxlength="128"
+                                autocomplete="new-password"
+                            ></label>
+                    </div>
+                    <p th:if="${a.citizen_id==null}" class="help">Chưa có hồ sơ nhân viên. Điền đủ căn cước, ngày sinh và giới tính để bổ sung; để trống cả ba nếu chỉ sửa tài khoản.</p>
+                    <div class="grid">
+                        <label>Số căn cước (10 chữ số)<input
+                                name="citizenId"
+                                th:value="${a.citizen_id}"
+                                type="text"
+                                inputmode="numeric"
+                                pattern="[0-9]{10}"
+                                minlength="10"
+                                maxlength="10"
+                            ></label>
+                        <label>Ngày sinh<input name="birthDate" th:value="${a.birth_date}" type="date"></label>
+                        <label>Giới tính<select name="gender"><option value="">Chưa cung cấp</option><option value="MALE" th:selected="${a.gender=='MALE'}">Nam</option><option value="FEMALE" th:selected="${a.gender=='FEMALE'}">Nữ</option><option value="OTHER" th:selected="${a.gender=='OTHER'}">Khác</option></select></label>
+                    </div>
+                    <button>Lưu tài khoản</button>
+                </form>
+            </article>
+            <p>
+                <a th:href="@{/admin/accounts}">← Quản lý tài khoản</a>
+            </p>
+        </main>
+    </body>
+</html>

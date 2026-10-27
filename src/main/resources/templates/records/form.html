@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Nhập và sửa hồ sơ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Nhập và sửa hồ sơ')}"></nav>
+            <h1
+                th:text="${attachingPaper==true ? 'Bổ sung bản giấy vào bệnh án hiện có' : (editId == null ? 'Nhập hồ sơ bệnh án' : 'Sửa và đối soát hồ sơ')}"
+            ></h1>
+            <p th:if="${attachingPaper==true}" class="help">Bổ sung thông tin nhập kho cho cùng bệnh án đã công bố; không tạo mã hoặc bản ghi bệnh án thứ hai.</p>
+            <p class="help">Lưu nháp nếu dữ liệu lịch sử còn thiếu. Nhập kho chỉ sau khi đã kiểm tra hồ sơ giấy, chính sách và vị trí.
+    Ngày đầu lưu là ngày thực tế, không phải ngày nhập bản ghi vào phần mềm.</p>
+            <p th:if="${editId==null}" class="help">Trước khi nhập mới, hãy tra cứu mã bệnh án và đợt điều trị. Nếu đã có hồ sơ chỉ điện tử, mở hồ sơ đó và chọn Bổ sung bản giấy để tránh nhập trùng.</p>
+            <form
+                th:action="${editId == null} ? @{/archivist/records} : @{/archivist/records/{id}/edit(id=${editId})}"
+                th:object="${recordForm}"
+                method="post"
+            >
+                <input type="hidden" th:field="*{operationKey}">
+                <input type="hidden" th:field="*{version}">
+                <div th:if="${#fields.hasAnyErrors()}" role="alert">
+                    <strong>Chưa thể lưu:</strong>
+                    <ul class="error-list">
+                        <li th:each="error : ${#fields.allErrors()}" th:text="${error}"></li>
+                    </ul>
+                </div>
+                <fieldset>
+                    <legend>Nhận diện hồ sơ và người bệnh</legend>
+                    <div class="grid">
+                        <div>
+                            <label for="archiveNumber">Số lưu trữ</label>
+                            <input
+                                id="archiveNumber"
+                                th:field="*{archiveNumber}"
+                                maxlength="64"
+                                th:readonly="${stored}"
+                            >
+                        </div>
+                        <div>
+                            <label for="medicalRecordNumber">Số bệnh án</label>
+                            <input id="medicalRecordNumber" th:field="*{medicalRecordNumber}" maxlength="64">
+                        </div>
+                        <div>
+                            <label for="patientCode">Mã người bệnh</label>
+                            <input id="patientCode" th:field="*{patientCode}" maxlength="64">
+                        </div>
+                        <div>
+                            <label for="patientName">Họ tên *</label>
+                            <input
+                                id="patientName"
+                                th:field="*{patientName}"
+                                maxlength="200"
+                                required
+                            >
+                        </div>
+                        <div>
+                            <label for="birthYear">Năm sinh</label>
+                            <input
+                                id="birthYear"
+                                type="number"
+                                th:field="*{birthYear}"
+                                min="1800"
+                                max="9999"
+                            >
+                        </div>
+                        <div>
+                            <label for="sex">Giới tính</label>
+                            <select id="sex" th:field="*{sex}">
+                                <option value="UNKNOWN">Chưa xác định</option>
+                                <option value="MALE">Nam</option>
+                                <option value="FEMALE">Nữ</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Đợt điều trị</legend>
+                    <div class="grid">
+                        <div>
+                            <label for="departmentId">Khoa điều trị cuối</label>
+                            <select id="departmentId" th:field="*{departmentId}">
+                                <option value="">Chưa xác định</option>
+                                <option th:each="item : ${departments}" th:value="${item.id}" th:text="${item.name}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="recordTypeId">Loại bệnh án</label>
+                            <select id="recordTypeId" th:field="*{recordTypeId}">
+                                <option value="">Chưa xác định</option>
+                                <option
+                                    th:each="item : ${recordTypes}"
+                                    th:value="${item.id}"
+                                    th:text="${item.name + (item.active ? '' : ' — ngừng dùng')}"
+                                ></option>
+                            </select>
+                            <small>Loại đã ngừng chỉ giữ cho lịch sử; không dùng nhập mới.</small>
+                        </div>
+                        <div>
+                            <label for="admissionDate">Ngày vào viện</label>
+                            <input id="admissionDate" type="date" th:field="*{admissionDate}">
+                        </div>
+                        <div>
+                            <label for="dischargeDate">Ngày ra viện</label>
+                            <input id="dischargeDate" type="date" th:field="*{dischargeDate}">
+                        </div>
+                    </div>
+                    <label><input type="checkbox" th:field="*{deceased}"> Hồ sơ người bệnh tử vong (cần chọn nhóm DECEASED khi nhập kho)</label>
+                </fieldset>
+                <fieldset>
+                    <legend>Lưu trữ và chính sách</legend>
+                    <div class="grid">
+                        <div>
+                            <label for="firstStoredOn">Ngày đầu lưu kho</label>
+                            <input
+                                id="firstStoredOn"
+                                type="date"
+                                th:field="*{firstStoredOn}"
+                                th:readonly="${stored}"
+                            >
+                        </div>
+                        <div>
+                            <label for="locationId">Ngăn lưu trữ</label>
+                            <select th:if="${!stored}" id="locationId" th:field="*{locationId}">
+                                <option value="">Chưa chọn</option>
+                                <option
+                                    th:each="item : ${locations}"
+                                    th:if="${item.type == 'COMPARTMENT'}"
+                                    th:value="${item.id}"
+                                    th:text="${item.path + (item.active ? '' : ' — ngừng dùng')}"
+                                ></option>
+                            </select>
+                            <div th:if="${stored}">
+                                <input type="hidden" th:field="*{locationId}">
+                                <p>Giữ vị trí hiện tại; sử dụng mục Chuyển vị trí tại trang chi tiết.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="qualityStatus">Chất lượng hồ sơ giấy</label>
+                            <select id="qualityStatus" th:field="*{qualityStatus}">
+                                <option value="NORMAL">Bình thường</option>
+                                <option value="DAMAGED">Hư hỏng</option>
+                                <option value="INCOMPLETE">Thiếu/chưa hoàn thiện</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p>Chọn tất cả nhóm bảo quản áp dụng; hệ thống lấy số năm dài nhất. Ngày đầu lưu phải nằm trong hiệu lực chính sách.
+    Bản dự thảo không dùng để nhập kho. Hồ sơ đã lưu giữ nguyên snapshot khi danh mục ngừng dùng, trừ khi bạn chủ động chọn lại nhóm/loại/khoa.</p>
+                    <label
+                        class="policy-option"
+                        th:each="item : ${policies}"
+                        th:if="${(item.status == 'APPROVED' and item.active) or #lists.contains(recordForm.policyIds, item.id)}"
+                    ><input type="checkbox" th:field="*{policyIds}" th:value="${item.id}">
+                        <strong th:text="${item.code + ' v' + item.versionNo + ' — ' + item.years + ' năm'}"></strong> · <span th:text="${item.name}"></span>
+                        <small
+                            th:text="${' | ' + item.status + (item.active ? ' / hoạt động' : ' / chưa dùng hoặc ngừng') + ' | từ ' + item.effectiveFrom + ' đến ' + (item.effectiveTo ?: 'không giới hạn')}"
+                        ></small></label>
+                    <p th:if="${#lists.isEmpty(policies)}">Chưa có chính sách. Tạo dự thảo và đề nghị Director xác nhận trước khi nhập kho.</p>
+                </fieldset>
+                <label for="sourceNote">Nguồn dữ liệu / căn cứ đối soát</label>
+                <textarea id="sourceNote" th:field="*{sourceNote}" rows="2" maxlength="1000"></textarea>
+                <label for="note">Ghi chú nội bộ (chỉ Archivist)</label>
+                <textarea id="note" th:field="*{note}" rows="3" maxlength="2000"></textarea>
+                <div th:if="${editId != null}">
+                    <label for="reason">Lý do sửa / xác nhận đối soát *</label>
+                    <textarea id="reason" th:field="*{reason}" rows="2" maxlength="1000" required></textarea>
+                </div>
+                <div class="actions"><button type="submit" name="mode" value="STORE">Xác nhận nhập kho / lưu hồ sơ chính thức</button><button
+                        th:if="${!stored}"
+                        class="secondary"
+                        type="submit"
+                        name="mode"
+                        value="DRAFT"
+                    >Lưu nháp để đối soát</button><a th:href="@{/archivist/records}">Quay lại danh sách</a></div>
+            </form>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

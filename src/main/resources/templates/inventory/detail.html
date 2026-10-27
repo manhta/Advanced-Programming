@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Đối soát kiểm kê')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Đối soát kiểm kê')}"></nav>
+            <h1 th:text="${batch.name}"></h1>
+            <p th:text="${batch.state}"></p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <article class="card" th:each="i:${batch.items}">
+                <h2><span th:text="${i.archive_number}"></span> · <span th:text="${i.patient_name}"></span></h2>
+                <p>Vị trí theo danh sách gốc: <span th:text="${i.expected_path}"></span></p>
+                <p>Kết quả: <strong th:text="${i.observed ?: 'Chưa kiểm'}"></strong> · <span th:text="${i.note}"></span> · <span th:text="${i.checked_at}"></span></p>
+                <form
+                    th:if="${batch.state=='OPEN'}"
+                    th:action="@{/archivist/inventories/{id}/check(id=${batch.id})}"
+                    method="post"
+                >
+                    <input type="hidden" name="record" th:value="${i.record_id}">
+                    <label>Kết quả<select name="observed"><option value="FOUND">Đủ, đúng vị trí</option><option value="MISSING">Chưa tìm thấy</option><option value="WRONG_LOCATION">Sai vị trí</option><option value="DAMAGED">Hư hỏng</option></select></label>
+                    <label>Ngăn quan sát thực tế (bắt buộc khi sai vị trí)<select name="location"><option value="">Không ghi nhận / giữ theo nguồn</option><option
+                                th:each="l:${locations}"
+                                th:if="${l.type=='COMPARTMENT' and l.active}"
+                                th:value="${l.id}"
+                                th:text="${l.path}"
+                            ></option></select></label>
+                    <label>Ghi chú / chênh lệch<textarea name="note" maxlength="2000"></textarea></label>
+                    <button>Ghi kết quả</button>
+                </form>
+            </article>
+            <form
+                th:if="${batch.state=='OPEN'}"
+                th:action="@{/archivist/inventories/{id}/close(id=${batch.id})}"
+                method="post"
+            >
+                <button>Chốt đợt sau khi kiểm đủ</button>
+            </form>
+            <a th:href="@{/archivist/inventories}">← Các đợt kiểm kê</a>
+        </main>
+    </body>
+</html>

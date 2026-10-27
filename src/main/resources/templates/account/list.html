@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Quản lý tài khoản')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Quản lý tài khoản')}"></nav>
+            <h1>Quản lý tài khoản</h1>
+            <nav class="actions" aria-label="Quản lý nhân sự">
+                <a class="button" th:href="@{/admin/accounts}">Tài khoản</a>
+                <a class="button secondary" th:href="@{/admin/accounts/changes}">Cập nhật thay đổi vai trò/khoa</a>
+                <a class="button secondary" th:href="@{/admin/accounts/new}">Tạo tài khoản</a>
+            </nav>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="success" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error" role="alert"></p>
+            <form th:action="@{/admin/accounts}" method="get" class="card">
+                <div class="grid">
+                    <label>Tên<input
+                            name="name"
+                            th:value="${name}"
+                            maxlength="200"
+                            placeholder="Tên đăng nhập hoặc tên nhân viên"
+                        ></label>
+                    <label>Căn cước công dân<input
+                            name="citizenId"
+                            th:value="${citizenId}"
+                            type="text"
+                            inputmode="numeric"
+                            pattern="[0-9]{10}"
+                            minlength="10"
+                            maxlength="10"
+                            placeholder="CCCD 10 chữ số"
+                        ></label>
+                    <label>Loại tài khoản<select name="role"><option value="">Tất cả</option><option value="READER" th:selected="${selectedRole=='READER'}">Bác sĩ</option><option value="ARCHIVIST" th:selected="${selectedRole=='ARCHIVIST'}">Nhân viên lưu trữ</option><option value="DIRECTOR" th:selected="${selectedRole=='DIRECTOR'}">Giám đốc</option><option value="ADMIN" th:selected="${selectedRole=='ADMIN'}">Quản trị viên</option></select></label>
+                </div>
+                <div class="actions"><button>Tìm kiếm</button><a class="button secondary" th:href="@{/admin/accounts}">Xóa bộ lọc</a></div>
+            </form>
+            <p>Tìm thấy <strong th:text="${#lists.size(accounts)}"></strong> tài khoản.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Loại tài khoản</th>
+                            <th>Họ tên</th>
+                            <th>Tên tài khoản</th>
+                            <th>Vai trò</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="a:${accounts}">
+                            <td th:text="${a.role}"></td>
+                            <td>
+                                <a th:href="@{/admin/accounts/{id}/edit(id=${a.id})}" th:text="${a.display_name}"></a>
+                            </td>
+                            <td th:text="${a.username}"></td>
+                            <td
+                                th:text="${a.role=='READER' ? 'Bác sĩ' : (a.role=='ARCHIVIST' ? 'Nhân viên lưu trữ' : (a.role=='DIRECTOR' ? 'Giám đốc' : 'Quản trị viên'))}"
+                            ></td>
+                            <td>
+                                <form th:if="${a.username!=currentUsername and !(a.role=='ADMIN' and a.status=='ACTIVE' and activeAdminCount<=1) and !(a.role=='DIRECTOR' and a.status=='ACTIVE' and activeDirectorCount<=1)}"
+                                      th:action="@{/admin/accounts/{id}/delete(id=${a.id})}" method="post"
+                                      onsubmit="return confirm('Xóa tài khoản này khỏi hệ thống? Tài khoản sẽ không thể đăng nhập; lịch sử hồ sơ và nhật ký vẫn được giữ.');">
+                                    <input type="hidden" name="version" th:value="${a.version}">
+                                    <button type="submit" class="danger">Xóa tài khoản</button>
+                                </form>
+                                <span th:if="${a.username==currentUsername}">Tài khoản đang sử dụng</span>
+                                <span th:if="${a.username!=currentUsername and a.role=='ADMIN' and a.status=='ACTIVE' and activeAdminCount<=1}">Admin hoạt động cuối cùng</span>
+                                <span th:if="${a.username!=currentUsername and a.role=='DIRECTOR' and a.status=='ACTIVE' and activeDirectorCount<=1}">Giám đốc hoạt động cuối cùng</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(accounts)}">
+                            <td colspan="5">Không có tài khoản phù hợp.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Kiểm kê kho')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Kiểm kê kho')}"></nav>
+            <h1>Kiểm kê và đối soát kho</h1>
+            <p>Danh sách chụp tại thời điểm tạo đợt, không gồm hồ sơ đang giao đọc. Kết quả kiểm kê không tự thay vị trí hoặc trạng thái hồ sơ; mọi điều chỉnh dùng chức năng tương ứng và giữ lịch sử.</p>
+            <form
+                th:if="${currentRole=='ARCHIVIST'}"
+                th:action="@{/archivist/inventories}"
+                method="post"
+                class="card"
+            >
+                <label>Tên đợt<input name="name" maxlength="200" required></label>
+                <label>Phạm vi vị trí<select name="location"><option value="">Toàn kho</option><option th:each="l:${locations}" th:value="${l.id}" th:text="${l.path}"></option></select></label>
+                <button>Tạo đợt kiểm kê</button>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Đợt</th>
+                        <th>Trạng thái</th>
+                        <th>Đã kiểm / Tổng</th>
+                        <th>Người tạo / ngày</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="b:${batches}">
+                        <td>
+                            <a
+                                th:if="${currentRole=='ARCHIVIST'}"
+                                th:href="@{/archivist/inventories/{id}(id=${b.id})}"
+                                th:text="${b.name}"
+                            ></a>
+                            <span th:unless="${currentRole=='ARCHIVIST'}" th:text="${b.name}"></span>
+                        </td>
+                        <td th:text="${b.state}"></td>
+                        <td><span th:text="${b.checked}"></span> / <span th:text="${b.total}"></span></td>
+                        <td><span th:text="${b.username}"></span> · <span th:text="${b.created_at}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </body>
+</html>

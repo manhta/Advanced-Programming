@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Tra cứu hồ sơ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Tra cứu hồ sơ')}"></nav>
+            <h1
+                th:text="${recordScope=='DECLARATIONS' ? 'Bệnh án chờ duyệt' : (recordScope=='DRAFTS' ? 'Bản giấy nháp' : 'Tra cứu hồ sơ bệnh án')}"
+            ></h1>
+            <nav class="record-list-tabs" aria-label="Danh sách hồ sơ">
+                <a
+                    th:href="@{${recordBase}(scope='OFFICIAL')}"
+                    th:attr="aria-current=${recordScope=='OFFICIAL' ? 'page' : null}"
+                >Hồ sơ chính thức</a>
+                <a
+                    th:href="@{${recordBase}(scope='DECLARATIONS')}"
+                    th:attr="aria-current=${recordScope=='DECLARATIONS' ? 'page' : null}"
+                    th:text="${currentRole=='READER' ? 'Bệnh án chờ duyệt' : 'Xét duyệt khai báo'}"
+                ></a>
+                <a
+                    th:if="${currentRole=='ARCHIVIST'}"
+                    th:href="@{${recordBase}(scope='DRAFTS')}"
+                    th:attr="aria-current=${recordScope=='DRAFTS' ? 'page' : null}"
+                >Bản giấy nháp</a>
+            </nav>
+            <p th:if="${recordScope=='DRAFTS'}" class="muted">Bản giấy nháp là thông tin hồ sơ giấy mới lưu tạm, chưa xác nhận nhập kho. Chỉ nhân viên lưu trữ thấy danh sách này; Reader chưa thể tra cứu hoặc mượn. Mở hồ sơ để hoàn thiện thông tin và xác nhận nhập kho.</p>
+            <form
+                method="get"
+                th:action="@{${recordBase}}"
+                th:object="${filter}"
+                class="card"
+            >
+                <input type="hidden" th:field="*{scope}">
+                <div class="grid record-search-grid">
+                    <div>
+                        <label for="q">Mã hồ sơ / tên</label>
+                        <input id="q" th:field="*{q}" maxlength="200">
+                    </div>
+                    <div>
+                        <label for="birthYear">Năm sinh</label>
+                        <input
+                            id="birthYear"
+                            type="number"
+                            min="1800"
+                            max="9999"
+                            th:field="*{birthYear}"
+                        >
+                    </div>
+                    <div>
+                        <label for="departmentId">Khoa</label>
+                        <select id="departmentId" th:field="*{departmentId}">
+                            <option value="">Tất cả</option>
+                            <option th:each="item:${departments}" th:value="${item.id}" th:text="${item.name}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="recordTypeId">Loại bệnh án</label>
+                        <select id="recordTypeId" th:field="*{recordTypeId}">
+                            <option value="">Tất cả</option>
+                            <option th:each="item:${recordTypes}" th:value="${item.id}" th:text="${item.name}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="format">Hình thức hồ sơ</label>
+                        <select id="format" th:field="*{format}">
+                            <option value="">Tất cả</option>
+                            <option value="BOTH">Giấy và điện tử</option>
+                            <option value="ELECTRONIC_ONLY">Điện tử</option>
+                            <option value="PAPER_ONLY">Giấy</option>
+                            <option value="PAPER">Có bản giấy</option>
+                        </select>
+                    </div>
+                    <div th:if="${recordScope=='DECLARATIONS'}">
+                        <label for="submissionState">Trạng thái xét duyệt</label>
+                        <select id="submissionState" th:field="*{submissionState}">
+                            <option value="">Tất cả</option>
+                            <option
+                                th:each="s:${ {'SUBMITTED','NEEDS_INFO','PENDING_APPROVAL','APPROVED','REJECTED','CANCELLED'} }"
+                                th:value="${s}"
+                                th:text="${@readingLabels.electronicState(s)}"
+                            ></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="from">Ra viện từ ngày</label>
+                        <input id="from" type="date" th:field="*{from}">
+                    </div>
+                    <div>
+                        <label for="to">Đến ngày</label>
+                        <input id="to" type="date" th:field="*{to}">
+                    </div>
+                    <div>
+                        <label for="physicalStatus">Trạng thái lưu chuyển</label>
+                        <select id="physicalStatus" th:field="*{physicalStatus}">
+                            <option value="">Tất cả</option>
+                            <option value="IN_STORAGE">Trong kho</option>
+                            <option value="UNAVAILABLE">Tạm không khả dụng</option>
+                            <option value="READING">Đang giao đọc</option>
+                            <option th:if="${currentRole=='ARCHIVIST'}" value="NOT_STORED">Chưa nhập kho</option>
+                        </select>
+                    </div>
+                    <div th:if="${currentRole=='ARCHIVIST'}">
+                        <label for="state">Trạng thái hồ sơ</label>
+                        <select id="state" th:field="*{state}">
+                            <option value="">Tất cả</option>
+                            <option value="DRAFT">Chưa công bố / nháp</option>
+                            <option value="STORED">Đã nhập kho</option>
+                            <option value="PUBLISHED">Đã công bố điện tử</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="size">Số dòng</label>
+                        <select id="size" th:field="*{size}">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="sort">Sắp xếp</label>
+                        <select id="sort" th:field="*{sort}">
+                            <option value="newest">Mới nhập</option>
+                            <option value="archive">Mã hồ sơ</option>
+                            <option value="name">Họ tên</option>
+                            <option value="discharge">Ngày ra viện mới nhất</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="actions"><button>Tìm kiếm</button><a class="button secondary" th:href="@{${recordBase}(scope=${recordScope})}">Xóa bộ lọc</a><a th:if="${currentRole=='ARCHIVIST'}" class="button" th:href="@{/archivist/records/new}">Nhập hồ sơ giấy</a><a th:if="${currentRole=='READER'}" class="button" th:href="@{/reader/records/new}">Thêm bệnh án mới</a></div>
+            </form>
+            <p>Tìm thấy <strong th:text="${result.total}"></strong> hồ sơ.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã hồ sơ</th>
+                            <th>Người bệnh</th>
+                            <th>Khoa / loại bệnh án</th>
+                            <th>Hình thức</th>
+                            <th th:if="${currentRole=='READER' and recordScope=='OFFICIAL'}">Mượn hồ sơ</th>
+                            <th th:text="${recordScope=='DECLARATIONS' ? 'Trạng thái xét duyệt' : 'Ghi chú'}"></th>
+                            <th th:if="${recordScope=='DECLARATIONS'}">Xử lý</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item:${result.items}">
+                            <td>
+                                <a th:href="@{${recordBase+'/'+item.id}}" th:text="${item.displayCode()}"></a>
+                                <small th:if="${item.archiveNumber!=null and item.archiveNumber!=item.recordCode}"><br>Số lưu trữ: <span th:text="${item.archiveNumber}"></span></small>
+                            </td>
+                            <td th:text="${item.patientName}"></td>
+                            <td>
+                                <span th:text="${item.departmentName ?: 'Chưa xác định'}"></span>
+                                <br>
+                                <small th:text="${item.recordTypeName ?: 'Chưa xác định loại'}"></small>
+                            </td>
+                            <td th:text="${item.formatLabel()}"></td>
+                            <td th:if="${currentRole=='READER' and recordScope=='OFFICIAL'}">
+                                <a
+                                    th:if="${item.borrowable}"
+                                    class="button"
+                                    data-borrow-record
+                                    th:href="@{/reader/requests/new(recordId=${item.id})}"
+                                >Mượn hồ sơ</a>
+                            </td>
+                            <td th:if="${recordScope!='DECLARATIONS'}" class="record-borrow-note">
+                                <span th:if="${item.deceased}" class="deceased-badge">Bệnh án tử</span>
+                                <span
+                                    th:if="${item.hasPaperCopy and !item.borrowable}"
+                                    class="muted"
+                                    th:text="${item.borrowingLabel()}"
+                                ></span>
+                            </td>
+                            <td th:if="${recordScope=='DECLARATIONS'}">
+                                <span class="badge" th:text="${@readingLabels.electronicState(item.submissionState)}"></span>
+                            </td>
+                            <td th:if="${recordScope=='DECLARATIONS'}">
+                                <a th:href="@{${recordBase+'/'+item.id}}">Xem / xử lý</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(result.items)}">
+                            <td
+                                th:colspan="${recordScope=='DECLARATIONS' or (currentRole=='READER' and recordScope=='OFFICIAL')?6:5}"
+                            >Không có kết quả phù hợp.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav class="pagination" aria-label="Phân trang">
+                <a
+                    th:if="${result.page>0}"
+                    th:href="@{${recordBase}(scope=${recordScope},q=${filter.q},birthYear=${filter.birthYear},departmentId=${filter.departmentId},recordTypeId=${filter.recordTypeId},from=${filter.from},to=${filter.to},physicalStatus=${filter.physicalStatus},state=${filter.state},format=${filter.format},submissionState=${filter.submissionState},size=${filter.size},sort=${filter.sort},page=${result.page-1})}"
+                >← Trang trước</a>
+                <span>Trang <span th:text="${result.page+1}"></span> / <span th:text="${result.pages()==0?1:result.pages()}"></span></span>
+                <a
+                    th:if="${result.page+1<result.pages()}"
+                    th:href="@{${recordBase}(scope=${recordScope},q=${filter.q},birthYear=${filter.birthYear},departmentId=${filter.departmentId},recordTypeId=${filter.recordTypeId},from=${filter.from},to=${filter.to},physicalStatus=${filter.physicalStatus},state=${filter.state},format=${filter.format},submissionState=${filter.submissionState},size=${filter.size},sort=${filter.sort},page=${result.page+1})}"
+                >Trang sau →</a>
+            </nav>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

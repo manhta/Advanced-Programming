@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Chỉnh sửa thông tin cá nhân')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Chỉnh sửa thông tin cá nhân')}"></nav>
+            <h1>Chỉnh sửa thông tin cá nhân</h1>
+            <p>Tên tài khoản giữ nguyên khi đổi họ tên hoặc ngày sinh. Vai trò và khoa chỉ thay đổi qua đề nghị được duyệt.</p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error" role="alert"></p>
+            <form class="card" th:action="@{/account/profile/edit}" method="post">
+                <input type="hidden" name="version" th:value="${profile.version}">
+                <div class="grid">
+                    <label>Họ tên<input name="displayName" th:value="${profile.full_name}" maxlength="200" required></label>
+                    <label>Căn cước công dân
+                        <input name="citizenId" th:value="${profile.citizen_id}" inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" required>
+                    </label>
+                    <label>Ngày sinh<input name="birthDate" type="date" th:value="${profile.birth_date}" required></label>
+                    <label>Giới tính
+                        <select name="gender" required>
+                            <option value="">Chọn giới tính</option>
+                            <option value="MALE" th:selected="${profile.gender=='MALE'}">Nam</option>
+                            <option value="FEMALE" th:selected="${profile.gender=='FEMALE'}">Nữ</option>
+                            <option value="OTHER" th:selected="${profile.gender=='OTHER'}">Khác</option>
+                        </select>
+                    </label>
+                    <div>
+                        <label>Vai trò</label>
+                        <a class="button secondary" th:href="@{/account/change-requests}"
+                            th:text="${T(mrm.account.StaffChangeService).roleName(profile.role)+' · Đề nghị thay đổi vai trò'}"></a>
+                    </div>
+                    <div>
+                        <label>Khoa/phòng</label>
+                        <a class="button secondary" th:href="@{/account/change-requests}"
+                            th:text="${(profile.department_name ?: 'Chưa gán')+' · Đề nghị thay đổi khoa'}"></a>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button>Lưu thông tin</button>
+                    <a class="button secondary" th:href="@{/account/profile}">Quay lại</a>
+                </div>
+            </form>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

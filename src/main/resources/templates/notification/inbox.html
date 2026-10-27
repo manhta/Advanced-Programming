@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Thông báo nội bộ')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Thông báo nội bộ')}"></nav>
+            <h1>Thông báo của bạn</h1>
+            <p>Chuông có <strong th:text="${unreadNotificationCount}"></strong> thông báo đang chờ xử lý chưa đọc. Đã đọc không đồng nghĩa đã phê duyệt hoặc xác nhận.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="success" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" class="error" role="alert"></p>
+            <nav class="notification-tabs" aria-label="Lọc tiến trình thông báo">
+                <a th:href="@{/notifications(scope='pending')}" th:attr="aria-current=${scope=='pending' ? 'page' : null}">Đang chờ xử lý <span th:text="${inbox.pendingCount}"></span></a>
+                <a th:href="@{/notifications(scope='handled')}" th:attr="aria-current=${scope=='handled' ? 'page' : null}">Đã xử lý <span th:text="${inbox.handledCount}"></span></a>
+                <a th:href="@{/notifications(scope='all')}" th:attr="aria-current=${scope=='all' ? 'page' : null}">Tất cả</a>
+            </nav>
+            <div class="actions">
+                <a class="button secondary" th:href="@{/notifications(scope=${scope},unread=${!unreadOnly})}"
+                    th:text="${unreadOnly ? 'Tất cả thông báo' : 'Thông báo chưa đọc'}"></a>
+                <form th:if="${unreadNotificationCount>0}" th:action="@{/notifications/read-all}" method="post">
+                    <button>Đánh dấu tất cả đã đọc</button>
+                </form>
+                <form th:if="${inbox.handledCount>0}" th:action="@{/notifications/delete-handled}" method="post">
+                    <input type="hidden" name="scope" th:value="${scope}">
+                    <button class="notification-delete">Xóa tất cả đã xử lý</button>
+                </form>
+            </div>
+            <p th:if="${#lists.isEmpty(inbox.items)}" class="card">Không có thông báo trong danh sách này.</p>
+            <article
+                class="card notification-item"
+                th:each="n:${inbox.items}"
+                th:classappend="${n.readAt==null ? 'notification-unread' : ''}"
+            >
+                <span class="badge" th:text="${n.pending ? 'Đang chờ xử lý' : 'Đã xử lý'}"></span>
+                <span class="badge" th:text="${n.readAt==null ? 'Chưa đọc' : 'Đã đọc'}"></span>
+                <h2 th:text="${n.title}"></h2>
+                <p class="muted">Lúc <time
+                        th:datetime="${n.createdAt}"
+                        th:text="${#temporals.format(n.createdAt.atZone(T(java.time.ZoneId).of('Asia/Bangkok')), 'dd/MM/yyyy HH:mm')}"
+                    ></time> (giờ Việt Nam)</p>
+                <dl th:if="${n.workInfo!=null}" class="notification-work-info">
+                    <dt>Người yêu cầu</dt>
+                    <dd><strong th:text="${n.workInfo.requesterName}"></strong> (<span th:text="${n.workInfo.requesterUsername}"></span>)</dd>
+                    <dt>Hồ sơ yêu cầu</dt>
+                    <dd><strong th:text="${n.workInfo.recordCode}"></strong> · <span th:text="${n.workInfo.patientName}"></span></dd>
+                    <dt>Ngày giờ yêu cầu</dt>
+                    <dd th:text="${#temporals.format(n.workInfo.requestedAt.atZone(T(java.time.ZoneId).of('Asia/Bangkok')),'dd/MM/yyyy HH:mm')}"></dd>
+                    <dt th:if="${n.workInfo.pickupDates!=null}">Ngày nhận</dt>
+                    <dd th:if="${n.workInfo.pickupDates!=null}" th:text="${n.workInfo.pickupDates}"></dd>
+                    <dt th:if="${n.workInfo.pickupRoom!=null}">Phòng nhận</dt>
+                    <dd th:if="${n.workInfo.pickupRoom!=null}" th:text="${n.workInfo.pickupRoom}"></dd>
+                </dl>
+                <p class="notification-message" th:if="${!#strings.isEmpty(n.message)}" th:text="${n.message}"></p>
+                <div class="actions">
+                    <form th:unless="${n.cancelled}" th:action="@{/notifications/{id}/open(id=${n.id})}" method="post">
+                        <button>Mở yêu cầu</button>
+                    </form>
+                    <form th:if="${n.readAt==null}" th:action="@{/notifications/{id}/read(id=${n.id})}" method="post">
+                        <button class="secondary">Đánh dấu đã đọc</button>
+                    </form>
+                    <form th:unless="${n.pending}" th:action="@{/notifications/{id}/delete(id=${n.id})}" method="post">
+                        <input type="hidden" name="scope" th:value="${scope}">
+                        <button class="notification-delete">Xóa thông báo</button>
+                    </form>
+                </div>
+            </article>
+            <nav class="pagination" aria-label="Trang thông báo">
+                <a th:if="${inbox.page>0}" th:href="@{/notifications(page=${inbox.page-1},unread=${unreadOnly},scope=${scope})}">← Trang trước</a>
+                <span>Trang <span th:text="${inbox.page+1}"></span> / <span th:text="${inbox.pages()==0 ? 1 : inbox.pages()}"></span></span>
+                <a
+                    th:if="${inbox.page+1<inbox.pages()}"
+                    th:href="@{/notifications(page=${inbox.page+1},unread=${unreadOnly},scope=${scope})}"
+                >Trang sau →</a>
+            </nav>
+        </main>
+        <footer th:replace="~{fragments/layout :: footer}"></footer>
+    </body>
+</html>

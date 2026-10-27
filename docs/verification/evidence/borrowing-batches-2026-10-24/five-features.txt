@@ -1,0 +1,97 @@
+PASS: maximum-length source note stores with audit atomically
+PASS: UC04 stores a complete record
+PASS: archive number allocated by stored month
+PASS: policy snapshot persisted and readable
+PASS: initial receipt and audit saved atomically
+PASS: identical create replay returns original ID
+PASS: create replay does not duplicate audit
+PASS: expected BusinessException
+PASS: incomplete draft has no invented date or retention
+PASS: draft excluded from public search
+PASS: expected ResponseStatusException
+PASS: draft publishes after reconciliation
+PASS: expected BusinessException
+PASS: expected DuplicateKeyException
+PASS: same patient can have two treatment episodes
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected CatalogException
+PASS: editing patient data preserves historical inactive catalog snapshot
+PASS: metadata edit records before/after and increments version
+PASS: expected BusinessException
+PASS: move updates current location once
+PASS: move replay does not duplicate history
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: failed move leaves original location
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: expected BusinessException
+PASS: accent-insensitive search and pagination
+PASS: combined department, type, status, dates and birth-year filters
+PASS: birth-year filter excludes other years
+PASS: stable pagination has no duplicates
+PASS: search input cannot inject SQL
+PASS: wildcard input is treated literally
+PASS: expected BusinessException
+PASS: concurrent suspected duplicate episode: only one intake
+PASS: concurrent duplicate archive: exactly one insert
+PASS: concurrent move: exactly one update
+PASS: concurrent move has one initial and one transfer history
+PASS: concurrent capacity: one record in one-capacity compartment
+PASS: login renders for READER
+PASS: login authenticates READER
+PASS: home redirects by READER
+PASS: role home renders READER
+PASS: login renders for ARCHIVIST
+PASS: login authenticates ARCHIVIST
+PASS: home redirects by ARCHIVIST
+PASS: role home renders ARCHIVIST
+PASS: login renders for DIRECTOR
+PASS: login authenticates DIRECTOR
+PASS: home redirects by DIRECTOR
+PASS: role home renders DIRECTOR
+PASS: login renders for ADMIN
+PASS: login authenticates ADMIN
+PASS: home redirects by ADMIN
+PASS: role home renders ADMIN
+PASS: anonymous cannot search
+PASS: admin has no clinical record access
+PASS: non-archivist cannot open entry form
+PASS: non-archivist cannot open entry form
+PASS: record entry template renders
+PASS: storage template renders
+PASS: HTTP creates storage warehouse
+PASS: HTTP updates storage name and deactivates empty warehouse
+PASS: HTTP duplicate storage code redisplays form
+PASS: HTTP creates complete record (status 302)
+PASS: HTTP create replay returns same record
+PASS: archivist sees full operational detail
+PASS: detail permission route for READER
+PASS: no internal data in response to READER
+PASS: detail permission route for DIRECTOR
+PASS: no internal data in response to DIRECTOR
+PASS: HTTP accent-insensitive search
+PASS: HTTP birth-year filter binds and excludes result
+PASS: invalid search interval handled
+PASS: entry POST needs CSRF
+PASS: stored edit form renders
+PASS: HTTP metadata edit succeeds
+PASS: HTTP stale metadata form redisplays error
+PASS: HTTP move succeeds
+PASS: HTTP move replay does not duplicate history
+PASS: HTTP stores incomplete draft
+PASS: reader cannot guess draft ID
+PASS: director cannot guess draft ID
+PASS: reader cannot directly POST record
+PASS: incorrect password rejected
+PASS: locked account rejected on new login
+PASS: logout succeeds
+PASS: protected page requires login after logout
+PASS: all test catalog fixtures removed
+PASS: all test storage fixtures removed
+PASSED 96 five-feature checks.

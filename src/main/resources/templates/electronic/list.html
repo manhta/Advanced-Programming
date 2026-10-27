@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/layout :: head('Hồ sơ điện tử')}"></head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Hồ sơ điện tử')}"></nav>
+            <h1>Hồ sơ điện tử</h1>
+            <p>Hồ sơ bác sĩ khai báo, nhân viên lưu trữ kiểm tra và Giám đốc duyệt để công bố; không sử dụng vị trí kho giấy.</p>
+            <p th:if="${currentRole=='READER'}">
+                <a class="button" th:href="@{/reader/electronic-records/new}">Thêm bệnh án mới</a>
+            </p>
+            <p th:if="${currentRole=='ARCHIVIST'}">
+                <a class="button secondary" th:href="@{/archivist/records/new}">Nhập hồ sơ giấy chưa có trên hệ thống</a>
+            </p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <form method="get" th:action="@{${electronicBase}}" class="card">
+                <div class="grid">
+                    <div>
+                        <label for="eq">Tên người bệnh / mã hồ sơ</label>
+                        <input
+                            id="eq"
+                            name="q"
+                            maxlength="200"
+                            th:value="${result.query}"
+                        >
+                    </div>
+                    <div>
+                        <label for="es">Trạng thái</label>
+                        <select id="es" name="state">
+                            <option value="">Tất cả</option>
+                            <option
+                                th:each="s:${ {'SUBMITTED','NEEDS_INFO','PENDING_APPROVAL','APPROVED','REJECTED','CANCELLED'} }"
+                                th:value="${s}"
+                                th:selected="${s==result.state}"
+                                th:text="${@readingLabels.electronicState(s)}"
+                            ></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="actions"><button>Tìm kiếm</button><a th:href="@{${electronicBase}}">Xóa bộ lọc</a></div>
+            </form>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã hồ sơ</th>
+                            <th>Người bệnh</th>
+                            <th>Bác sĩ khai báo</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày công bố</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r:${result.items}">
+                            <td>
+                                <a th:href="@{${electronicBase+'/'+r.id}}" th:text="${r.record_code}"></a>
+                            </td>
+                            <td><span th:text="${r.patient_name}"></span> · <span th:text="${r.birth_year}"></span></td>
+                            <td th:text="${r.creator}"></td>
+                            <td th:text="${@readingLabels.electronicState(r.state)}"></td>
+                            <td th:text="${r.published_at}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(result.items)}">
+                            <td colspan="5">Không có hồ sơ phù hợp.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav class="pagination" aria-label="Phân trang hồ sơ điện tử">
+                <a
+                    th:if="${result.page>0}"
+                    th:href="@{${electronicBase}(q=${result.query},state=${result.state},page=${result.page-1})}"
+                >← Trang trước</a>
+                <span>Trang <span th:text="${result.page+1}"></span> / <span th:text="${result.pages()}"></span></span>
+                <a
+                    th:if="${result.page+1<result.pages()}"
+                    th:href="@{${electronicBase}(q=${result.query},state=${result.state},page=${result.page+1})}"
+                >Trang sau →</a>
+            </nav>
+        </main>
+    </body>
+</html>

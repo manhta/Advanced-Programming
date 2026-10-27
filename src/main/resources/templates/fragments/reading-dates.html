@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="picker(initialDates)">
+            <fieldset data-reading-dates>
+                <legend>Ngày đọc (Số ngày mượn tối đa: 5)</legend>
+                <div
+                    data-date-rows
+                    th:with="days=${#strings.isEmpty(initialDates) ? {''} : #strings.arraySplit(initialDates, ',')}"
+                >
+                    <div class="reading-date-row" th:each="day:${days}">
+                        <input
+                            type="date"
+                            name="dates"
+                            th:value="${#strings.trim(day)}"
+                            th:min="${readingMinDate}"
+                            th:max="${readingMaxDate}"
+                            aria-label="Ngày đọc"
+                            required
+                        >
+                        <button
+                            type="button"
+                            class="secondary"
+                            data-remove-date
+                            hidden
+                        >Xóa ngày</button>
+                    </div>
+                </div>
+                <button
+                    type="button"
+                    class="secondary"
+                    data-add-date
+                    hidden
+                >Thêm ngày</button>
+            </fieldset>
+            <script th:src="@{/js/reading-dates.js}" defer></script>
+        </div>
+    </body>
+</html>

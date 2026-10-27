@@ -1,0 +1,17 @@
+Completion excerpt only; the functional checks ran in --preview mode with terminal output.
+
+2026-10-25T11:13:17.510+07:00  INFO 31808 --- [medical-record-management] [     
+       main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutd
+down. Waiting for active requests to complete
+2026-10-25T11:13:17.529+07:00  INFO 31808 --- [medical-record-management] [tomca
+at-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complet
+te
+2026-10-25T11:13:17.535+07:00  INFO 31808 --- [medical-record-management] [     
+       main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown i
+initiated...
+2026-10-25T11:13:17.539+07:00  INFO 31808 --- [medical-record-management] [     
+       main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown c
+completed.
+PASS: temporary schema removed
+PASSED 455 functional requirement checks; email intentionally deferred.
+

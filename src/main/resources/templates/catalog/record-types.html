@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Loại bệnh án | MRM</title>
+        <style>
+        body { font: 16px/1.6 "Segoe UI", sans-serif; background: #f0f5f5; color: #18333f; margin: 0; }
+        main { max-width: 1100px; margin: 32px auto; padding: 24px; background: white; border-radius: 16px; }
+        a { color: #17665f; } label { display: block; margin-top: 12px; }
+        input, select, button { font: inherit; padding: 9px; border: 1px solid #b9ceca; border-radius: 6px; max-width: 100%; box-sizing: border-box; }
+        button { background: #17665f; color: white; cursor: pointer; margin-top: 12px; }
+        .table-scroll { overflow-x: auto; } table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 12px; border-bottom: 1px solid #dbe7e4; text-align: left; vertical-align: top; }
+        [role="alert"] { color: #a12f3c; } [role="status"] { color: #17665f; }
+        .edit-form { display: grid; gap: 8px; min-width: 220px; }
+    </style>
+        <link rel="stylesheet" th:href="@{/css/app.css}">
+        <link rel="stylesheet" th:href="@{/css/portal.css}">
+        <script th:src="@{/js/portal.js}" defer></script>
+    </head>
+    <body>
+        <header th:replace="~{fragments/layout :: header}"></header>
+        <main>
+            <nav th:replace="~{fragments/layout :: breadcrumb('Loại bệnh án')}"></nav>
+            <a th:href="@{/archivist/home}">← Trang nhân viên lưu trữ</a>
+            <h1>Danh mục loại bệnh án</h1>
+            <p>Loại bệnh án độc lập với khoa điều trị, dấu hiệu tử vong và chính sách bảo quản.</p>
+            <p th:if="${successMessage}" th:text="${successMessage}" role="status"></p>
+            <p th:if="${errorMessage}" th:text="${errorMessage}" role="alert"></p>
+            <h2>Thêm loại bệnh án</h2>
+            <form th:action="@{/archivist/record-types}" th:object="${recordTypeForm}" method="post">
+                <label for="code">Mã loại</label>
+                <input
+                    id="code"
+                    th:field="*{code}"
+                    maxlength="32"
+                    required
+                >
+                <p th:errors="*{code}" role="alert"></p>
+                <label for="name">Tên loại bệnh án</label>
+                <input
+                    id="name"
+                    th:field="*{name}"
+                    maxlength="200"
+                    required
+                >
+                <p th:errors="*{name}" role="alert"></p>
+                <button type="submit">Thêm loại bệnh án</button>
+            </form>
+            <h2>Danh sách và chỉnh sửa</h2>
+            <p>Giữ nguyên mã; ngừng hoạt động để ẩn khỏi lựa chọn mới, không xóa lịch sử.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã</th>
+                            <th>Tên hiện tại</th>
+                            <th>Trạng thái</th>
+                            <th>Chỉnh sửa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${recordTypes}">
+                            <td th:text="${item.code}"></td>
+                            <td th:text="${item.name}"></td>
+                            <td th:text="${item.active ? 'Đang hoạt động' : 'Ngừng hoạt động'}"></td>
+                            <td>
+                                <form
+                                    class="edit-form"
+                                    th:action="@{/archivist/record-types/{id}(id=${item.id})}"
+                                    method="post"
+                                >
+                                    <input type="hidden" name="version" th:value="${item.version}">
+                                    <label th:for="${'name-' + item.id}">Tên</label>
+                                    <input
+                                        th:id="${'name-' + item.id}"
+                                        name="name"
+                                        th:value="${item.name}"
+                                        maxlength="200"
+                                        required
+                                    >
+                                    <label th:for="${'active-' + item.id}">Trạng thái</label>
+                                    <select th:id="${'active-' + item.id}" name="active">
+                                        <option value="true" th:selected="${item.active}">Đang hoạt động</option>
+                                        <option value="false" th:selected="${!item.active}">Ngừng hoạt động</option>
+                                    </select>
+                                    <button type="submit">Lưu thay đổi</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(recordTypes)}">
+                            <td colspan="4">Chưa có loại bệnh án.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>
